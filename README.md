@@ -1,0 +1,1 @@
+# alfresco-docker-base-java
