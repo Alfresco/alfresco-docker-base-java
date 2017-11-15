@@ -1,7 +1,7 @@
 #!/bin/sh
 set -o errexit
 
-. build.properties
+. ./build.properties
 
 JRE_FILENAME=`echo "${JRE_URL##*/}"`
 
