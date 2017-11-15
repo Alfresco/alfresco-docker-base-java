@@ -1,3 +1,5 @@
+[![Docker Repository on Quay](https://quay.io/repository/alfresco/alfresco-base-java/status?token=7b035610-24b5-4ed7-a95f-6e812628cd8e "Docker Repository on Quay")](https://quay.io/repository/alfresco/alfresco-base-java)
+
 # Welcome
 
 This repository contains the Dockerfile to create the base Java image that will be used by Alfresco engineering teams, other internal groups in the organisation, customers and partners to create images as part of the Alfresco Digital Business Platform.
