@@ -6,3 +6,6 @@ This repository contains the Dockerfile to create the base Java image that will 
 
 The architectural decision record can be found [here](https://github.com/Alfresco/alfresco-anaxes-shipyard/blob/master/docs/adrs/0005-base-java-docker-image-composition.md).
 
+# Versioning
+
+Currently any pull request to this project should be accompanied by an increment to the `DOCKER_IMAGE_TAG` in `build.properties` as Bamboo will automatically build and push a new image to Quay.io.
