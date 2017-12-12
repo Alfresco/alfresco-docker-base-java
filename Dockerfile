@@ -5,8 +5,8 @@
 # This is an initial iteration and subject to change
 FROM centos:7.4.1708
 
-RUN yum -y update nss bind-license
-
+RUN yum -y update nss bind-license curl
+# Added curl update to fix security issue, this should be removed on next iteration if not necessary
 ENV JAVA_PKG=server-jre-8u*-linux-x64.tar.gz \
     JAVA_HOME=/usr/java/default
 
