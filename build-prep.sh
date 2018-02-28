@@ -11,7 +11,7 @@ if [ "${USE_MVN}" = 'true' ]; then
     # As Oracle have made downloading non-current versions of Java difficult,
     # we are sadly having to store them in an internal repository.
 
-    mvn org.apache.maven.plugins:maven-dependency-plugin:3.0.2:copy \
+    /opt/apache-maven/bin/mvn org.apache.maven.plugins:maven-dependency-plugin:3.0.2:copy \
         -DrepoUrl=https://artifacts.alfresco.com/nexus/content/repositories/oracle-java \
         -Dartifact="${JAVA_OS_ARCH}":"${JAVA_SE_TYPE}":"${JAVA_VERSION}":"${JAVA_PACKAGING}":bin \
         -DoutputDirectory=.
