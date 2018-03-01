@@ -38,10 +38,12 @@ else
 fi
 
 # Checksum
-
-if [ -x "$(command -v shasum)" ]; then
+# Check for coreutils version first
+if [ -x "$(command -v sha256sum)" ]; then
+    echo "${!JRE_CHECKSUM_256_REF} ${JRE_FILENAME}" | sha256sum -c -
+elif [ -x "$(command -v gsha256sum)" ]; then
+    echo "${!JRE_CHECKSUM_256_REF} ${JRE_FILENAME}" | gsha256sum -c -
+else
     # Note: two spaces are required between the variables in perl's shasum
     echo "${!JRE_CHECKSUM_256_REF}  ${JRE_FILENAME}" | shasum -a 256 -c -
-else
-    echo "${!JRE_CHECKSUM_256_REF} ${JRE_FILENAME}" | sha256sum -c -
 fi
