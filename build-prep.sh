@@ -4,9 +4,6 @@ set -o errexit
 
 . ./build.properties
 
-echo $BASH_VERSION
-uname -a
-
 # Get Java release from Docker tag
 JAVA_VERSION="${DOCKER_IMAGE_TAG%%-*}"
 
@@ -40,14 +37,13 @@ else
     JRE_FILENAME="${JRE_URL##*/}"
 fi
 
-# Checksum
 # Check for coreutils version first
+# Note: two spaces are required between the variables in some implementations
+
 if [ -x "$(command -v sha256sum)" ]; then
-    echo "${!JRE_CHECKSUM_256_REF} ${JRE_FILENAME}"
     echo "${!JRE_CHECKSUM_256_REF}  ${JRE_FILENAME}" | sha256sum -c -
 elif [ -x "$(command -v gsha256sum)" ]; then
     echo "${!JRE_CHECKSUM_256_REF}  ${JRE_FILENAME}" | gsha256sum -c -
 else
-    # Note: two spaces are required between the variables in perl's shasum
     echo "${!JRE_CHECKSUM_256_REF}  ${JRE_FILENAME}" | shasum -a 256 -c -
 fi
