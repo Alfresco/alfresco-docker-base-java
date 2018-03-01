@@ -7,6 +7,10 @@ set -o errexit
 # Get Java release from Docker tag
 JAVA_VERSION="${DOCKER_IMAGE_TAG%%-*}"
 
+# bash 3.2 compatible alternative to associative arrays
+JAVA_VERSION_NO_DOTS=$(echo $JAVA_VERSION | sed -e 's/\.//g')
+JRE_CHECKSUM_256_REF="JRE_CHECKSUM_256_${JAVA_VERSION_NO_DOTS}"
+
 if [ "${USE_MVN}" = 'true' ]; then
 
     # As Oracle have made downloading non-current versions of Java difficult,
@@ -17,6 +21,7 @@ if [ "${USE_MVN}" = 'true' ]; then
     export M3_HOME=/opt/apache-maven
 
     "${M3_HOME}"/bin/mvn org.apache.maven.plugins:maven-dependency-plugin:3.0.2:copy \
+        --quiet \
         -DrepoUrl=https://artifacts.alfresco.com/nexus/content/repositories/oracle-java \
         -Dartifact="${JAVA_OS_ARCH}":"${JAVA_SE_TYPE}":"${JAVA_VERSION}":"${JAVA_PACKAGING}":bin \
         -DoutputDirectory=.
@@ -32,12 +37,11 @@ else
     JRE_FILENAME="${JRE_URL##*/}"
 fi
 
-# bash 3.2 compatible alternative to associative arrays
-JAVA_VERSION_NO_DOTS=$(echo $JAVA_VERSION | sed -e 's/\.//g')
-JRE_CHECKSUM_256_REF="JRE_CHECKSUM_256_${JAVA_VERSION_NO_DOTS}"
+# Checksum
 
 if [ -x "$(command -v shasum)" ]; then
-  echo "${!JRE_CHECKSUM_256_REF} ${JRE_FILENAME}" | shasum -a 256 -c -
+    # Note: two spaces are required between the variables in perl's shasum
+    echo "${!JRE_CHECKSUM_256_REF}  ${JRE_FILENAME}" | shasum -a 256 -c -
 else
-  echo "${!JRE_CHECKSUM_256_REF} ${JRE_FILENAME}" | sha256sum -c -
+    echo "${!JRE_CHECKSUM_256_REF} ${JRE_FILENAME}" | sha256sum -c -
 fi
