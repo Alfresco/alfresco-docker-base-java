@@ -7,7 +7,7 @@ FROM centos:7.4.1708
 
 RUN yum -y update nss bind-license curl systemd
 # Added curl update to fix security issue, this should be removed on next iteration if not necessary
-ENV JAVA_PKG=serverjre-9.*.tar.gz \
+ENV JAVA_PKG=serverjre-*.tar.gz \
     JAVA_HOME=/usr/java/default
 
 ADD $JAVA_PKG /usr/java/
