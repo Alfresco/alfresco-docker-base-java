@@ -5,6 +5,11 @@
 # This is an initial iteration and subject to change
 FROM centos:7.4.1708
 
+LABEL name="Alfresco Base Java" \
+    vendor="Alfresco" \
+    license="Various" \
+    build-date="unset"
+
 RUN yum -y update nss bind-license curl systemd
 # Added curl update to fix security issue, this should be removed on next iteration if not necessary
 ENV JAVA_PKG=serverjre-*.tar.gz \
