@@ -5,7 +5,7 @@ set -o errexit
 . ./build.properties
 
 # Get Java release from Docker tag
-JAVA_VERSION="${DOCKER_IMAGE_TAG%%-*}"
+JAVA_VERSION="${DOCKER_IMAGE_TAG%%-[![:digit:]]*}"
 
 # bash 3.2 compatible alternative to associative arrays
 JAVA_VERSION_NO_DOTS=$(echo $JAVA_VERSION | sed -e 's/\.//g')
