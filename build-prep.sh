@@ -5,11 +5,12 @@ set -o errexit
 . ./build.properties
 
 # Get Java release from Docker tag
-JAVA_VERSION="${DOCKER_IMAGE_TAG%%-*}"
+JAVA_VERSION="${DOCKER_IMAGE_TAG%%-[![:digit:]]*}"
 
+# Remove periods, and replace remaining non-alphanumerics with underscores
+JAVA_VERSION_CLEANED=$(echo $JAVA_VERSION | sed -e 's/\.//g' -e 's%[^[:alnum:]]%_%g')
 # bash 3.2 compatible alternative to associative arrays
-JAVA_VERSION_NO_DOTS=$(echo $JAVA_VERSION | sed -e 's/\.//g')
-JRE_CHECKSUM_256_REF="JRE_CHECKSUM_256_${JAVA_VERSION_NO_DOTS}"
+JRE_CHECKSUM_256_REF="JRE_CHECKSUM_256_${JAVA_VERSION_CLEANED}"
 
 if [ "${USE_MVN}" = 'true' ]; then
 
