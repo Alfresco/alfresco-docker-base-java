@@ -41,7 +41,7 @@ docker build -t alfresco/alfresco-base-java .
 
 ## Pulling released images
 
-Builds are available publically from
+Builds are available from
 [Docker Hub](https://hub.docker.com/r/alfresco/alfresco-base-java)
 
 ```bash
