@@ -60,26 +60,37 @@ docker pull alfresco/alfresco-base-java:8u161-oracle-centos-7-333472fed423
 
 ## Usage
 
-```bash
-docker run \
-  -it \
-  --rm \
-  --read-only \
-  --mount type=tmpfs,destination=/tmp,tmpfs-mode=01777 \
-  alfresco/alfresco-base-java:8 \
-  java \
-    -XX:ErrorFile=/tmp/hs_err_%p.log \
-    <command-line-arguments>
-```
+### Standalone
 
-Or, more likely, use it as a base image in a Dockerfile, using a valid tag
-in Docker Hub or Quay, like the following. See [Alfresco Base Tomcat](https://github.com/Alfresco/alfresco-docker-base-tomcat/blob/master/Dockerfile)
-for a concrete example.
+The image can be used via `docker run` to run java applications
+with `--read-only` set, without any loss of functionality (with the
+obvious caveat that the application itself does not write to the filesystem).
+
+### Parent Image
+
+It is more likely to be used as a
+[parent image](https://docs.docker.com/glossary/?term=parent%20image)
+in a Dockerfile.
+For reference, see the documentation on
+[layers](https://docs.docker.com/storage/storagedriver/#container-and-layers),
+the
+[VOLUME](https://docs.docker.com/engine/reference/builder/#volume)
+instruction, and
+[best practices with VOLUMEs](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#volume).
+
+### Examples of usage as a parent image
+
+Example from a Dockerfile using a public, parent image in Docker Hub.
 
 ```bash
 FROM alfresco/alfresco-base-java:8
 ```
 
+Example from a Dockerfile using a private, parent image in Quay:
+
 ```bash
 FROM quay.io/alfresco/alfresco-base-java:8u161-oracle-centos-7-333472fed423
 ```
+
+See [Alfresco Base Tomcat](https://github.com/Alfresco/alfresco-docker-base-tomcat/blob/master/Dockerfile)
+for a concrete example.
