@@ -5,7 +5,7 @@
 
 ## Introduction
 
-This repository contains the Dockerfile to create the base Java image that
+This repository contains the Dockerfile used to create the parent Java image that
 will be used by Alfresco engineering teams, other internal groups in the
 organisation, customers and partners to create images as part of the Alfresco
 Digital Business Platform.
