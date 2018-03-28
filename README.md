@@ -53,9 +53,9 @@ The builds are identical to those stored in the private repo on Quay,
 (which also supports build-pinning versions).
 
 ```bash
-docker pull alfresco/alfresco-base-java:8
-docker pull alfresco/alfresco-base-java:8u161-oracle-centos-7
-docker pull alfresco/alfresco-base-java:8u161-oracle-centos-7-333472fed423
+docker pull quay.io/alfresco/alfresco-base-java:8
+docker pull quay.io/alfresco/alfresco-base-java:8u161-oracle-centos-7
+docker pull quay.io/alfresco/alfresco-base-java:8u161-oracle-centos-7-333472fed423
 ```
 
 ## Usage
