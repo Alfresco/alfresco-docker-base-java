@@ -2,13 +2,14 @@
 
 set -o errexit
 
-. ./build.properties
+# shellcheck source=./build.properties
+source ./build.properties
 
 # Get Java release from Docker tag
 JAVA_VERSION="${DOCKER_IMAGE_TAG%%-[![:digit:]]*}"
 
 # Remove periods, and replace remaining non-alphanumerics with underscores
-JAVA_VERSION_CLEANED=$(echo $JAVA_VERSION | sed -e 's/\.//g' -e 's%[^[:alnum:]]%_%g')
+JAVA_VERSION_CLEANED=$(echo "${JAVA_VERSION}" | sed -e 's/\.//g' -e 's%[^[:alnum:]]%_%g')
 # bash 3.2 compatible alternative to associative arrays
 JRE_CHECKSUM_256_REF="JRE_CHECKSUM_256_${JAVA_VERSION_CLEANED}"
 
