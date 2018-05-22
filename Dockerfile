@@ -12,7 +12,6 @@ LABEL name="Alfresco Base Java" \
 
 RUN yum -y update nss bind-license curl systemd glibc openssl-libs krb5-libs libgcc libstdc++
 
-# Added curl update to fix security issue, this should be removed on next iteration if not necessary
 ENV JAVA_PKG=serverjre-*.tar.gz \
     JAVA_HOME=/usr/java/default
 
