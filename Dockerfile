@@ -10,7 +10,17 @@ LABEL name="Alfresco Base Java" \
     license="Various" \
     build-date="unset"
 
-RUN yum -y update nss bind-license curl systemd glibc openssl-libs krb5-libs libgcc libstdc++
+RUN yum -y update \
+    nss-3.36.0-5.el7_5 \
+    bind-license-9.9.4-61.el7 \ 
+    curl-7.29.0-46.el7 \
+    systemd-219-57.el7 \
+    glibc-2.17-222.el7 \
+    openssl-libs-1.0.2k-12.el7 \
+    krb5-libs-1.15.1-19.el7 \
+    libgcc-4.8.5-28.el7_5.1 \
+    libstdc++-4.8.5-28.el7_5.1 \
+    procps-ng-3.3.10-17.el7_5.2
 
 ENV JAVA_PKG=serverjre-*.tar.gz \
     JAVA_HOME=/usr/java/default
