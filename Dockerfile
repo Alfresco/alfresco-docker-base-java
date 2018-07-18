@@ -10,6 +10,11 @@ LABEL name="Alfresco Base Java" \
     license="Various" \
     build-date="unset"
 
+# Set the locale
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8    
+
 RUN yum -y update \
     nss-3.36.0-5.el7_5 \
     bind-license-9.9.4-61.el7 \ 
