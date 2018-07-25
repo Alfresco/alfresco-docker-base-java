@@ -20,7 +20,8 @@ RUN yum -y update \
     krb5-libs-1.15.1-19.el7 \
     libgcc-4.8.5-28.el7_5.1 \
     libstdc++-4.8.5-28.el7_5.1 \
-    procps-ng-3.3.10-17.el7_5.2
+    procps-ng-3.3.10-17.el7_5.2 && \
+    yum clean all
 
 ENV JAVA_PKG=serverjre-*.tar.gz \
     JAVA_HOME=/usr/java/default
