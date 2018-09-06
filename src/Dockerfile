@@ -3,7 +3,7 @@
 # Version 0.1
 
 # This is an initial iteration and subject to change
-FROM centos:7.4.1708
+FROM centos:7.5.1804
 
 LABEL name="Alfresco Base Java" \
     vendor="Alfresco" \
@@ -11,19 +11,14 @@ LABEL name="Alfresco Base Java" \
     build-date="unset"
 
 RUN yum -y update \
-    nss-3.36.0-5.el7_5 \
-    bind-license-9.9.4-61.el7 \ 
-    curl-7.29.0-46.el7 \
-    systemd-219-57.el7 \
-    glibc-2.17-222.el7 \
-    openssl-libs-1.0.2k-12.el7 \
-    krb5-libs-1.15.1-19.el7 \
-    libgcc-4.8.5-28.el7_5.1 \
-    libstdc++-4.8.5-28.el7_5.1 \
-    procps-ng-3.3.10-17.el7_5.2
+    yum-utils-1.1.31-46.el7_5 \
+    python-2.7.5-69.el7_5 \
+    gnupg2-2.0.22-5.el7_5
 
-ENV JAVA_PKG=serverjre-*.tar.gz \
-    JAVA_HOME=/usr/java/default
+# like serverjre-*.tar.gz 
+ARG JAVA_PKG
+
+ENV JAVA_HOME=/usr/java/default
 
 ADD $JAVA_PKG /usr/java/
 

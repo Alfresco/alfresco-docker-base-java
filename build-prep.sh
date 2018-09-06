@@ -5,6 +5,8 @@ set -o errexit
 # shellcheck source=./build.properties
 source ./build.properties
 
+declare -r DOWNLOAD_DIR=src/
+
 # Get Java release from Docker tag
 JAVA_VERSION="${DOCKER_IMAGE_TAG%%-[![:digit:]]*}"
 
@@ -26,17 +28,19 @@ if [ "${USE_MVN}" = 'true' ]; then
         --quiet \
         -DrepoUrl=https://artifacts.alfresco.com/nexus/content/repositories/oracle-java \
         -Dartifact="${JAVA_OS_ARCH}":"${JAVA_SE_TYPE}":"${JAVA_VERSION}":"${JAVA_PACKAGING}":bin \
-        -DoutputDirectory=.
+        -DoutputDirectory="${DOWNLOAD_DIR}"
 
     # Our filenames are munged into Maven compatible names
-    JRE_FILENAME="${JAVA_SE_TYPE}"-"${JAVA_VERSION}"-bin."${JAVA_PACKAGING}"
+    JRE_FILENAME="${DOWNLOAD_DIR}/${JAVA_SE_TYPE}"-"${JAVA_VERSION}"-bin."${JAVA_PACKAGING}"
 else
-
     # You can still download the latest Java version from Oracle
 
+    declare OLD_PWD="${PWD}"
+    cd "${DOWNLOAD_DIR}"
     curl -jksSLOH "Cookie: oraclelicense=accept-securebackup-cookie" "${JRE_URL}"
+    cd "${OLD_PWD}"
 
-    JRE_FILENAME="${JRE_URL##*/}"
+    JRE_FILENAME="${DOWNLOAD_DIR}/${JRE_URL##*/}"
 fi
 
 # Check for coreutils version first
