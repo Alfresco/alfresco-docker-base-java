@@ -15,11 +15,11 @@ RUN yum -y update \
     python-2.7.5-69.el7_5 \
     gnupg2-2.0.22-5.el7_5
 
-# like serverjre-*.tar.gz 
-ARG JAVA_PKG
-
 ENV JAVA_HOME=/usr/java/default
 
+# This used to be serverjre-*.tar.gz (and not an ARG)
+# now it will be serverjre-8u181-bin.tar.gz / serverjre-11.0.0-bin.tar.gz
+ARG JAVA_PKG
 ADD $JAVA_PKG /usr/java/
 
 RUN export JAVA_DIR=$(ls -1 -d /usr/java/*) && \
