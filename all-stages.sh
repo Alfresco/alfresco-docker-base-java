@@ -5,6 +5,7 @@
 
 export suffix
 export repo_tag
+export docker_build='true'
 export docker_build_dir='src'
 
 
