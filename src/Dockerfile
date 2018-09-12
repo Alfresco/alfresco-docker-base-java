@@ -10,6 +10,11 @@ LABEL name="Alfresco Base Java" \
     license="Various" \
     build-date="unset"
 
+# Set the locale
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8    
+
 RUN yum -y update \
     yum-utils-1.1.31-46.el7_5 \
     yum-plugin-ovl-1.1.31-46.el7_5 \
