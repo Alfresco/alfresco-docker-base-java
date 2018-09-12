@@ -18,6 +18,10 @@ RUN yum -y update \
     python-2.7.5-69.el7_5 \
     gnupg2-2.0.22-5.el7_5
 
+# Set the locale
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
 ENV JAVA_HOME=/usr/java/default
 
 # This used to be serverjre-*.tar.gz (and not an ARG)
