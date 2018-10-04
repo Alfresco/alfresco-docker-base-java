@@ -17,7 +17,7 @@ source "${here}/../lib/java.sh"
 
 main () {
     local -a versions_a
-    IFS=, read -ra versions_a <<< $java_versions
+    IFS=, read -ra versions_a <<< "$java_versions"
 
     local java
     for java in "${versions_a[@]}"; do

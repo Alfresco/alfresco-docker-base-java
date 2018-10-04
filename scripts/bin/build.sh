@@ -19,7 +19,7 @@ main () {
     local -r download_dir="${docker_build_dir}"
 
     local -a versions_a
-    IFS=, read -ra versions_a <<< $java_versions
+    IFS=, read -ra versions_a <<< "$java_versions"
 
     local java
     for java in "${versions_a[@]}"; do
