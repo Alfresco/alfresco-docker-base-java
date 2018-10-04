@@ -28,9 +28,13 @@ main () {
         # STAGE 1 - Download
         local java_pkg
         java_pkg=$(java::pkg "${java}" "${download_dir}")
-        export docker_build_extra_args="--build-arg JAVA_PKG=${java_pkg}"
 
-        # Stage 2 - Build      
+        # Stage 2 - Build 
+        export docker_build_extra_args="--build-arg JAVA_PKG=${java_pkg}"
+        # This is GNU date specific.
+        # Hmm. Couldn't get this working.
+        # docker_build_extra_args+=' --build-arg BUILD_DATE="'$(date -u --rfc-3339=seconds)'"' 
+
         local docker_image_tag
         docker_image_tag=$(java::docker::tag::full2 "${java}")
 

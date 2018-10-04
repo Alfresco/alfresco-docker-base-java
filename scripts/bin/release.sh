@@ -41,8 +41,7 @@ main () {
 
         ./docker-tools/bin/release-docker-tags.sh
 
-        unset docker_build_extra_args \
-            docker_image_tag \
+        unset docker_image_tag \
             DOCKER_IMAGE_TAG_SHORT_NAME
 
     done
