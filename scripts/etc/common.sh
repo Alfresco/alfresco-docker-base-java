@@ -5,5 +5,5 @@
 export artifacts_repo_url='https://artifacts.alfresco.com/nexus/content/repositories/oracle-java'
 
 # Download directory. Originally meant to be a subdirectory,
-# for when were going to have separate Dockerfiles.
+# for when we were going to have separate Dockerfiles.
 export docker_build_dir='.'
