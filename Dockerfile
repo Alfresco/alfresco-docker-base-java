@@ -5,10 +5,9 @@
 # This is an initial iteration and subject to change
 FROM centos:7.5.1804
 
-LABEL name="Alfresco Base Java" \
-    vendor="Alfresco" \
-    license="Various" \
-    build-date="unset"
+LABEL org.label-schema.schema-version="1.0" \
+    org.label-schema.name="Alfresco Base Java" \
+    org.label-schema.vendor="Alfresco"
 
 RUN yum -y update \
     yum-utils-1.1.31-46.el7_5 \

@@ -5,7 +5,7 @@
 
 ## Introduction
 
-This repository contains the [Dockerfile](src/Dockerfile) used to create the parent Java image that
+This repository contains the [Dockerfile](Dockerfile) used to create the parent Java image that
 will be used by Alfresco engineering teams, other internal groups in the
 organisation, customers and partners to create images as part of the Alfresco
 Digital Business Platform.
@@ -69,7 +69,7 @@ To build a local version of the base java image follow the instructions below
 
 #### Download JDK
 
-Download any `tar.gz` of the serverjre or jdk into [src](src). Save the filename in
+Download any `tar.gz` of the serverjre or jdk into [.](.). Save the filename in
 a variable. e.g.
 
 ```bash
@@ -81,7 +81,7 @@ export java_filename='jdk-11_linux-x64_bin.tar.gz'
 Assuming the filename has been saved in the variable `$java_filename`, build as follows
 
 ```bash
-docker build --build-arg JAVA_PKG="${java_filename}" -t alfresco/alfresco-base-java src
+docker build --build-arg JAVA_PKG="${java_filename}" -t alfresco/alfresco-base-java .
 ```
 
 ### Scripts
@@ -91,7 +91,7 @@ They assume that these have been pulled into `./docker-tools` at build time.
 
 #### Build
 
-[bin/build.sh](bin/build.sh) requires the following environment variables:
+[scripts/bin/build.sh](scripts/bin/build.sh) requires the following environment variables:
 
 * `registry` _(mandatory)_: The hostname (and optional port) of your private registry. e.g. `quay.io`. Note: this is available in bamboo by setting `registry=${bamboo.docker.registry.address}`.
 * `namespace` _(mandatory)_: The namespace you use in your private registry. e.g. `alfresco`. Note: this is available in bamboo by setting `namespace=${bamboo.docker.registry.namespace}`.
@@ -100,7 +100,7 @@ They assume that these have been pulled into `./docker-tools` at build time.
 
 #### Release
 
-[bin/release.sh](bin/release.sh) requires the same variables, with the exception of `suffix`.
+[scripts/bin/release.sh](scripts/bin/release.sh) requires the same variables, with the exception of `suffix`.
 
 ## Pulling released images
 

@@ -41,8 +41,7 @@ main () {
 
         ./docker-tools/bin/release-docker-tags.sh
 
-        unset docker_build_extra_args \
-            docker_image_tag \
+        unset docker_image_tag \
             DOCKER_IMAGE_TAG_SHORT_NAME
 
     done
@@ -54,11 +53,10 @@ declare namespace
 declare java_versions
 # From other file
 declare docker_image_repository
+declare docker_build_dir
 
 export suffix
 export docker_build='true'
-export docker_build_dir='src'
-
 
 # Call main() if we're not sourced
 [[ "${BASH_SOURCE[0]}" == "${0}" ]] && main "$@"
