@@ -16,32 +16,35 @@ source "${here}/../lib/java.sh"
 
 
 main () {
-    local -r download_dir="${here}/../${docker_build_dir}"
-
     local -a versions_a
     IFS=, read -ra versions_a <<< $java_versions
 
     local java
     for java in "${versions_a[@]}"; do
         java="java_${java}"
+        # Stage 3 - Relase
 
-        # STAGE 1 - Download
-        local java_pkg
-        java_pkg=$(java::pkg "${java}" "${download_dir}")
-        export docker_build_extra_args="--build-arg JAVA_PKG=${java_pkg}"
-
-        # Stage 2 - Build      
+        # Get the full tag version-vendor-centos-7 
         local docker_image_tag
         docker_image_tag=$(java::docker::tag::full2 "${java}")
 
-        export repo_tag="${registry}/${namespace}/${docker_image_repository}:${docker_image_tag}"
+        # Get the short tag (java major version)
+        # This variable is used by release-docker-tags.sh
+        local DOCKER_IMAGE_TAG_SHORT_NAME
+        DOCKER_IMAGE_TAG_SHORT_NAME=$(java::docker::tag::short2 "${java}")
 
-        ./docker-tools/bin/primary-docker-tag.sh
+        local private_repo_tag
+        private_repo_tag="${registry}/${namespace}/${docker_image_repository}:${docker_image_tag}"
+        
+        export private_repo_tag
+        export DOCKER_IMAGE_TAG_SHORT_NAME
+
+        ./docker-tools/bin/release-docker-tags.sh
 
         unset docker_build_extra_args \
-            docker_image_tag
+            docker_image_tag \
+            DOCKER_IMAGE_TAG_SHORT_NAME
 
-        rm -f "${download_dir}/${java_pkg}"
     done
 }
 
@@ -51,11 +54,10 @@ declare namespace
 declare java_versions
 # From other file
 declare docker_image_repository
+declare docker_build_dir
 
 export suffix
 export docker_build='true'
-export docker_build_dir='src'
-
 
 # Call main() if we're not sourced
 [[ "${BASH_SOURCE[0]}" == "${0}" ]] && main "$@"
