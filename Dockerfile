@@ -2,6 +2,21 @@
 #
 # Version 0.1
 
+# first stage: strip JDK package of largest, superflous files
+# src.zip and *.jmod files are only used in development
+FROM centos:7.5.1804 as jdkRepackager
+
+# This used to be serverjre-*.tar.gz (and not an ARG)
+# now it will be serverjre-8u181-bin.tar.gz / serverjre-11.0.0-bin.tar.gz
+ARG JAVA_PKG
+COPY $JAVA_PKG /tmp/
+
+RUN mkdir /tmp/java \
+  && tar xzf /tmp/$JAVA_PKG -C /tmp/java \
+  && find /tmp/java/ -iname src.zip -delete \
+  && find /tmp/java/ -iname *.jmod -delete \
+  && rm /tmp/$JAVA_PKG
+
 # This is an initial iteration and subject to change
 FROM centos:7.5.1804
 
@@ -28,10 +43,7 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 ENV JAVA_HOME=/usr/java/default
 
-# This used to be serverjre-*.tar.gz (and not an ARG)
-# now it will be serverjre-8u181-bin.tar.gz / serverjre-11.0.0-bin.tar.gz
-ARG JAVA_PKG
-ADD $JAVA_PKG /usr/java/
+COPY --from=jdkRepackager /tmp/java /usr/java
 
 RUN export JAVA_DIR=$(ls -1 -d /usr/java/*) && \
     ln -s $JAVA_DIR /usr/java/latest && \
