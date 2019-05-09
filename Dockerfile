@@ -14,11 +14,13 @@ RUN yum -y update \
     yum-plugin-ovl-1.1.31-46.el7_5 \
     yum-plugin-fastestmirror-1.1.31-46.el7_5 \
     bind-license-9.9.4-61.el7_5.1 \
-    python-2.7.5-69.el7_5 \
+    python-2.7.5-77.el7_6 \
     gnupg2-2.0.22-5.el7_5 \
     nss-3.36.0-7.el7_5 \
     nss-sysinit-3.36.0-7.el7_5 \
     nss-tools-3.36.0-7.el7_5 \
+    systemd-libs-219-62.el7_6.5 \
+    libssh2-1.4.3-12.el7_6.2 \
     && \
     yum clean all
 
