@@ -18,7 +18,7 @@ RUN yum -y update \
     openssl-libs-1.0.2k-16.el7_6.1 \
     krb5-libs-1.15.1-37.el7_6 \
     setup-2.8.71-10.el7 \
-    python-2.7.5-80.el7_6 \
+    python-2.7.5-77.el7_6 \
     gnupg2-2.0.22-5.el7_5 \
     nss-3.36.0-7.el7_5 \
     nss-sysinit-3.36.0-7.el7_5 \
