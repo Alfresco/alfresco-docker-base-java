@@ -14,7 +14,7 @@ RUN yum -y update \
     yum-plugin-ovl-1.1.31-50.el7 \
     yum-plugin-fastestmirror-1.1.31-50.el7 \
     bind-license-9.9.4-74.el7_6.1 \
-    glibc-2.17-260.el7_6.5 \
+    glibc-2.17-260.el7_6.6 \
     openssl-libs-1.0.2k-16.el7_6.1 \
     krb5-libs-1.15.1-37.el7_6 \
     setup-2.8.71-10.el7 \
