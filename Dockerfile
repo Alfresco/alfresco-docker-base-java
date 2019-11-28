@@ -26,6 +26,9 @@ RUN yum -y update \
     systemd-libs-219-67.el7_7.2 \
     libssh2-1.8.0-3.el7 \
     vim-minimal-7.4.629-6.el7 \
+    procps-ng-3.3.10-26.el7_7.1 \
+    binutils-2.27-41.base.el7_7.1 \
+    curl-7.29.0-54.el7 \
     && \
     yum clean all
 
