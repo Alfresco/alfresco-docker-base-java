@@ -10,22 +10,22 @@ LABEL org.label-schema.schema-version="1.0" \
     org.label-schema.vendor="Alfresco"
 
 RUN yum -y update \
-    yum-utils-1.1.31-50.el7 \
-    yum-plugin-ovl-1.1.31-50.el7 \
-    yum-plugin-fastestmirror-1.1.31-50.el7 \
-    bind-license-9.9.4-74.el7_6.1 \
-    glibc-2.17-260.el7_6.6 \
-    openssl-libs-1.0.2k-16.el7_6.1 \
-    krb5-libs-1.15.1-37.el7_6 \
+    yum-utils-1.1.31-52.el7 \
+    yum-plugin-ovl-1.1.31-52.el7 \
+    yum-plugin-fastestmirror-1.1.31-52.el7 \
+    bind-license-9.11.4-9.P2.el7 \
+    glibc-2.17-292.el7 \
+    openssl-libs-1.0.2k-19.el7 \
+    krb5-libs-1.15.1-37.el7_7.2 \
     setup-2.8.71-10.el7 \
-    python-2.7.5-80.el7_6 \
+    python-2.7.5-86.el7 \
     gnupg2-2.0.22-5.el7_5 \
-    nss-3.36.0-7.el7_5 \
-    nss-sysinit-3.36.0-7.el7_5 \
-    nss-tools-3.36.0-7.el7_5 \
-    systemd-libs-219-62.el7_6.5 \
-    libssh2-1.4.3-12.el7_6.2 \
-    vim-minimal-7.4.160-6.el7_6 \
+    nss-3.44.0-4.el7 \
+    nss-sysinit-3.44.0-4.el7 \
+    nss-tools-3.44.0-4.el7 \
+    systemd-libs-219-67.el7_7.2 \
+    libssh2-1.8.0-3.el7 \
+    vim-minimal-7.4.629-6.el7 \
     && \
     yum clean all
 
