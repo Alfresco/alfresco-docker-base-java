@@ -26,9 +26,9 @@ RUN yum -y update \
     procps-ng-3.3.10-26.el7_7.1 \
     binutils-2.27-41.base.el7_7.1 \
     curl-7.29.0-54.el7 \
-    nss-3.44.0-4.el7 \
-    nss-sysinit-3.44.0-4.el7 \
-    nss-tools-3.44.0-4.el7 \
+    nss-3.44.0-7.el7_7 \
+    nss-sysinit-3.44.0-7.el7_7 \
+    nss-tools-3.44.0-7.el7_7 \
     && \
     yum clean all
 
