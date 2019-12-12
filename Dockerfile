@@ -29,9 +29,6 @@ RUN yum -y update \
     nss-3.44.0-7.el7_7 \
     nss-sysinit-3.44.0-7.el7_7 \
     nss-tools-3.44.0-7.el7_7 \
-    nss-softokn-3.44.0-8.el7_7 \
-    nss-util-3.44.0-4.el7_7 \
-    nss-softokn-freebl-3.44.0-8.el7_7 \
     && \
     yum clean all
 
