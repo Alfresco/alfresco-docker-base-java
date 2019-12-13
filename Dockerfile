@@ -20,9 +20,9 @@ RUN yum -y update \
     setup-2.8.71-10.el7 \
     python-2.7.5-86.el7 \
     gnupg2-2.0.22-5.el7_5 \
-    nss-3.44.0-4.el7 \
-    nss-sysinit-3.44.0-4.el7 \
-    nss-tools-3.44.0-4.el7 \
+    nss-3.44.0-7.el7_7 \
+    nss-sysinit-3.44.0-7.el7_7 \
+    nss-tools-3.44.0-7.el7_7 \
     systemd-libs-219-67.el7_7.2 \
     libssh2-1.8.0-3.el7 \
     vim-minimal-7.4.629-6.el7 \
