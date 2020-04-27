@@ -37,6 +37,6 @@ export -A java_8=(
 # See https://docs.oracle.com/en/java/javase/11/install/version-string-format.html
 export -A java_11=(
   [version]=11.0.7
-  [url]=https://download.java.net/java/GA/jdk11/13/GPL/openjdk-11.0.7_linux-x64_bin.tar.gz
+  [url]=https://github.com/AdoptOpenJDK/openjdk11-upstream-binaries/releases/download/jdk-11.0.7%2B10/OpenJDK11U-jdk_x64_linux_11.0.7_10.tar.gz
 )
 
