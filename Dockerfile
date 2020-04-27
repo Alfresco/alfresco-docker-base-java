@@ -18,7 +18,7 @@ RUN yum -y update \
     openssl-libs-1.0.2k-19.el7 \
     krb5-libs-1.15.1-37.el7_7.2 \
     setup-2.8.71-10.el7 \
-    python-2.7.5-86.el7 \
+    python-2.7.5-88.el7 \
     gnupg2-2.0.22-5.el7_5 \
     nss-3.44.0-7.el7_7 \
     nss-sysinit-3.44.0-7.el7_7 \
@@ -30,6 +30,7 @@ RUN yum -y update \
     binutils-2.27-41.base.el7_7.1 \
     curl-7.29.0-54.el7 \
     sqlite-3.7.17-8.el7_7.1 \
+    bash-4.2.46-33.el7 \
     && \
     yum clean all
 
