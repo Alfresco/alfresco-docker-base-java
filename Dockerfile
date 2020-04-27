@@ -10,27 +10,27 @@ LABEL org.label-schema.schema-version="1.0" \
     org.label-schema.vendor="Alfresco"
 
 RUN yum -y update \
-    python-2.7.5-86.el7 \
-    yum-utils-1.1.31-52.el7 \
-    yum-plugin-ovl-1.1.31-52.el7 \
-    yum-plugin-fastestmirror-1.1.31-52.el7 \
-    bind-license-9.11.4-9.P2.el7 \
-    glibc-2.17-292.el7 \
+    yum-utils-1.1.31-53.el7 \
+    yum-plugin-ovl-1.1.31-53.el7 \
+    yum-plugin-fastestmirror-1.1.31-53.el7 \
+    bind-license-9.11.4-16.P2.el7_8.2 \
+    glibc-2.17-307.el7.1 \
+    systemd-219-73.el7_8.5 \
+    expat-2.1.0-11.el7 \
+    bash-4.2.46-34.el7 \
+    shared-mime-info-1.8-5.el7 \
+    libxml2-2.9.1-6.el7.4 \
     openssl-libs-1.0.2k-19.el7 \
-    krb5-libs-1.15.1-37.el7_7.2 \
-    setup-2.8.71-10.el7 \
+    krb5-libs-1.15.1-46.el7 \
+    setup-2.8.71-11.el7 \
+    python-2.7.5-88.el7 \
     gnupg2-2.0.22-5.el7_5 \
     nss-3.44.0-7.el7_7 \
-    nss-sysinit-3.44.0-7.el7_7 \
-    nss-tools-3.44.0-7.el7_7 \
-    systemd-libs-219-67.el7_7.2 \
-    libssh2-1.8.0-3.el7 \
     vim-minimal-7.4.629-6.el7 \
-    procps-ng-3.3.10-26.el7_7.1 \
-    binutils-2.27-41.base.el7_7.1 \
-    curl-7.29.0-54.el7 \
+    procps-ng-3.3.10-27.el7 \
+    binutils-2.27-43.base.el7 \
+    curl-7.29.0-57.el7 \
     sqlite-3.7.17-8.el7_7.1 \
-    bash-4.2.46-33.el7 \
     && \
     yum clean all
 

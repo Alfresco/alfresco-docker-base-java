@@ -59,7 +59,7 @@ java::download::artifacts::curl () {
     local java_packaging="$4"
     local download_dir="$5"
     
-    curl -sSLO \
+    curl -sfSLO \
         --user "${ARTIFACTS_USER}:${ARTIFACTS_PASSWORD}" \
         "${artifacts_repo_url}/${group_id}/${artifact_id}/${artifact_id}-${java_version}-bin.${java_packaging}"
 }
@@ -68,7 +68,7 @@ java::download::openjdk::curl () {
     local url="$1"
     # https://download.java.net/java/GA/jdk11/28/GPL/openjdk-11+28_linux-x64_bin.tar.gz
     # https://download.java.net/java/GA/jdk11/28/GPL/openjdk-11+28_linux-x64_bin.tar.gz.sha256
-    curl -sSLO "${url}"
+    curl -sfSLO "${url}"
 }
 
 # Wrapper
