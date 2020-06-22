@@ -10,11 +10,12 @@ LABEL org.label-schema.schema-version="1.0" \
     org.label-schema.vendor="Alfresco"
 
 RUN yum -y update \
-    yum-utils-1.1.31-53.el7 \
+    yum-utils-1.1.31-54.el7_8 \
     yum-plugin-ovl-1.1.31-53.el7 \
     yum-plugin-fastestmirror-1.1.31-53.el7 \
     bind-license-9.11.4-16.P2.el7_8.2 \
     glibc-2.17-307.el7.1 \
+    glib2-2.56.1-5.el7 \
     systemd-219-73.el7_8.5 \
     expat-2.1.0-11.el7 \
     bash-4.2.46-34.el7 \
@@ -31,6 +32,8 @@ RUN yum -y update \
     binutils-2.27-43.base.el7 \
     curl-7.29.0-57.el7 \
     sqlite-3.7.17-8.el7_7.1 \
+    gobject-introspection-1.56.1-1.el7 \
+    bind-license-9.11.4-16.P2.el7_8.6 \
     && \
     yum clean all
 
