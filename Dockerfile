@@ -33,6 +33,7 @@ RUN yum -y update \
     curl-7.29.0-57.el7 \
     sqlite-3.7.17-8.el7_7.1 \
     gobject-introspection-1.56.1-1.el7 \
+    bind-license-9.11.4-16.P2.el7_8.6 \
     && \
     yum clean all
 
