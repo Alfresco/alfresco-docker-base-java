@@ -34,6 +34,9 @@ RUN yum -y update \
     sqlite-3.7.17-8.el7_7.1 \
     gobject-introspection-1.56.1-1.el7 \
     bind-license-9.11.4-16.P2.el7_8.6 \
+    elfutils-libs-0.176-4.el7 \
+    file-libs-5.11-36.el7 \
+    elfutils-default-yama-scope-0.176-4.el7 \
     && \
     yum clean all
 
