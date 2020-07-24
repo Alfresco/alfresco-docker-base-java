@@ -36,6 +36,7 @@ RUN yum -y update \
     bind-license-9.11.4-16.P2.el7_8.6 \
     elfutils-libs-0.176-4.el7 \
     file-libs-5.11-36.el7 \
+    dbus-1.10.24-14.el7_8 \
     elfutils-default-yama-scope-0.176-4.el7 \
     && \
     yum clean all
