@@ -36,7 +36,6 @@ export -A java_8=(
 # FCS of Java 11 is called 11, as trailing '.0's are dropped
 # See https://docs.oracle.com/en/java/javase/11/install/version-string-format.html
 export -A java_11=(
-  [version]=11.0.7
-  [url]=https://github.com/AdoptOpenJDK/openjdk11-upstream-binaries/releases/download/jdk-11.0.7%2B10/OpenJDK11U-jdk_x64_linux_11.0.7_10.tar.gz
+  [version]=11.0.8
+  [url]=https://github.com/AdoptOpenJDK/openjdk11-upstream-binaries/releases/download/jdk-11.0.8%2B10/OpenJDK11U-jdk_x64_linux_11.0.8_10.tar.gz
 )
-
