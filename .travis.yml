@@ -1,0 +1,21 @@
+language: ruby
+
+services:
+  - docker
+
+env:
+  global:
+    - java_versions=8,11 
+    - suffix=${TRAVIS_BRANCH}
+    - registry=quay.io
+    - namespace=alfresco
+
+jobs:
+  include:
+    - stage: All stages
+      name: "All stages"
+      before_script:
+      - mkdir docker-tools
+      - git clone git@github.com:Alfresco/bamboo-build-docker-repo-tools.git docker-tools
+      script:
+      - ./scripts/bin/build.sh
