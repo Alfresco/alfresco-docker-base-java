@@ -40,7 +40,7 @@ main () {
 
         export repo_tag="${registry}/${namespace}/${docker_image_repository}:${docker_image_tag}"
 
-#        ./docker-tools/bin/primary-docker-tag.sh
+        ./docker-tools/bin/primary-docker-tag.sh
 
         unset docker_build_extra_args \
             docker_image_tag
