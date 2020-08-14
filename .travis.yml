@@ -14,7 +14,5 @@ jobs:
   include:
     - stage: All stages
       name: "All stages"
-      before_script:
-      - git clone --branch=master https://github.com/Alfresco/bamboo-build-docker-repo-tools.git docker-tools
       script:
       - ./scripts/bin/build.sh
