@@ -17,4 +17,6 @@ jobs:
       script:
       - git clone https://github.com/Alfresco/alfresco-docker-base-java.git docker-tools
       - ls -l
+      - ls docker-tools
+      - ls docker-tools/bin/primary-docker-tag.sh
       - ./scripts/bin/build.sh
