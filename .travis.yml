@@ -16,4 +16,5 @@ jobs:
       name: "All stages"
       script:
       - git clone https://github.com/Alfresco/alfresco-docker-base-java.git docker-tools
+      - ls -l
       - ./scripts/bin/build.sh
