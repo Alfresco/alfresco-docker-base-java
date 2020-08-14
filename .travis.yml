@@ -15,8 +15,5 @@ jobs:
     - stage: All stages
       name: "All stages"
       script:
-      - git clone https://github.com/Alfresco/alfresco-docker-base-java.git docker-tools
-      - ls -l
-      - ls docker-tools
-      - ls docker-tools/bin/primary-docker-tag.sh
+      - git clone https://github.com/Alfresco/bamboo-build-docker-repo-tools.git docker-tools
       - ./scripts/bin/build.sh
