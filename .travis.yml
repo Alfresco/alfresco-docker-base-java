@@ -31,5 +31,5 @@ jobs:
         docker build -t ${DOCKER_IMAGE_REPOSITORY_8} . --build-arg JAVA_PKG=${java_8_se_type}-${java_8_version}-bin.${java_8_packaging} --no-cache && \
         docker tag "${DOCKER_IMAGE_REPOSITORY_8}" "quay.io/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_REPOSITORY_8}" && \
         docker images && \
-        docker push "quay.io/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}"
+        docker push "quay.io/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_REPOSITORY_8}"
         fi
