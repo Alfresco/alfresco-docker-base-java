@@ -29,7 +29,7 @@ jobs:
         echo "JAVA 8"  && \
         wget --user=${NEXUS_USERNAME} --password=${NEXUS_PASSWORD} "https://artifacts.alfresco.com/nexus/content/repositories/oracle-java/${java_8_os_arch}/${java_8_se_type}/${java_8_version}/${java_8_se_type}-${java_8_version}-bin.${java_8_packaging}" && \
         docker build -t "${DOCKER_IMAGE_REPOSITORY}" . --build-arg JAVA_PKG=${java_8_se_type}-${java_8_version}-bin.${java_8_packaging} --no-cache && \        
+        docker tag  "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}" && \
         docker images && \
-        docker tag  "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}"
         docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}"
         fi
