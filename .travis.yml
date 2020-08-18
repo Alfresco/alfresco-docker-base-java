@@ -31,5 +31,5 @@ jobs:
         docker tag "${DOCKER_IMAGE_REPOSITORY_8}" "quay.io/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_REPOSITORY_8}" && \
         docker images && \
         docker push "quay.io/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}"
-
+        fi
 #https://github.com/AdoptOpenJDK/openjdk11-upstream-binaries/releases/download/jdk-11.0.8%2B10/OpenJDK11U-jdk_x64_linux_11.0.8_10.tar.gz
