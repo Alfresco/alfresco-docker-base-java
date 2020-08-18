@@ -57,7 +57,7 @@ jobs:
       - |
         if [[ $TRAVIS_BRANCH == master ]]; then
         echo "JAVA 11"  && \
-        wget --user=${NEXUS_USERNAME} --password=${NEXUS_PASSWORD} "https://github.com/AdoptOpenJDK/openjdk11-upstream-binaries/releases/download/jdk-${java_11_version}%2B{java_11_minor_version}/OpenJDK11U-jdk_x64_linux_${java_11_version}_${java_11_minor_version}.tar.gz" && \
+        wget --user=${NEXUS_USERNAME} --password=${NEXUS_PASSWORD} "https://github.com/AdoptOpenJDK/openjdk11-upstream-binaries/releases/download/jdk-${java_11_version}%2B${java_11_minor_version}/OpenJDK11U-jdk_x64_linux_${java_11_version}_${java_11_minor_version}.tar.gz" && \
         docker build -t "${DOCKER_IMAGE_REPOSITORY}" . --build-arg JAVA_PKG=OpenJDK11U-jdk_x64_linux_${java_11_version}_${java_11_minor_version}.tar.gz --no-cache && \
         docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}" && \
         docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-${TRAVIS_JOB_ID}" && \
