@@ -46,7 +46,7 @@ jobs:
            docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:8"; fi
         else
         docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-${TRAVIS_BRANCH}" && \
-        docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-${TRAVIS_BRANCH}";
+        docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-${TRAVIS_BRANCH}";
         fi
 
     - stage: Download and build java 11
