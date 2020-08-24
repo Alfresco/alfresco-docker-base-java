@@ -26,6 +26,7 @@ jobs:
       - echo "${DOCKER_PASSWORD_QUAY}" | docker login ${registry} -u "${DOCKER_USERNAME_QUAY}" --password-stdin
       script:
       - |
+        set -e
         if [[ $TRAVIS_BRANCH == master ]]
         then
           echo "JAVA 8" 
@@ -42,6 +43,7 @@ jobs:
         then
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
           export short_tag=$(docker image inspect "${DOCKER_IMAGE_REPOSITORY}" | jq -r .[0].RepoDigests[0] | sed "s?{DOCKER_IMAGE_REPOSITORY}@??" | cut -c 8-19)
+          echo $short_tag
           echo "tagging and pushing to quay.io"
           docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}"
           docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-$short_tag"
@@ -63,6 +65,7 @@ jobs:
       - echo "${DOCKER_PASSWORD_QUAY}" | docker login ${registry} -u "${DOCKER_USERNAME_QUAY}" --password-stdin
       script:
       - |
+        set -e
         if [[ $TRAVIS_BRANCH == master ]]
         then
           echo "JAVA 11" 
@@ -79,6 +82,7 @@ jobs:
         then
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
           export short_tag=$(docker image inspect "${DOCKER_IMAGE_REPOSITORY}" | jq -r .[0].RepoDigests[0] | sed "s?{DOCKER_IMAGE_REPOSITORY}@??" | cut -c 8-19)
+          echo $short_tag
           echo "tagging and pushing to quay.io"
           docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}"
           docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-$short_tag"
