@@ -33,26 +33,27 @@ jobs:
           docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-release-candidate"
           docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-release-candidate"
           docker images
-          if [[ "${TRAVIS_COMMIT_MESSAGE}" == *"[release]"* ]]; then
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-            export short_tag=$(docker image inspect "${DOCKER_IMAGE_REPOSITORY}" | jq -r .[0].RepoDigests[0] | sed "s?{DOCKER_IMAGE_REPOSITORY}@??" | cut -c 8-19)
-            echo "tagging and pushing to quay.io"
-            docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}"
-            docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-$short_tag"
-            docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:8"
-            docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}"
-            docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-$short_tag"
-            docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:8"
-            echo "tagging and pushing to dockerhub"
-            docker tag "${DOCKER_IMAGE_REPOSITORY}" "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}"
-            docker tag "${DOCKER_IMAGE_REPOSITORY}" "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-$short_tag"
-            docker tag "${DOCKER_IMAGE_REPOSITORY}" "alfresco/${DOCKER_IMAGE_REPOSITORY}:8"
-            docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}"
-            docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-$short_tag"
-            docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:8"; fi
         else
           docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-${TRAVIS_BRANCH}"
           docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-${TRAVIS_BRANCH}"
+        fi
+        if [[ "${TRAVIS_COMMIT_MESSAGE}" == *"[release]"* ]] && [[ $TRAVIS_BRANCH == master ]]; then
+          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          export short_tag=$(docker image inspect "${DOCKER_IMAGE_REPOSITORY}" | jq -r .[0].RepoDigests[0] | sed "s?{DOCKER_IMAGE_REPOSITORY}@??" | cut -c 8-19)
+          echo "tagging and pushing to quay.io"
+          docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}"
+          docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-$short_tag"
+          docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:8"
+          docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}"
+          docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-$short_tag"
+          docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:8"
+          echo "tagging and pushing to dockerhub"
+          docker tag "${DOCKER_IMAGE_REPOSITORY}" "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}"
+          docker tag "${DOCKER_IMAGE_REPOSITORY}" "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-$short_tag"
+          docker tag "${DOCKER_IMAGE_REPOSITORY}" "alfresco/${DOCKER_IMAGE_REPOSITORY}:8"
+          docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}"
+          docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-$short_tag"
+          docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:8"
         fi
 
     - name: "Build11"
@@ -67,25 +68,26 @@ jobs:
           docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-release-candidate"
           docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-release-candidate"
           docker images
-          if [[ "${TRAVIS_COMMIT_MESSAGE}" == *"[release]"* ]]; then
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-            export short_tag=$(docker image inspect "${DOCKER_IMAGE_REPOSITORY}" | jq -r .[0].RepoDigests[0] | sed "s?{DOCKER_IMAGE_REPOSITORY}@??" | cut -c 8-19)
-            echo "tagging and pushing to quay.io"
-            docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}"
-            docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-$short_tag"
-            docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:11"
-            docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}"
-            docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-$short_tag"
-            docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:11"
-            echo "tagging and pushing to dockerhub"
-            docker tag "${DOCKER_IMAGE_REPOSITORY}" "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}"
-            docker tag "${DOCKER_IMAGE_REPOSITORY}" "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-$short_tag"
-            docker tag "${DOCKER_IMAGE_REPOSITORY}" "alfresco/${DOCKER_IMAGE_REPOSITORY}:11"
-            docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}"
-            docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-$short_tag"
-            docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:11"; fi
         else
           docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-${TRAVIS_BRANCH}"
           docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-${TRAVIS_BRANCH}"
+        fi
+        if [[ "${TRAVIS_COMMIT_MESSAGE}" == *"[release]"* ]] && [[ $TRAVIS_BRANCH == master ]]; then
+          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          export short_tag=$(docker image inspect "${DOCKER_IMAGE_REPOSITORY}" | jq -r .[0].RepoDigests[0] | sed "s?{DOCKER_IMAGE_REPOSITORY}@??" | cut -c 8-19)
+          echo "tagging and pushing to quay.io"
+          docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}"
+          docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-$short_tag"
+          docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:11"
+          docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}"
+          docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-$short_tag"
+          docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:11"
+          echo "tagging and pushing to dockerhub"
+          docker tag "${DOCKER_IMAGE_REPOSITORY}" "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}"
+          docker tag "${DOCKER_IMAGE_REPOSITORY}" "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-$short_tag"
+          docker tag "${DOCKER_IMAGE_REPOSITORY}" "alfresco/${DOCKER_IMAGE_REPOSITORY}:11"
+          docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}"
+          docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-$short_tag"
+          docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:11"
         fi
 
