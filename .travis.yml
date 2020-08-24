@@ -33,7 +33,7 @@ jobs:
           docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-release-candidate"
           docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-release-candidate"
           docker images
-          if [[ $TRAVIS_COMMIT_MESSAGE == *"release"* ]]; then
+          if [[ "${TRAVIS_COMMIT_MESSAGE}" == *"[release]"* ]]; then
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
             export short_tag=$(docker image inspect "${DOCKER_IMAGE_REPOSITORY}" | jq -r .[0].RepoDigests[0] | sed "s?{DOCKER_IMAGE_REPOSITORY}@??" | cut -c 8-19)
             echo "tagging and pushing to quay.io"
@@ -68,7 +68,7 @@ jobs:
           docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-release-candidate"
           docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-release-candidate"
           docker images
-          if [[ $TRAVIS_COMMIT_MESSAGE == *"release"* ]]; then
+          if [[ "${TRAVIS_COMMIT_MESSAGE}" == *"[release]"* ]]; then
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
             export short_tag=$(docker image inspect "${DOCKER_IMAGE_REPOSITORY}" | jq -r .[0].RepoDigests[0] | sed "s?{DOCKER_IMAGE_REPOSITORY}@??" | cut -c 8-19)
             echo "tagging and pushing to quay.io"
