@@ -3,7 +3,7 @@
 # Version 0.1
 
 # This is an initial iteration and subject to change
-FROM centos:7.5.1804
+FROM centos:8.3.2011
 
 LABEL org.label-schema.schema-version="1.0" \
     org.label-schema.name="Alfresco Base Java" \
