@@ -10,7 +10,7 @@ LABEL org.label-schema.schema-version="1.0" \
     org.label-schema.vendor="Alfresco" \
     org.label-schema.build-date="$BUILD_DATE" \
     org.opencontainers.image.title="Alfresco Base Java Image" \
-    org.opencontainers.image.vendor="Alfresco"
+    org.opencontainers.image.vendor="Alfresco" \
     org.opencontainers.image.created="$BUILD_DATE"
 
 #RUN yum -y update \

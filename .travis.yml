@@ -8,73 +8,73 @@ branches:
     - master
 
 env:
-  - JAVA_MAJOR_VERSION=8
-  - JAVA_MAJOR_VERSION=11
-  - CENTOS_MAJOR_VERSION=7
-  - CENTOS_MAJOR_VERSION=8
+  - CENTOS_MAJOR_VERSION=7 JAVA_MAJOR_VERSION=8
+  - CENTOS_MAJOR_VERSION=7 JAVA_MAJOR_VERSION=11
+  - CENTOS_MAJOR_VERSION=8 JAVA_MAJOR_VERSION=8
+  - CENTOS_MAJOR_VERSION=8 JAVA_MAJOR_VERSION=11
 
 before_script:
   - echo $QUAY_PASSWORD | docker login quay.io -u $QUAY_USERNAME --password-stdin
   - echo $DOCKER_PASSWORD | docker login docker.io -u "$DOCKER_USERNAME" --password-stdin
-  - |
+  - |-
     export IMAGE_REGISTRY_NAMESPACE=alfresco
     export IMAGE_REPOSITORY=alfresco-base-java
     export BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
-  - |
-    [[ $CENTOS_MAJOR_VERSION == 7 ]] && CENTOS_VERSION=7.9.2009
-    [[ $CENTOS_MAJOR_VERSION == 8 ]] && CENTOS_VERSION=8.3.2011
-    export CENTOS_VERSION
+  - |-
+    case $CENTOS_MAJOR_VERSION in
+      7)
+        export CENTOS_VERSION=7.9.2009
+        ;;
+      8)
+        export CENTOS_VERSION=8.3.2011
+        ;;
+    esac
+  - |-
+    case $JAVA_MAJOR_VERSION in
+      8)
+        export JAVA_VERSION=8u181
+        java_type=serverjre
+        export JAVA_VENDOR=oracle
+        export JAVA_PKG=${java_type}-${JAVA_VERSION}-bin.tar.gz
+        export JAVA_URL_USERNAME=$NEXUS_USERNAME
+        export JAVA_URL_PASSWORD=$NEXUS_PASSWORD
+        export JAVA_URL=https://artifacts.alfresco.com/nexus/content/repositories/oracle-java/linux-x64/$java_type/$JAVA_VERSION/$JAVA_PKG
+        ;;
+      11)
+        export JAVA_VERSION=11.0.10+9
+        export JAVA_VENDOR=openjdk
+        export JAVA_PKG=OpenJDK11U-jdk_x64_linux_${JAVA_VERSION/+/_}.tar.gz
+        export JAVA_URL=https://github.com/AdoptOpenJDK/openjdk11-upstream-binaries/releases/download/jdk-${JAVA_VERSION}/$JAVA_PKG
+        ;;
+    esac
 
-_shared_job: &shared_job
-  script:
-    - |
-      IMAGE_TAG=${JAVA_VERSION}-${JAVA_VENDOR}-centos-$CENTOS_MAJOR_VERSION
-      wget --user=$JAVA_URL_USERNAME --password=$JAVA_URL_PASSWORD $JAVA_URL
-      docker build -t $IMAGE_REPOSITORY . \
-        --build-arg CENTOS_VERSION=$CENTOS_VERSION \
-        --build-arg JAVA_PKG=$JAVA_PKG \
-        --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
-      [[ $BRANCH == master ]] && IMAGE_TAG_SUFFIX=release-candidate || IMAGE_TAG_SUFFIX=$BRANCH
-      IMAGE=quay.io/$IMAGE_REGISTRY_NAMESPACE/$IMAGE_REPOSITORY:${IMAGE_TAG}-$IMAGE_TAG_SUFFIX
-      docker tag $IMAGE_REPOSITORY $IMAGE
-      docker push $IMAGE
-      docker images
+script:
+  - |-
+    set e
 
-      if [[ "$TRAVIS_COMMIT_MESSAGE" == *"[release]"* ]] && [[ $BRANCH == master ]]
-      then
-        export short_tag=$(docker image inspect -f '{{ slice (index (split (index .RepoDigests 0) ":") 1) 0 12 }}' $IMAGE_REPOSITORY)
-        echo short_tag=$short_tag
-        for IMAGE_REGISTRY in (quay.io docker.io)
+    IMAGE_TAG=${JAVA_VERSION}-${JAVA_VENDOR}-centos-$CENTOS_MAJOR_VERSION
+    wget --user=$JAVA_URL_USERNAME --password=$JAVA_URL_PASSWORD $JAVA_URL
+    docker build -t $IMAGE_REPOSITORY . \
+      --build-arg CENTOS_VERSION=$CENTOS_VERSION \
+      --build-arg JAVA_PKG=$JAVA_PKG \
+      --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+    [[ $BRANCH == master ]] && IMAGE_TAG_SUFFIX=release-candidate || IMAGE_TAG_SUFFIX=$BRANCH
+    IMAGE=quay.io/$IMAGE_REGISTRY_NAMESPACE/$IMAGE_REPOSITORY:${IMAGE_TAG}-$IMAGE_TAG_SUFFIX
+    docker tag $IMAGE_REPOSITORY $IMAGE
+    docker push $IMAGE
+    docker images
+
+    if [[ "$TRAVIS_COMMIT_MESSAGE" == *"[release]"* ]] && [[ $BRANCH == master ]]
+    then
+      export SHORT_SHA256=$(docker image inspect -f '{{ slice (index (split (index .RepoDigests 0) ":") 1) 0 12 }}' $IMAGE_REPOSITORY)
+      echo SHORT_SHA256=$SHORT_SHA256
+      for IMAGE_REGISTRY in quay.io docker.io
+      do
+        echo "tagging and pushing to $IMAGE_REGISTRY"
+        for TAG in $IMAGE_TAG $IMAGE_TAG-$SHORT_SHA256 $$JAVA_MAJOR_VERSION
         do
-          echo "tagging and pushing to $IMAGE_REGISTRY"
-          for TAG in ($IMAGE_TAG $IMAGE_TAG-$short_tag $$JAVA_MAJOR_VERSION)
-          do
-            docker tag $IMAGE_REPOSITORY $IMAGE_REGISTRY/$IMAGE_REGISTRY_NAMESPACE/$IMAGE_REPOSITORY:$TAG
-            docker push $IMAGE_REGISTRY/$IMAGE_REGISTRY_NAMESPACE/$IMAGE_REPOSITORY:$TAG
-          done
+          docker tag $IMAGE_REPOSITORY $IMAGE_REGISTRY/$IMAGE_REGISTRY_NAMESPACE/$IMAGE_REPOSITORY:$TAG
+          docker push $IMAGE_REGISTRY/$IMAGE_REGISTRY_NAMESPACE/$IMAGE_REPOSITORY:$TAG
         done
-      fi
-
-jobs:
-  include:
-    - name: build Java 8 base image
-      env: JAVA_MAJOR_VERSION=8
-      before_script:
-        - |
-          export JAVA_VERSION=8u181
-          java_type=serverjre
-          export JAVA_VENDOR=oracle
-          export JAVA_PKG=${java_type}-${JAVA_VERSION}-bin.tar.gz
-          export JAVA_URL_USERNAME=$NEXUS_USERNAME
-          export JAVA_URL_PASSWORD=$NEXUS_PASSWORD
-          export JAVA_URL=https://artifacts.alfresco.com/nexus/content/repositories/oracle-java/linux-x64/$java_type/$JAVA_VERSION/$JAVA_PKG
-      <<: *shared_job
-    - name: build Java 11 base image
-      env: JAVA_MAJOR_VERSION=11
-      before_script:
-        - |
-          export JAVA_VERSION=11.0.10+9
-          export JAVA_VENDOR=openjdk
-          export JAVA_PKG=OpenJDK11U-jdk_x64_linux_${JAVA_VERSION/+/_}.tar.gz
-          export JAVA_URL=https://github.com/AdoptOpenJDK/openjdk11-upstream-binaries/releases/download/jdk-${JAVA_VERSION}/$JAVA_PKG
-      <<: *shared_job
+      done
+    fi
