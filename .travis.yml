@@ -1,100 +1,80 @@
-language: ruby
+language: minimal
 
 services:
   - docker
 
+branches:
+  only:
+    - master
+
 env:
-  global:
-    - java_8_version=8u181
-    - java_11_version=11.0.8
-    - java_11_minor_version=10
-    - java_8_os_arch=linux-x64
-    - java_8_se_type=serverjre
-    - java_8_packaging=tar.gz
-    - suffix=${TRAVIS_BRANCH}
-    - registry=quay.io
-    - namespace=alfresco
-    - DOCKER_IMAGE_TAG_8=${java_8_version}-oracle-centos-7
-    - DOCKER_IMAGE_TAG_11=${java_11_version}-openjdk-centos-7
-    - DOCKER_IMAGE_REPOSITORY=alfresco-base-java
+  - JAVA_MAJOR_VERSION=8
+  - JAVA_MAJOR_VERSION=11
+  - CENTOS_MAJOR_VERSION=7
+  - CENTOS_MAJOR_VERSION=8
+
+before_script:
+  - echo $QUAY_PASSWORD | docker login quay.io -u $QUAY_USERNAME --password-stdin
+  - echo $DOCKER_PASSWORD | docker login docker.io -u "$DOCKER_USERNAME" --password-stdin
+  - |
+    export IMAGE_REGISTRY_NAMESPACE=alfresco
+    export IMAGE_REPOSITORY=alfresco-base-java
+    export BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
+  - |
+    [[ $CENTOS_MAJOR_VERSION == 7 ]] && CENTOS_VERSION=7.9.2009
+    [[ $CENTOS_MAJOR_VERSION == 8 ]] && CENTOS_VERSION=8.3.2011
+    export CENTOS_VERSION
+
+_shared_job: &shared_job
+  script:
+    - |
+      IMAGE_TAG=${JAVA_VERSION}-${JAVA_VENDOR}-centos-$CENTOS_MAJOR_VERSION
+      wget --user=$JAVA_URL_USERNAME --password=$JAVA_URL_PASSWORD $JAVA_URL
+      docker build -t $IMAGE_REPOSITORY . \
+        --build-arg CENTOS_VERSION=$CENTOS_VERSION \
+        --build-arg JAVA_PKG=$JAVA_PKG \
+        --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+      [[ $BRANCH == master ]] && IMAGE_TAG_SUFFIX=release-candidate || IMAGE_TAG_SUFFIX=$BRANCH
+      IMAGE=quay.io/$IMAGE_REGISTRY_NAMESPACE/$IMAGE_REPOSITORY:${IMAGE_TAG}-$IMAGE_TAG_SUFFIX
+      docker tag $IMAGE_REPOSITORY $IMAGE
+      docker push $IMAGE
+      docker images
+
+      if [[ "$TRAVIS_COMMIT_MESSAGE" == *"[release]"* ]] && [[ $BRANCH == master ]]
+      then
+        export short_tag=$(docker image inspect -f '{{ slice (index (split (index .RepoDigests 0) ":") 1) 0 12 }}' $IMAGE_REPOSITORY)
+        echo short_tag=$short_tag
+        for IMAGE_REGISTRY in (quay.io docker.io)
+        do
+          echo "tagging and pushing to $IMAGE_REGISTRY"
+          for TAG in ($IMAGE_TAG $IMAGE_TAG-$short_tag $$JAVA_MAJOR_VERSION)
+          do
+            docker tag $IMAGE_REPOSITORY $IMAGE_REGISTRY/$IMAGE_REGISTRY_NAMESPACE/$IMAGE_REPOSITORY:$TAG
+            docker push $IMAGE_REGISTRY/$IMAGE_REGISTRY_NAMESPACE/$IMAGE_REPOSITORY:$TAG
+          done
+        done
+      fi
 
 jobs:
   include:
-    - stage: Download and build java base images
-      name: "Build8"
+    - name: build Java 8 base image
+      env: JAVA_MAJOR_VERSION=8
       before_script:
-      - echo "${DOCKER_PASSWORD_QUAY}" | docker login ${registry} -u "${DOCKER_USERNAME_QUAY}" --password-stdin
-      script:
-      - |
-        set -e
-        if [[ $TRAVIS_BRANCH == master ]]
-        then
-          echo "JAVA 8" 
-          wget --user=${NEXUS_USERNAME} --password=${NEXUS_PASSWORD} "https://artifacts.alfresco.com/nexus/content/repositories/oracle-java/${java_8_os_arch}/${java_8_se_type}/${java_8_version}/${java_8_se_type}-${java_8_version}-bin.${java_8_packaging}"
-          docker build -t "${DOCKER_IMAGE_REPOSITORY}" . --build-arg JAVA_PKG=${java_8_se_type}-${java_8_version}-bin.${java_8_packaging} --no-cache
-          docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-release-candidate"
-          docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-release-candidate"
-          docker images
-        else
-          docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-${TRAVIS_BRANCH}"
-          docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-${TRAVIS_BRANCH}"
-        fi
-        if [[ "$TRAVIS_COMMIT_MESSAGE" == *"[release]"* ]] && [[ $TRAVIS_BRANCH == master ]]
-        then
-          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-          export short_tag=$(docker image inspect "${DOCKER_IMAGE_REPOSITORY}" | jq -r .[0].RepoDigests[0] | sed "s?.*sha256:??" | cut -c 1-12)
-          echo $short_tag
-          echo "tagging and pushing to quay.io"
-          docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}"
-          docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-$short_tag"
-          docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:8"
-          docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}"
-          docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-$short_tag"
-          docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:8"
-          echo "tagging and pushing to dockerhub"
-          docker tag "${DOCKER_IMAGE_REPOSITORY}" "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}"
-          docker tag "${DOCKER_IMAGE_REPOSITORY}" "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-$short_tag"
-          docker tag "${DOCKER_IMAGE_REPOSITORY}" "alfresco/${DOCKER_IMAGE_REPOSITORY}:8"
-          docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}"
-          docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_8}-$short_tag"
-          docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:8"
-        fi
-    - name: "Build11"
+        - |
+          export JAVA_VERSION=8u181
+          java_type=serverjre
+          export JAVA_VENDOR=oracle
+          export JAVA_PKG=${java_type}-${JAVA_VERSION}-bin.tar.gz
+          export JAVA_URL_USERNAME=$NEXUS_USERNAME
+          export JAVA_URL_PASSWORD=$NEXUS_PASSWORD
+          export JAVA_URL=https://artifacts.alfresco.com/nexus/content/repositories/oracle-java/linux-x64/$java_type/$JAVA_VERSION/$JAVA_PKG
+      <<: *shared_job
+    - name: build Java 11 base image
+      env: JAVA_MAJOR_VERSION=11
       before_script:
-      - echo "${DOCKER_PASSWORD_QUAY}" | docker login ${registry} -u "${DOCKER_USERNAME_QUAY}" --password-stdin
-      script:
-      - |
-        set -e
-        if [[ $TRAVIS_BRANCH == master ]]
-        then
-          echo "JAVA 11" 
-          wget --user=${NEXUS_USERNAME} --password=${NEXUS_PASSWORD} "https://github.com/AdoptOpenJDK/openjdk11-upstream-binaries/releases/download/jdk-${java_11_version}%2B${java_11_minor_version}/OpenJDK11U-jdk_x64_linux_${java_11_version}_${java_11_minor_version}.tar.gz"
-          docker build -t "${DOCKER_IMAGE_REPOSITORY}" . --build-arg JAVA_PKG=OpenJDK11U-jdk_x64_linux_${java_11_version}_${java_11_minor_version}.tar.gz --no-cache
-          docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-release-candidate"
-          docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-release-candidate"
-          docker images
-        else
-          docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-${TRAVIS_BRANCH}"
-          docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-${TRAVIS_BRANCH}"
-        fi
-        if [[ "$TRAVIS_COMMIT_MESSAGE" == *"[release]"* ]] && [[ $TRAVIS_BRANCH == master ]]
-        then
-          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-          export short_tag=$(docker image inspect "${DOCKER_IMAGE_REPOSITORY}" | jq -r .[0].RepoDigests[0] | sed "s?.*sha256:??" | cut -c 1-12)
-          echo $short_tag
-          echo "tagging and pushing to quay.io"
-          docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}"
-          docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-$short_tag"
-          docker tag "${DOCKER_IMAGE_REPOSITORY}" "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:11"
-          docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}"
-          docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-$short_tag"
-          docker push "${registry}/alfresco/${DOCKER_IMAGE_REPOSITORY}:11"
-          echo "tagging and pushing to dockerhub"
-          docker tag "${DOCKER_IMAGE_REPOSITORY}" "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}"
-          docker tag "${DOCKER_IMAGE_REPOSITORY}" "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-$short_tag"
-          docker tag "${DOCKER_IMAGE_REPOSITORY}" "alfresco/${DOCKER_IMAGE_REPOSITORY}:11"
-          docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}"
-          docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG_11}-$short_tag"
-          docker push "alfresco/${DOCKER_IMAGE_REPOSITORY}:11"
-        fi
-
+        - |
+          export JAVA_VERSION=11.0.10+9
+          export JAVA_VENDOR=openjdk
+          export JAVA_PKG=OpenJDK11U-jdk_x64_linux_${JAVA_VERSION/+/_}.tar.gz
+          export JAVA_URL=https://github.com/AdoptOpenJDK/openjdk11-upstream-binaries/releases/download/jdk-${JAVA_VERSION}/$JAVA_PKG
+      <<: *shared_job

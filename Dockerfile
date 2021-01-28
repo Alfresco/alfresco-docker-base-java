@@ -3,11 +3,15 @@
 # Version 0.1
 
 # This is an initial iteration and subject to change
-FROM centos:7.9.2009
+FROM centos:$CENTOS_VERSION
 
 LABEL org.label-schema.schema-version="1.0" \
-    org.label-schema.name="Alfresco Base Java" \
-    org.label-schema.vendor="Alfresco"
+    org.label-schema.name="Alfresco Base Java Image" \
+    org.label-schema.vendor="Alfresco" \
+    org.label-schema.build-date="$BUILD_DATE" \
+    org.opencontainers.image.title="Alfresco Base Java Image" \
+    org.opencontainers.image.vendor="Alfresco"
+    org.opencontainers.image.created="$BUILD_DATE"
 
 #RUN yum -y update \
 #    yum-utils-1.1.31-54.el7_8 \
