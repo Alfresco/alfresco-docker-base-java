@@ -3,6 +3,7 @@
 # Version 0.1
 
 # This is an initial iteration and subject to change
+ARG CENTOS_VERSION=latest
 FROM centos:$CENTOS_VERSION
 
 LABEL org.label-schema.schema-version="1.0" \
