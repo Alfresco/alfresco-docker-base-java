@@ -1,7 +1,7 @@
-<!-- markdownlint-disable MD013 MD041 -->
-[![Docker Repository on Quay](https://quay.io/repository/alfresco/alfresco-base-java/status?token=7b035610-24b5-4ed7-a95f-6e812628cd8e "Docker Repository on Quay")](https://quay.io/repository/alfresco/alfresco-base-java)
+# Alfresco Docker Base Java
 
-# Welcome to Alfresco Docker Base Java
+[![Build Status](https://travis-ci.com/Alfresco/alfresco-docker-base-java.svg?branch=master)](https://travis-ci.com/Alfresco/alfresco-docker-base-java)
+[![Docker Repository on Quay](https://quay.io/repository/alfresco/alfresco-base-java/status?token=7b035610-24b5-4ed7-a95f-6e812628cd8e "Docker Repository on Quay")](https://quay.io/repository/alfresco/alfresco-base-java)
 
 ## Introduction
 
@@ -14,50 +14,13 @@ The architectural decision record can be found [![here](https://img.shields.io/b
 
 ## Versioning
 
-`DOCKER_IMAGE_TAG` and `DOCKER_IMAGE_TAG_SHORT_NAME` are now calculated from the configuration in
-[etc/images.sh](etc/images.sh).
-
-Associative arrays called `java_n` are defined for each *major* Java version (ie. 8, 11, 14).
-
 ### Legacy Oracle Java 8
 
-For legacy Oracle Java 8
-builds where the serverjre has been saved in Alfresco's artifact repository, a configuration is
-needed as follows. It is not expected that anything other than `${java_8[version]}` would need changing.
+For legacy Oracle Java 8 builds, the serverjre has been saved in Alfresco's artifact repository, last version is 8u181.
 
-_(The keys `java_os_arch`, `java_se_type`, `version`, and `java_packaging` map to `groupId`, `artifactId`,
-`version`, and `packaging` in maven, respectively.)_
+### OpenJDK Java 11
 
-```bash
-export -A java_8=(
-  [version]=8u181
-  [java_os_arch]='linux-x64'
-  [java_se_type]='serverjre'
-  [java_packaging]='tar.gz'
-)
-```
-
-The checksum will also need adding into the associative array in [etc/checksum.sh](etc/checksum.sh).
-
-### OpenJDK Java 11 onwards
-
-For OpenJDK builds from Java 11 onwards, the configuration looks like:
-
-```bash
-export -A java_11=(
-  [version]=11
-  [url]=https://download.java.net/java/GA/jdk11/28/GPL/openjdk-11+28_linux-x64_bin.tar.gz
-)
-```
-
-The `${java_n[version]}` field is currently `11` as 
-[trailing '.0's are dropped](https://docs.oracle.com/en/java/javase/11/install/version-string-format.html)
-in Java's new numbering system.
-
-When a `11.0.1` or other release comes out, `${java_11[version]}` should be set to that.
-
-The URL is the one found on [jdk.java.net](http://jdk.java.net/11/). The sha256 is assumed to live at this URL
-with `.sha256` appended.
+For OpenJDK builds from Java 11, the binary is downloaded from [AdoptOpenJDK](https://github.com/AdoptOpenJDK/openjdk11-upstream-binaries).
 
 Build-pinning is available on Quay and Docker Hub to ensure an exact build artifact is used.
 
@@ -84,28 +47,13 @@ Assuming the filename has been saved in the variable `$java_filename`, build as 
 docker build --build-arg JAVA_PKG="${java_filename}" -t alfresco/alfresco-base-java .
 ```
 
-### Scripts
-
-There are two scripts, one to build, and one to release that are simple "for loop" wrapper around the standard Alfresco tools.
-They assume that these have been pulled into `./docker-tools` at build time.
-
-#### Build
-
-[scripts/bin/build.sh](scripts/bin/build.sh) requires the following environment variables:
-
-* `registry` _(mandatory)_: The hostname (and optional port) of your private registry. e.g. `quay.io`. Note: this is available in bamboo by setting `registry=${bamboo.docker.registry.address}`.
-* `namespace` _(mandatory)_: The namespace you use in your private registry. e.g. `alfresco`. Note: this is available in bamboo by setting `namespace=${bamboo.docker.registry.namespace}`.
-* `java_versions` _(mandatory)_: Comma separated list of *major* versions. e.g. `8,11`. For each of these (`n`), there must be a corresponding `${java_n}` associative array in [etc/images.sh](etc/images.sh).
-* `suffix` _(optional, but usual)_: this is passed to bamboo-build-docker-repo-tools as its `suffix` variable. It is appended to the docker tag, and is typically something of the form `DEPLOY-574` or `SNAPSHOT`. e.g. `suffix=${bamboo.planRepository.branchName}`.
-
 #### Release
 
-[scripts/bin/release.sh](scripts/bin/release.sh) requires the same variables, with the exception of `suffix`.
+Just push a commit on the default branch including `'[release]` in the message to trigger a release on Travis CI.
 
 ## Pulling released images
 
-Builds are available from
-[Docker Hub](https://hub.docker.com/r/alfresco/alfresco-base-java)
+Builds are available from [Docker Hub](https://hub.docker.com/r/alfresco/alfresco-base-java):
 
 ```bash
 docker pull alfresco/alfresco-base-java:8
@@ -130,17 +78,12 @@ The image can be used via `docker run` to run java applications
 with `--read-only` set, without any loss of functionality (with the
 obvious caveat that the application itself does not write to the filesystem).
 
-### Parent Image
+### Base Image
 
-It is more likely to be used as a
-[parent image](https://docs.docker.com/glossary/?term=parent%20image)
-in a Dockerfile.
-For reference, see the documentation on
-[layers](https://docs.docker.com/storage/storagedriver/#container-and-layers),
-the
-[VOLUME](https://docs.docker.com/engine/reference/builder/#volume)
-instruction, and
-[best practices with VOLUMEs](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#volume).
+It is more likely to be used as a [base image](https://docs.docker.com/glossary/?term=parent%20image#base-image) in a Dockerfile.
+For reference, see the documentation on [layers](https://docs.docker.com/storage/storagedriver/#container-and-layers),
+the [VOLUME](https://docs.docker.com/engine/reference/builder/#volume)
+instruction, and [best practices with VOLUMEs](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#volume).
 
 ### Examples of usage as a parent image
 
@@ -156,5 +99,4 @@ Example from a Dockerfile using a private, parent image in Quay:
 FROM quay.io/alfresco/alfresco-base-java:8u161-oracle-centos-7-333472fed423
 ```
 
-See [Alfresco Base Tomcat](https://github.com/Alfresco/alfresco-docker-base-tomcat/blob/master/Dockerfile)
-for a concrete example.
+See [Alfresco Base Tomcat](https://github.com/Alfresco/alfresco-docker-base-tomcat/blob/master/Dockerfile) for a concrete example.

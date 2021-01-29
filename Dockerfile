@@ -1,54 +1,39 @@
-# Alfresco Anaxes Shipyard Base Java Image
-#
-# Version 0.1
+# Alfresco Base Java Image
 
-# This is an initial iteration and subject to change
-FROM centos:7.5.1804
+ARG CENTOS_VERSION=7
+FROM centos:$CENTOS_VERSION
 
 LABEL org.label-schema.schema-version="1.0" \
-    org.label-schema.name="Alfresco Base Java" \
-    org.label-schema.vendor="Alfresco"
+    org.label-schema.name="Alfresco Base Java Image" \
+    org.label-schema.vendor="Alfresco" \
+    org.label-schema.build-date="$BUILD_DATE" \
+    org.opencontainers.image.title="Alfresco Base Java Image" \
+    org.opencontainers.image.vendor="Alfresco" \
+    org.opencontainers.image.created="$BUILD_DATE"
 
-RUN yum -y update \
-    yum-utils-1.1.31-54.el7_8 \
-    yum-plugin-ovl-1.1.31-53.el7 \
-    yum-plugin-fastestmirror-1.1.31-53.el7 \
-    bind-license-9.11.4-16.P2.el7_8.2 \
-    glibc-2.17-307.el7.1 \
-    glib2-2.56.1-5.el7 \
-    systemd-219-73.el7_8.5 \
-    expat-2.1.0-11.el7 \
-    bash-4.2.46-34.el7 \
-    shared-mime-info-1.8-5.el7 \
-    libxml2-2.9.1-6.el7.4 \
-    openssl-libs-1.0.2k-19.el7 \
-    krb5-libs-1.15.1-46.el7 \
-    setup-2.8.71-11.el7 \
-    python-2.7.5-88.el7 \
-    gnupg2-2.0.22-5.el7_5 \
-    nss-3.44.0-7.el7_7 \
-    vim-minimal-7.4.629-6.el7 \
-    procps-ng-3.3.10-27.el7 \
-    binutils-2.27-43.base.el7 \
-    curl-7.29.0-57.el7 \
-    sqlite-3.7.17-8.el7_7.1 \
-    gobject-introspection-1.56.1-1.el7 \
-    bind-license-9.11.4-16.P2.el7_8.6 \
-    elfutils-libs-0.176-4.el7 \
-    file-libs-5.11-36.el7 \
-    dbus-1.10.24-14.el7_8 \
-    elfutils-default-yama-scope-0.176-4.el7 \
-    && \
-    yum clean all
+ARG CENTOS_MAJOR_VERSION=7
 
-# Set the locale
+ENV CENTOS_7_UPDATES \
+    openssl-libs-1.0.2k-21.el7_9 \
+    libcurl-7.29.0-59.el7_9.1 \
+    curl-7.29.0-59.el7_9.1 \
+    python-2.7.5-90.el7 \
+    python-libs-2.7.5-90.el7 \
+    bind-license-9.11.4-26.P2.el7_9.2
+
+ENV CENTOS_8_UPDATES \
+    openssl-libs-1.1.1g-12.el8_3 \
+    gnutls-3.6.14-7.el8_3
+
+RUN if [[ "$CENTOS_MAJOR_VERSION" == "7" ]] ; then CENTOS_UPDATES=$CENTOS_7_UPDATES;  fi && \
+    if [[ "$CENTOS_MAJOR_VERSION" == "8" ]] ; then CENTOS_UPDATES=$CENTOS_8_UPDATES;  fi && \
+    yum -y update $CENTOS_UPDATES && yum clean all
+
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
-ENV JAVA_HOME=/usr/java/default
 
-# This used to be serverjre-*.tar.gz (and not an ARG)
-# now it will be serverjre-8u181-bin.tar.gz / serverjre-11.0.0-bin.tar.gz
+ENV JAVA_HOME=/usr/java/default
 ARG JAVA_PKG
 ADD $JAVA_PKG /usr/java/
 
