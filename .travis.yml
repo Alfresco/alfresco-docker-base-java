@@ -73,7 +73,7 @@ script:
       for IMAGE_REGISTRY in quay.io docker.io
       do
         echo "tagging and pushing to $IMAGE_REGISTRY"
-        for TAG in $IMAGE_TAG $IMAGE_TAG-$SHORT_SHA256 $$JAVA_MAJOR_VERSION
+        for TAG in $IMAGE_TAG $IMAGE_TAG-$SHORT_SHA256 $JAVA_MAJOR_VERSION
         do
           docker tag $IMAGE_REPOSITORY $IMAGE_REGISTRY/$IMAGE_REGISTRY_NAMESPACE/$IMAGE_REPOSITORY:$TAG
           docker push $IMAGE_REGISTRY/$IMAGE_REGISTRY_NAMESPACE/$IMAGE_REPOSITORY:$TAG
