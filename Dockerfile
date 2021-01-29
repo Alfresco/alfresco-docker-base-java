@@ -21,14 +21,14 @@ RUN if [[ "$CENTOS_MAJOR_VERSION" == "7" ]] ; then \
             python-2.7.5-90.el7 \
             python-libs-2.7.5-90.el7 \
             bind-license-9.11.4-26.P2.el7_9.2 \
-        && yum clean all
+        && yum clean all \
     fi
 
 RUN if [[ "$CENTOS_MAJOR_VERSION" == "8" ]] ; then \
         yum -y update \
             openssl-libs-1.1.1g-12.el8_3 \
             gnutls-3.6.14-7.el8_3 \
-        && yum clean all
+        && yum clean all \
     fi
 
 ENV LANG en_US.UTF-8
