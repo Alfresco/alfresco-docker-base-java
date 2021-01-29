@@ -25,10 +25,9 @@ ENV CENTOS_8_UPDATES \
     openssl-libs-1.1.1g-12.el8_3 \
     gnutls-3.6.14-7.el8_3
 
-RUN if [[ "$CENTOS_MAJOR_VERSION" == "7" ]] ; then $CENTOS_UPDATES=$CENTOS_7_UPDATES;  fi && \
-    if [[ "$CENTOS_MAJOR_VERSION" == "8" ]] ; then $CENTOS_UPDATES=$CENTOS_8_UPDATES;  fi && \
-    yum -y update $CENTOS_UPDATES && \
-    yum clean all
+RUN if [[ "$CENTOS_MAJOR_VERSION" == "7" ]] ; then CENTOS_UPDATES=$CENTOS_7_UPDATES;  fi && \
+    if [[ "$CENTOS_MAJOR_VERSION" == "8" ]] ; then CENTOS_UPDATES=$CENTOS_8_UPDATES;  fi && \
+    yum -y update $CENTOS_UPDATES && yum clean all
 
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
