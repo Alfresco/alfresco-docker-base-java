@@ -13,23 +13,22 @@ LABEL org.label-schema.schema-version="1.0" \
 
 ARG CENTOS_MAJOR_VERSION=7
 
-RUN if [[ "$CENTOS_MAJOR_VERSION" == "7" ]] ; then \
-        yum -y update \
-            openssl-libs-1.0.2k-21.el7_9 \
-            libcurl-7.29.0-59.el7_9.1 \
-            curl-7.29.0-59.el7_9.1 \
-            python-2.7.5-90.el7 \
-            python-libs-2.7.5-90.el7 \
-            bind-license-9.11.4-26.P2.el7_9.2 \
-        && yum clean all \
-    fi
+ENV CENTOS_7_UPDATES \
+    openssl-libs-1.0.2k-21.el7_9 \
+    libcurl-7.29.0-59.el7_9.1 \
+    curl-7.29.0-59.el7_9.1 \
+    python-2.7.5-90.el7 \
+    python-libs-2.7.5-90.el7 \
+    bind-license-9.11.4-26.P2.el7_9.2
 
-RUN if [[ "$CENTOS_MAJOR_VERSION" == "8" ]] ; then \
-        yum -y update \
-            openssl-libs-1.1.1g-12.el8_3 \
-            gnutls-3.6.14-7.el8_3 \
-        && yum clean all \
-    fi
+ENV CENTOS_8_UPDATES \
+    openssl-libs-1.1.1g-12.el8_3 \
+    gnutls-3.6.14-7.el8_3
+
+RUN if [[ "$CENTOS_MAJOR_VERSION" == "7" ]] ; then $CENTOS_UPDATES=$CENTOS_7_UPDATES;  fi && \
+    if [[ "$CENTOS_MAJOR_VERSION" == "8" ]] ; then $CENTOS_UPDATES=$CENTOS_8_UPDATES;  fi && \
+    yum -y update $CENTOS_UPDATES && \
+    yum clean all
 
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
