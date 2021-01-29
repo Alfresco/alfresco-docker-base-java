@@ -55,7 +55,8 @@ script:
     set -e
 
     wget --user=$JAVA_URL_USERNAME --password=$JAVA_URL_PASSWORD $JAVA_URL
-    docker build -t $IMAGE_REPOSITORY . \
+    docker build --squash -t $IMAGE_REPOSITORY . \
+      --build-arg CENTOS_MAJOR_VERSION=$CENTOS_MAJOR_VERSION \
       --build-arg CENTOS_VERSION=$CENTOS_VERSION \
       --build-arg JAVA_PKG=$JAVA_PKG \
       --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
