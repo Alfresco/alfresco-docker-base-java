@@ -15,7 +15,6 @@ env:
 
 before_script:
   - export BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
-  - echo '{"experimental":true}' | sudo tee /etc/docker/daemon.json && sudo service docker restart
   - echo $QUAY_PASSWORD | docker login quay.io -u $QUAY_USERNAME --password-stdin
   - echo $DOCKER_PASSWORD | docker login docker.io -u "$DOCKER_USERNAME" --password-stdin
   - |-
@@ -56,7 +55,7 @@ script:
     set -e
 
     wget --user=$JAVA_URL_USERNAME --password=$JAVA_URL_PASSWORD $JAVA_URL
-    docker build --squash -t $IMAGE_REPOSITORY . \
+    docker build -t $IMAGE_REPOSITORY . \
       --build-arg CENTOS_MAJOR_VERSION=$CENTOS_MAJOR_VERSION \
       --build-arg CENTOS_VERSION=$CENTOS_VERSION \
       --build-arg JAVA_PKG=$JAVA_PKG \
