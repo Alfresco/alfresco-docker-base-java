@@ -18,15 +18,6 @@ before_script:
   - echo $QUAY_PASSWORD | docker login quay.io -u $QUAY_USERNAME --password-stdin
   - echo $DOCKER_PASSWORD | docker login docker.io -u "$DOCKER_USERNAME" --password-stdin
   - |-
-    case $CENTOS_MAJOR_VERSION in
-      7)
-        export CENTOS_VERSION=7.9.2009
-        ;;
-      8)
-        export CENTOS_VERSION=8.3.2011
-        ;;
-    esac
-  - |-
     case $JAVA_MAJOR_VERSION in
       8)
         export JAVA_VERSION=8u181
@@ -57,7 +48,6 @@ script:
     wget --user=$JAVA_URL_USERNAME --password=$JAVA_URL_PASSWORD $JAVA_URL
     docker build -t $IMAGE_REPOSITORY . \
       --build-arg CENTOS_MAJOR_VERSION=$CENTOS_MAJOR_VERSION \
-      --build-arg CENTOS_VERSION=$CENTOS_VERSION \
       --build-arg JAVA_PKG=$JAVA_PKG \
       --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
     [[ $BRANCH == master ]] && IMAGE_TAG_SUFFIX=release-candidate || IMAGE_TAG_SUFFIX=$BRANCH
