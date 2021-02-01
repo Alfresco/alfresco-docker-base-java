@@ -20,8 +20,6 @@ For OpenJDK builds from Java 11.0.10, the most updated binary is downloaded from
 
 Options are available using CentOS 7 and 8 as base.
 
-Build-pinning is available on Quay and Docker Hub to ensure an exact build artifact is used.
-
 ## How to Build
 
 ### Manually
@@ -34,7 +32,7 @@ Download any `tar.gz` of the jdk into [.](.).
 Save the filename in a variable. e.g.
 
 ```bash
-export java_filename='jdk-11_linux-x64_bin.tar.gz'
+export java_filename="OpenJDK11U-jdk_x64_linux_11.0.10_9.tar.gz"
 ```
 
 #### Build the docker image
@@ -42,7 +40,8 @@ export java_filename='jdk-11_linux-x64_bin.tar.gz'
 Assuming the filename has been saved in the variable `$java_filename`, build as follows
 
 ```bash
-docker build --build-arg JAVA_PKG="${java_filename}" -t alfresco/alfresco-base-java .
+(cd centos-7 && docker build -t centos-7 .)
+docker build --build-arg JAVA_PKG=$java_filename -t alfresco/alfresco-base-java .
 ```
 
 #### Release
@@ -66,7 +65,7 @@ where:
 * CENTOS_MAJOR is 7 or 8
 * SHORT_SHA256 is the 12 digit SHA256 of the image as available from the registry
 
-The builds are identical to those stored in the private repo on Quay, which also supports build-pinning versions.
+The builds are identical to those stored in the private repo on Quay.
 
 ```bash
 docker pull quay.io/alfresco/alfresco-base-java:$JAVA_MAJOR
@@ -99,7 +98,13 @@ FROM alfresco/alfresco-base-java:11
 Example from a Dockerfile using a private base image in Quay:
 
 ```bash
-FROM quay.io/alfresco/alfresco-base-java:11.0.10-oracle-centos-7-fc1ad2925112
+FROM quay.io/alfresco/alfresco-base-java:11.0.10-openjdk-centos-7-954752c611bf
+```
+
+or pinned:
+
+```bash
+FROM quay.io/alfresco/alfresco-base-java:11.0.10-oracle-centos-7@sha256:954752c611bf52883a8519197a2ee29c8686b0bbd2cc48752cd740a864a6c233
 ```
 
 See [Alfresco Base Tomcat](https://github.com/Alfresco/alfresco-docker-base-tomcat/blob/master/Dockerfile) for a concrete example.

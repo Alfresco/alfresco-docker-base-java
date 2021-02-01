@@ -5,7 +5,19 @@
 
 version: 2
 updates:
-  - package-ecosystem: "docker" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "docker"
+    directory: "/centos-7/"
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: "centos"
+        versions:
+          - ">= 8"
+  - package-ecosystem: "docker"
+    directory: "/centos-8/"
+    schedule:
+      interval: "daily"
+    ignore:
+      - dependency-name: "centos"
+        versions:
+          - ">= 9"
