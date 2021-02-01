@@ -43,7 +43,7 @@ before_script:
 
 script:
   - |-
-    set -e
+    set -ex
 
     wget --user=$JAVA_URL_USERNAME --password=$JAVA_URL_PASSWORD $JAVA_URL
     (cd centos-$CENTOS_MAJOR && docker build -t centos-$CENTOS_MAJOR .)
@@ -51,8 +51,9 @@ script:
       --build-arg CENTOS_MAJOR=$CENTOS_MAJOR \
       --build-arg JAVA_PKG=$JAVA_PKG \
       --build-arg REVISION=$TRAVIS_COMMIT \
-      --build-arg CREATED=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
-    [[ $BRANCH == master ]] && IMAGE_TAG_SUFFIX=release-candidate || IMAGE_TAG_SUFFIX=$BRANCH
+      --build-arg CREATED=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
+      --no-cache
+    [[ $BRANCH == master ]] && IMAGE_TAG_SUFFIX=release-candidate || IMAGE_TAG_SUFFIX=${BRANCH//\//-}
     IMAGE=quay.io/$IMAGE_REGISTRY_NAMESPACE/$IMAGE_REPOSITORY:$IMAGE_TAG-$IMAGE_TAG_SUFFIX
     docker tag $IMAGE_REPOSITORY $IMAGE
     docker push $IMAGE
@@ -62,10 +63,12 @@ script:
     then
       export SHORT_SHA256=$(docker image inspect -f '{{ printf "%.12s" (index (split (index .RepoDigests 0) ":") 1) }}' $IMAGE_REPOSITORY)
       echo SHORT_SHA256=$SHORT_SHA256
+      TAGS=($IMAGE_TAG $IMAGE_TAG-$SHORT_SHA256)
+      [[ $CENTOS_MAJOR_VERSION = 8 ]] && TAGS+=$JAVA_MAJOR
       for IMAGE_REGISTRY in quay.io docker.io
       do
         echo "tagging and pushing to $IMAGE_REGISTRY"
-        for TAG in $IMAGE_TAG $IMAGE_TAG-$SHORT_SHA256 $JAVA_MAJOR
+        for TAG in ${TAGS[*]}
         do
           docker tag $IMAGE_REPOSITORY $IMAGE_REGISTRY/$IMAGE_REGISTRY_NAMESPACE/$IMAGE_REPOSITORY:$TAG
           docker push $IMAGE_REGISTRY/$IMAGE_REGISTRY_NAMESPACE/$IMAGE_REPOSITORY:$TAG

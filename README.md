@@ -32,21 +32,27 @@ Download any `tar.gz` of the jdk into [.](.).
 Save the filename in a variable. e.g.
 
 ```bash
-export java_filename="OpenJDK11U-jdk_x64_linux_11.0.10_9.tar.gz"
+export JAVA_PKG="OpenJDK11U-jdk_x64_linux_11.0.10_9.tar.gz"
 ```
 
 #### Build the docker image
 
-Assuming the filename has been saved in the variable `$java_filename`, build as follows
+Assuming the filename has been saved in the variable `$JAVA_PKG`, build as follows:
 
 ```bash
-(cd centos-7 && docker build -t centos-7 .)
-docker build --build-arg JAVA_PKG=$java_filename -t alfresco/alfresco-base-java .
+(cd centos-$CENTOS_MAJOR && docker build -t centos-$CENTOS_MAJOR .)
+docker build -t alfresco-base-java . \
+  --build-arg CENTOS_MAJOR=$CENTOS_MAJOR \
+  --build-arg JAVA_PKG=$JAVA_PKG \
+  --no-cache
 ```
+
+where:
+* CENTOS_MAJOR is 7 or 8
 
 #### Release
 
-Just push a commit on the default branch including `'[release]` in the message to trigger a release on Travis CI.
+Just push a commit on the default branch including `[release]` in the message to trigger a release on Travis CI.
 
 ## Pulling released images
 
@@ -64,6 +70,9 @@ where:
 * JAVA_VENDOR is `oracle` for 8 and `openjdk` for 11
 * CENTOS_MAJOR is 7 or 8
 * SHORT_SHA256 is the 12 digit SHA256 of the image as available from the registry
+
+*NOTE*
+The default image with $JAVA_MAJOR as tag uses CentOS 8.
 
 The builds are identical to those stored in the private repo on Quay.
 
