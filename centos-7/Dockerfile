@@ -1,5 +1,5 @@
 # Centos 7 Base Image for Alfresco Base Java Image
-FROM centos:7.8.2003
+FROM centos:7.9.2009
 RUN set -eux; \
 	deps=" \
         openssl-libs-1.0.2k-21.el7_9 \
