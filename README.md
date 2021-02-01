@@ -4,7 +4,7 @@
 
 ## Introduction
 
-This repository contains the [Dockerfile](Dockerfile) used to create the parent Java image that
+This repository contains the [Dockerfile](Dockerfile) used to create the base Java image that
 will be used by Alfresco engineering teams, other internal groups in the
 organisation, customers and partners to create images as part of the Alfresco
 Digital Business Platform.
@@ -79,20 +79,20 @@ obvious caveat that the application itself does not write to the filesystem).
 
 ### Base Image
 
-It is more likely to be used as a [base image](https://docs.docker.com/glossary/?term=parent%20image#base-image) in a Dockerfile.
+It is more likely to be used as a [base image](https://docs.docker.com/glossary/#base-image) in a Dockerfile.
 For reference, see the documentation on [layers](https://docs.docker.com/storage/storagedriver/#container-and-layers),
 the [VOLUME](https://docs.docker.com/engine/reference/builder/#volume)
 instruction, and [best practices with VOLUMEs](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#volume).
 
-### Examples of usage as a parent image
+### Examples of usage as a base image
 
-Example from a Dockerfile using a public, parent image in Docker Hub.
+Example from a Dockerfile using a public base image in Docker Hub.
 
 ```bash
 FROM alfresco/alfresco-base-java:8
 ```
 
-Example from a Dockerfile using a private, parent image in Quay:
+Example from a Dockerfile using a private base image in Quay:
 
 ```bash
 FROM quay.io/alfresco/alfresco-base-java:8u161-oracle-centos-7-333472fed423
