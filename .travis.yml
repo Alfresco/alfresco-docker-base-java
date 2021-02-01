@@ -8,31 +8,22 @@ branches:
     - master
 
 env:
-  - CENTOS_MAJOR_VERSION=7 JAVA_MAJOR_VERSION=8
-  - CENTOS_MAJOR_VERSION=7 JAVA_MAJOR_VERSION=11
-  - CENTOS_MAJOR_VERSION=8 JAVA_MAJOR_VERSION=8
-  - CENTOS_MAJOR_VERSION=8 JAVA_MAJOR_VERSION=11
+  - CENTOS_MAJOR=7 JAVA_MAJOR=8
+  - CENTOS_MAJOR=7 JAVA_MAJOR=11
+  - CENTOS_MAJOR=8 JAVA_MAJOR=8
+  - CENTOS_MAJOR=8 JAVA_MAJOR=11
 
 before_script:
   - export BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
   - echo $QUAY_PASSWORD | docker login quay.io -u $QUAY_USERNAME --password-stdin
   - echo $DOCKER_PASSWORD | docker login docker.io -u "$DOCKER_USERNAME" --password-stdin
   - |-
-    case $CENTOS_MAJOR_VERSION in
-      7)
-        export CENTOS_VERSION=7.9.2009
-        ;;
+    case $JAVA_MAJOR in
       8)
-        export CENTOS_VERSION=8.3.2011
-        ;;
-    esac
-  - |-
-    case $JAVA_MAJOR_VERSION in
-      8)
-        export JAVA_VERSION=8u181
+        export JAVA_VERSION=8u202
         java_pkg_type=serverjre
         export JAVA_VENDOR=oracle
-        export JAVA_PKG=${java_pkg_type}-${JAVA_VERSION}-bin.tar.gz
+        export JAVA_PKG=$java_pkg_type-$JAVA_VERSION-bin.tar.gz
         export JAVA_URL_USERNAME=$NEXUS_USERNAME
         export JAVA_URL_PASSWORD=$NEXUS_PASSWORD
         export JAVA_URL=https://artifacts.alfresco.com/nexus/content/repositories/oracle-java/linux-x64/$java_pkg_type/$JAVA_VERSION/$JAVA_PKG
@@ -48,7 +39,7 @@ before_script:
   - |-
     export IMAGE_REGISTRY_NAMESPACE=alfresco
     export IMAGE_REPOSITORY=alfresco-base-java
-    export IMAGE_TAG=$JAVA_VERSION-$JAVA_VENDOR-centos-$CENTOS_MAJOR_VERSION
+    export IMAGE_TAG=$JAVA_VERSION-$JAVA_VENDOR-centos-$CENTOS_MAJOR
 
 script:
   - |-
@@ -56,8 +47,7 @@ script:
 
     wget --user=$JAVA_URL_USERNAME --password=$JAVA_URL_PASSWORD $JAVA_URL
     docker build -t $IMAGE_REPOSITORY . \
-      --build-arg CENTOS_MAJOR_VERSION=$CENTOS_MAJOR_VERSION \
-      --build-arg CENTOS_VERSION=$CENTOS_VERSION \
+      --build-arg CENTOS_MAJOR=$CENTOS_MAJOR \
       --build-arg JAVA_PKG=$JAVA_PKG \
       --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
     [[ $BRANCH == master ]] && IMAGE_TAG_SUFFIX=release-candidate || IMAGE_TAG_SUFFIX=$BRANCH
@@ -73,7 +63,7 @@ script:
       for IMAGE_REGISTRY in quay.io docker.io
       do
         echo "tagging and pushing to $IMAGE_REGISTRY"
-        for TAG in $IMAGE_TAG $IMAGE_TAG-$SHORT_SHA256 $JAVA_MAJOR_VERSION
+        for TAG in $IMAGE_TAG $IMAGE_TAG-$SHORT_SHA256 $JAVA_MAJOR
         do
           docker tag $IMAGE_REPOSITORY $IMAGE_REGISTRY/$IMAGE_REGISTRY_NAMESPACE/$IMAGE_REPOSITORY:$TAG
           docker push $IMAGE_REGISTRY/$IMAGE_REGISTRY_NAMESPACE/$IMAGE_REPOSITORY:$TAG

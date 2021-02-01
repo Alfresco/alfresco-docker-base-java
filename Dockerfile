@@ -1,8 +1,29 @@
 # Alfresco Base Java Image
 
-ARG CENTOS_VERSION=7
-FROM centos:$CENTOS_VERSION
+ARG CENTOS_MAJOR=7
+FROM centos:7.8.2003 AS centos-7
+RUN set -eux; \
+	deps=" \
+        openssl-libs-1.0.2k-21.el7_9 \
+        libcurl-7.29.0-59.el7_9.1 \
+        curl-7.29.0-59.el7_9.1 \
+        python-2.7.5-90.el7 \
+        python-libs-2.7.5-90.el7 \
+        bind-license-9.11.4-26.P2.el7_9.2 \
+	"; \
+    yum -y update $deps; \
+    yum clean all
+FROM centos:8.2.2004 AS centos-8
+RUN set -eux; \
+	deps=" \
+        openssl-libs-1.1.1g-12.el8_3 \
+        gnutls-3.6.14-7.el8_3 \
+	"; \
+    yum -y update $deps; \
+    yum clean all
 
+FROM centos-$CENTOS_MAJOR
+ARG BUILD_DATE
 LABEL org.label-schema.schema-version="1.0" \
     org.label-schema.name="Alfresco Base Java Image" \
     org.label-schema.vendor="Alfresco" \
@@ -10,24 +31,6 @@ LABEL org.label-schema.schema-version="1.0" \
     org.opencontainers.image.title="Alfresco Base Java Image" \
     org.opencontainers.image.vendor="Alfresco" \
     org.opencontainers.image.created="$BUILD_DATE"
-
-ARG CENTOS_MAJOR_VERSION=7
-
-ENV CENTOS_7_UPDATES \
-    openssl-libs-1.0.2k-21.el7_9 \
-    libcurl-7.29.0-59.el7_9.1 \
-    curl-7.29.0-59.el7_9.1 \
-    python-2.7.5-90.el7 \
-    python-libs-2.7.5-90.el7 \
-    bind-license-9.11.4-26.P2.el7_9.2
-
-ENV CENTOS_8_UPDATES \
-    openssl-libs-1.1.1g-12.el8_3 \
-    gnutls-3.6.14-7.el8_3
-
-RUN if [[ "$CENTOS_MAJOR_VERSION" == "7" ]] ; then CENTOS_UPDATES=$CENTOS_7_UPDATES;  fi && \
-    if [[ "$CENTOS_MAJOR_VERSION" == "8" ]] ; then CENTOS_UPDATES=$CENTOS_8_UPDATES;  fi && \
-    yum -y update $CENTOS_UPDATES && yum clean all
 
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
