@@ -46,10 +46,12 @@ script:
     set -e
 
     wget --user=$JAVA_URL_USERNAME --password=$JAVA_URL_PASSWORD $JAVA_URL
+    (cd centos-7 && docker build -t centos-7 .)
     docker build -t $IMAGE_REPOSITORY . \
       --build-arg CENTOS_MAJOR=$CENTOS_MAJOR \
       --build-arg JAVA_PKG=$JAVA_PKG \
-      --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+      --build-arg REVISION=$TRAVIS_COMMIT \
+      --build-arg CREATED=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
     [[ $BRANCH == master ]] && IMAGE_TAG_SUFFIX=release-candidate || IMAGE_TAG_SUFFIX=$BRANCH
     IMAGE=quay.io/$IMAGE_REGISTRY_NAMESPACE/$IMAGE_REPOSITORY:$IMAGE_TAG-$IMAGE_TAG_SUFFIX
     docker tag $IMAGE_REPOSITORY $IMAGE
