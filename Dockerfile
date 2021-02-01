@@ -1,7 +1,7 @@
 # Alfresco Base Java Image
 
 ARG CENTOS_MAJOR_VERSION=7
-FROM centos:7.9.2009 AS centos-7
+FROM centos:7.8.2003 AS centos-7
 RUN set -eux; \
 	deps=" \
         openssl-libs-1.0.2k-21.el7_9 \
@@ -13,7 +13,7 @@ RUN set -eux; \
 	"; \
     yum -y update $deps; \
     yum clean all
-FROM centos:8.3.2011 AS centos-8
+FROM centos:8.2.2004 AS centos-8
 RUN set -eux; \
 	deps=" \
         openssl-libs-1.1.1g-12.el8_3 \
