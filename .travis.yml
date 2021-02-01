@@ -27,6 +27,7 @@ before_script:
         export JAVA_URL_USERNAME=$NEXUS_USERNAME
         export JAVA_URL_PASSWORD=$NEXUS_PASSWORD
         export JAVA_URL=https://artifacts.alfresco.com/nexus/content/repositories/oracle-java/linux-x64/$java_pkg_type/$JAVA_VERSION/$JAVA_PKG
+        JAVA_VERSION=${JAVA_VERSION/u/.0.}
         ;;
       11)
         export JAVA_VERSION=11.0.10
