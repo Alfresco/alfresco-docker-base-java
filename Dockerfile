@@ -1,6 +1,6 @@
 # Alfresco Base Java Image
 
-ARG CENTOS_MAJOR_VERSION=7
+ARG CENTOS_MAJOR=7
 FROM centos:7.8.2003 AS centos-7
 RUN set -eux; \
 	deps=" \
@@ -22,7 +22,7 @@ RUN set -eux; \
     yum -y update $deps; \
     yum clean all
 
-FROM centos-$CENTOS_MAJOR_VERSION
+FROM centos-$CENTOS_MAJOR
 ARG BUILD_DATE
 LABEL org.label-schema.schema-version="1.0" \
     org.label-schema.name="Alfresco Base Java Image" \

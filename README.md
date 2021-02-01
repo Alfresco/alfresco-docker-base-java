@@ -54,24 +54,24 @@ Just push a commit on the default branch including `'[release]` in the message t
 Builds are available from [Docker Hub](https://hub.docker.com/r/alfresco/alfresco-base-java):
 
 ```bash
-docker pull alfresco/alfresco-base-java:$JAVA_MAJOR_VERSION
-docker pull alfresco/alfresco-base-java:$JAVA_VERSION-$JAVA_VENDOR-centos-$CENTOS_MAJOR_VERSION
-docker pull alfresco/alfresco-base-java:$JAVA_VERSION-$JAVA_VENDOR-centos-$CENTOS_MAJOR_VERSION-$SHORT_SHA256
+docker pull alfresco/alfresco-base-java:$JAVA_MAJOR
+docker pull alfresco/alfresco-base-java:$JAVA_VERSION-$JAVA_VENDOR-centos-$CENTOS_MAJOR
+docker pull alfresco/alfresco-base-java:$JAVA_VERSION-$JAVA_VENDOR-centos-$CENTOS_MAJOR-$SHORT_SHA256
 ```
 
 where:
-* JAVA_MAJOR_VERSION is 8 or 11
+* JAVA_MAJOR is 8 or 11
 * JAVA_VERSION is 8u202 or 11.0.10
 * JAVA_VENDOR is `oracle` for 8 and `openjdk` for 11
-* CENTOS_MAJOR_VERSION is 7 or 8
+* CENTOS_MAJOR is 7 or 8
 * SHORT_SHA256 is the 12 digit SHA256 of the image as available from the registry
 
 The builds are identical to those stored in the private repo on Quay, which also supports build-pinning versions.
 
 ```bash
-docker pull quay.io/alfresco/alfresco-base-java:$JAVA_MAJOR_VERSION
-docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-$JAVA_VENDOR-centos-$CENTOS_MAJOR_VERSION
-docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-$JAVA_VENDOR-centos-$CENTOS_MAJOR_VERSION-$SHORT_SHA256
+docker pull quay.io/alfresco/alfresco-base-java:$JAVA_MAJOR
+docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-$JAVA_VENDOR-centos-$CENTOS_MAJOR
+docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-$JAVA_VENDOR-centos-$CENTOS_MAJOR-$SHORT_SHA256
 ```
 
 ## Usage
