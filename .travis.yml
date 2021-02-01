@@ -20,10 +20,10 @@ before_script:
   - |-
     case $JAVA_MAJOR_VERSION in
       8)
-        export JAVA_VERSION=8u181
+        export JAVA_VERSION=8u202
         java_pkg_type=serverjre
         export JAVA_VENDOR=oracle
-        export JAVA_PKG=${java_pkg_type}-${JAVA_VERSION}-bin.tar.gz
+        export JAVA_PKG=$java_pkg_type-$JAVA_VERSION-bin.tar.gz
         export JAVA_URL_USERNAME=$NEXUS_USERNAME
         export JAVA_URL_PASSWORD=$NEXUS_PASSWORD
         export JAVA_URL=https://artifacts.alfresco.com/nexus/content/repositories/oracle-java/linux-x64/$java_pkg_type/$JAVA_VERSION/$JAVA_PKG

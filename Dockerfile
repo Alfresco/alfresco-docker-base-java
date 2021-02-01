@@ -23,7 +23,7 @@ RUN set -eux; \
     yum clean all
 
 FROM centos-$CENTOS_MAJOR_VERSION
-
+ARG BUILD_DATE
 LABEL org.label-schema.schema-version="1.0" \
     org.label-schema.name="Alfresco Base Java Image" \
     org.label-schema.vendor="Alfresco" \
