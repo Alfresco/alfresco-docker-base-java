@@ -9,41 +9,24 @@ other internal groups in the organisation, customers and partners to create Java
 
 ## Versioning
 
-### Legacy Oracle Java 8
+### Legacy OpenJDK Java 8
 
-For legacy Oracle Java 8 builds, version 8u202 of the serverjre has been saved in Alfresco artifact repository,
-which is the last one available with the BCL license.
+For legacy Java 8 builds, using the OpenJDK version from the CentOS distro which includes the latest security patches.
 
-### OpenJDK Java 11
+### OpenJDK Java 11 LTS
 
-For OpenJDK builds from Java 11.0.10, the most updated binary is downloaded from [AdoptOpenJDK](https://github.com/AdoptOpenJDK/openjdk11-upstream-binaries).
+For Java 11 builds, using the OpenJDK version from the CentOS distro which includes the latest security patches, this is the recommended option.
 
 Options are available using CentOS 7 and 8 as base.
 
 ## How to Build
 
-### Manually
-
-To build a local version of the base java image follow the instructions below
-
-#### Download JDK
-
-Download any `tar.gz` of the jdk into [.](.).
-Save the filename in a variable. e.g.
-
-```bash
-export JAVA_PKG="OpenJDK11U-jdk_x64_linux_11.0.10_9.tar.gz"
-```
-
-#### Build the docker image
-
-Assuming the filename has been saved in the variable `$JAVA_PKG`, build as follows:
+To build a local version of the base java image follow the instructions below:
 
 ```bash
 (cd centos-$CENTOS_MAJOR && docker build -t centos-$CENTOS_MAJOR .)
 docker build -t alfresco-base-java . \
   --build-arg CENTOS_MAJOR=$CENTOS_MAJOR \
-  --build-arg JAVA_PKG=$JAVA_PKG \
   --no-cache
 ```
 
@@ -52,7 +35,7 @@ where:
 
 #### Release
 
-Just push a commit on the default branch including `[release]` in the message to trigger a release on Travis CI.
+Push a commit on the default branch including `[release]` in the message to trigger a release on Travis CI.
 
 ## Pulling released images
 
@@ -66,8 +49,8 @@ docker pull alfresco/alfresco-base-java:$JAVA_VERSION-$JAVA_VENDOR-centos-$CENTO
 
 where:
 * JAVA_MAJOR is 8 or 11
-* JAVA_VERSION is 8u202 or 11.0.10
-* JAVA_VENDOR is `oracle` for 8 and `openjdk` for 11
+* JAVA_VERSION is 8.0.202 or 11.0.10
+* JAVA_VENDOR is `openjdk` for both on 8 and 11
 * CENTOS_MAJOR is 7 or 8
 * SHORT_SHA256 is the 12 digit SHA256 of the image as available from the registry
 

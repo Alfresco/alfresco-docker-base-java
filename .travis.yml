@@ -17,24 +17,16 @@ before_script:
   - export BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
   - echo $QUAY_PASSWORD | docker login quay.io -u $QUAY_USERNAME --password-stdin
   - echo $DOCKER_PASSWORD | docker login docker.io -u "$DOCKER_USERNAME" --password-stdin
+  # https://blog.adoptopenjdk.net/2021/01/adoptopenjdk-8u282-11010-and-1502-available
   - |-
     case $JAVA_MAJOR in
       8)
-        export JAVA_VERSION=8u202
-        java_pkg_type=serverjre
-        export JAVA_VENDOR=oracle
-        export JAVA_PKG=$java_pkg_type-$JAVA_VERSION-bin.tar.gz
-        export JAVA_URL_USERNAME=$NEXUS_USERNAME
-        export JAVA_URL_PASSWORD=$NEXUS_PASSWORD
-        export JAVA_URL=https://artifacts.alfresco.com/nexus/content/repositories/oracle-java/linux-x64/$java_pkg_type/$JAVA_VERSION/$JAVA_PKG
-        JAVA_VERSION=${JAVA_VERSION/u/.0.}
+        export JAVA_VERSION=8.0.282
+        export JAVA_VENDOR=openjdk
         ;;
       11)
         export JAVA_VERSION=11.0.10
-        java_build=9
         export JAVA_VENDOR=openjdk
-        export JAVA_PKG=OpenJDK11U-jdk_x64_linux_${JAVA_VERSION}_$java_build.tar.gz
-        export JAVA_URL=https://github.com/AdoptOpenJDK/openjdk11-upstream-binaries/releases/download/jdk-$JAVA_VERSION+$java_build/$JAVA_PKG
         ;;
     esac
   - |-
@@ -46,11 +38,10 @@ script:
   - |-
     set -ex
 
-    wget --user=$JAVA_URL_USERNAME --password=$JAVA_URL_PASSWORD $JAVA_URL
     (cd centos-$CENTOS_MAJOR && docker build -t centos-$CENTOS_MAJOR .)
     docker build -t $IMAGE_REPOSITORY . \
       --build-arg CENTOS_MAJOR=$CENTOS_MAJOR \
-      --build-arg JAVA_PKG=$JAVA_PKG \
+      --build-arg JAVA_MAJOR=$JAVA_MAJOR \
       --build-arg REVISION=$TRAVIS_COMMIT \
       --build-arg CREATED=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
       --no-cache
