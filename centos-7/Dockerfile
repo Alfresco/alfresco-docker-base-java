@@ -8,6 +8,7 @@ RUN set -eux; \
         python-2.7.5-90.el7 \
         python-libs-2.7.5-90.el7 \
         bind-license-9.11.4-26.P2.el7_9.2 \
+        glibc-2.17-322.el7_9 \
 	"; \
     yum -y update $deps; \
     yum clean all
