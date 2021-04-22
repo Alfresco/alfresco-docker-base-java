@@ -2,6 +2,7 @@
 FROM centos:7.9.2009
 RUN set -eux; \
 	deps=" \
+        openssl-1.0.2k-21.el7_9 \
         openssl-libs-1.0.2k-21.el7_9 \
         libcurl-7.29.0-59.el7_9.1 \
         curl-7.29.0-59.el7_9.1 \
