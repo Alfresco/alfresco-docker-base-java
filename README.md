@@ -107,13 +107,15 @@ FROM alfresco/alfresco-base-java:11
 Example from a Dockerfile using a private base image in Quay:
 
 ```bash
-FROM quay.io/alfresco/alfresco-base-java:11.0.10-openjdk-centos-7-954752c611bf
+FROM quay.io/alfresco/alfresco-base-java:11.0.10-openjdk-centos-7-$SHORT_SHA256
 ```
+where `SHORT_SHA256` is the 12-digit short sha256 image digest.
 
 or pinned:
 
 ```bash
-FROM quay.io/alfresco/alfresco-base-java:11.0.10-oracle-centos-7@sha256:954752c611bf52883a8519197a2ee29c8686b0bbd2cc48752cd740a864a6c233
+FROM quay.io/alfresco/alfresco-base-java:11.0.10-openjdk-centos-7@sha256:$SHA256
 ```
+where `SHA256` is the full sha256 image digest.
 
 See [Alfresco Base Tomcat](https://github.com/Alfresco/alfresco-docker-base-tomcat/blob/master/Dockerfile) for a concrete example.
