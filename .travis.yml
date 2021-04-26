@@ -20,37 +20,25 @@ before_script:
   - |-
     case $JAVA_MAJOR in
       8)
-        export JAVA_VERSION=8u202
-        java_pkg_type=serverjre
-        export JAVA_VENDOR=oracle
-        export JAVA_PKG=$java_pkg_type-$JAVA_VERSION-bin.tar.gz
-        export JAVA_URL_USERNAME=$NEXUS_USERNAME
-        export JAVA_URL_PASSWORD=$NEXUS_PASSWORD
-        export JAVA_URL=https://artifacts.alfresco.com/nexus/content/repositories/oracle-java/linux-x64/$java_pkg_type/$JAVA_VERSION/$JAVA_PKG
-        JAVA_VERSION=${JAVA_VERSION/u/.0.}
+        export JAVA_VERSION=8.0.292
         ;;
       11)
-        export JAVA_VERSION=11.0.10
-        java_build=9
-        export JAVA_VENDOR=openjdk
-        export JAVA_PKG=OpenJDK11U-jdk_x64_linux_${JAVA_VERSION}_$java_build.tar.gz
-        export JAVA_URL=https://github.com/AdoptOpenJDK/openjdk11-upstream-binaries/releases/download/jdk-$JAVA_VERSION+$java_build/$JAVA_PKG
+        export JAVA_VERSION=11.0.11
         ;;
     esac
   - |-
     export IMAGE_REGISTRY_NAMESPACE=alfresco
     export IMAGE_REPOSITORY=alfresco-base-java
-    export IMAGE_TAG=$JAVA_VERSION-$JAVA_VENDOR-centos-$CENTOS_MAJOR
+    export IMAGE_TAG=$JAVA_VERSION-centos-$CENTOS_MAJOR
 
 script:
   - |-
     set -ex
 
-    wget --user=$JAVA_URL_USERNAME --password=$JAVA_URL_PASSWORD $JAVA_URL
     (cd centos-$CENTOS_MAJOR && docker build -t centos-$CENTOS_MAJOR .)
     docker build -t $IMAGE_REPOSITORY . \
       --build-arg CENTOS_MAJOR=$CENTOS_MAJOR \
-      --build-arg JAVA_PKG=$JAVA_PKG \
+      --build-arg JAVA_MAJOR=$JAVA_MAJOR \
       --build-arg REVISION=$TRAVIS_COMMIT \
       --build-arg CREATED=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
       --no-cache
@@ -65,7 +53,7 @@ script:
       export SHORT_SHA256=$(docker image inspect -f '{{ printf "%.12s" (index (split (index .RepoDigests 0) ":") 1) }}' $IMAGE_REPOSITORY)
       echo SHORT_SHA256=$SHORT_SHA256
       TAGS=($IMAGE_TAG $IMAGE_TAG-$SHORT_SHA256)
-      [[ $CENTOS_MAJOR_VERSION = 8 ]] && TAGS+=$JAVA_MAJOR
+      [[ $CENTOS_MAJOR_VERSION == 8 ]] && TAGS+=$JAVA_MAJOR
       for IMAGE_REGISTRY in quay.io docker.io
       do
         echo "tagging and pushing to $IMAGE_REGISTRY"

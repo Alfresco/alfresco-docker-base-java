@@ -9,50 +9,35 @@ other internal groups in the organisation, customers and partners to create Java
 
 ## Versioning
 
-### Legacy Oracle Java 8
+### Legacy OpenJDK Java 8
 
-For legacy Oracle Java 8 builds, version 8u202 of the serverjre has been saved in Alfresco artifact repository,
-which is the last one available with the BCL license.
+For legacy Java 8 builds, using the OpenJDK version from the CentOS distro which includes the latest security patches.
 
-### OpenJDK Java 11
+### OpenJDK Java 11 LTS
 
-For OpenJDK builds from Java 11.0.10, the most updated binary is downloaded from [AdoptOpenJDK](https://github.com/AdoptOpenJDK/openjdk11-upstream-binaries).
+For Java 11 builds, using the OpenJDK version from the CentOS distro which includes the latest security patches, this is the recommended option.
 
 Options are available using CentOS 7 and 8 as base.
 
 ## How to Build
 
-### Manually
-
-To build a local version of the base java image follow the instructions below
-
-#### Download JDK
-
-Download any `tar.gz` of the jdk into [.](.).
-Save the filename in a variable. e.g.
-
-```bash
-export JAVA_PKG="OpenJDK11U-jdk_x64_linux_11.0.10_9.tar.gz"
-```
-
-#### Build the docker image
-
-Assuming the filename has been saved in the variable `$JAVA_PKG`, build as follows:
+To build a local version of the base java image follow the instructions below:
 
 ```bash
 (cd centos-$CENTOS_MAJOR && docker build -t centos-$CENTOS_MAJOR .)
 docker build -t alfresco-base-java . \
   --build-arg CENTOS_MAJOR=$CENTOS_MAJOR \
-  --build-arg JAVA_PKG=$JAVA_PKG \
+  --build-arg JAVA_MAJOR=$JAVA_MAJOR \
   --no-cache
 ```
 
 where:
 * CENTOS_MAJOR is 7 or 8
+* JAVA_MAJOR is 8 or 11
 
 #### Release
 
-Just push a commit on the default branch including `[release]` in the message to trigger a release on Travis CI.
+Push a commit on the default branch including `[release]` in the message to trigger a release on Travis CI.
 
 ## Pulling released images
 
@@ -60,14 +45,13 @@ Builds are available from [Docker Hub](https://hub.docker.com/r/alfresco/alfresc
 
 ```bash
 docker pull alfresco/alfresco-base-java:$JAVA_MAJOR
-docker pull alfresco/alfresco-base-java:$JAVA_VERSION-$JAVA_VENDOR-centos-$CENTOS_MAJOR
-docker pull alfresco/alfresco-base-java:$JAVA_VERSION-$JAVA_VENDOR-centos-$CENTOS_MAJOR-$SHORT_SHA256
+docker pull alfresco/alfresco-base-java:$JAVA_VERSION-centos-$CENTOS_MAJOR
+docker pull alfresco/alfresco-base-java:$JAVA_VERSION-centos-$CENTOS_MAJOR-$SHORT_SHA256
 ```
 
 where:
 * JAVA_MAJOR is 8 or 11
-* JAVA_VERSION is 8u202 or 11.0.10
-* JAVA_VENDOR is `oracle` for 8 and `openjdk` for 11
+* JAVA_VERSION is 8.0.292 or 11.0.11
 * CENTOS_MAJOR is 7 or 8
 * SHORT_SHA256 is the 12 digit SHA256 of the image as available from the registry
 
@@ -78,8 +62,8 @@ The builds are identical to those stored in the private repo on Quay.
 
 ```bash
 docker pull quay.io/alfresco/alfresco-base-java:$JAVA_MAJOR
-docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-$JAVA_VENDOR-centos-$CENTOS_MAJOR
-docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-$JAVA_VENDOR-centos-$CENTOS_MAJOR-$SHORT_SHA256
+docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-centos-$CENTOS_MAJOR
+docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-centos-$CENTOS_MAJOR-$SHORT_SHA256
 ```
 
 ## Usage
@@ -107,14 +91,14 @@ FROM alfresco/alfresco-base-java:11
 Example from a Dockerfile using a private base image in Quay:
 
 ```bash
-FROM quay.io/alfresco/alfresco-base-java:11.0.10-openjdk-centos-7-$SHORT_SHA256
+FROM quay.io/alfresco/alfresco-base-java:11.0.11-centos-7-$SHORT_SHA256
 ```
 where `SHORT_SHA256` is the 12-digit short sha256 image digest.
 
 or pinned:
 
 ```bash
-FROM quay.io/alfresco/alfresco-base-java:11.0.10-openjdk-centos-7@sha256:$SHA256
+FROM quay.io/alfresco/alfresco-base-java:11.0.11-centos-7@sha256:$SHA256
 ```
 where `SHA256` is the full sha256 image digest.
 
