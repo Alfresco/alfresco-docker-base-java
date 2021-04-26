@@ -22,16 +22,16 @@ ENV LC_ALL en_US.UTF-8
 
 RUN set -eux; \
 	[[ ${CENTOS_MAJOR} = 7 && ${JAVA_MAJOR} = 8 ]] && deps=" \
-		java-1.8.0-openjdk-headless-1.8.0.282.b08-1.el7_9 \
+		java-1.8.0-openjdk-headless-1.8.0.292.b10-1.el7_9 \
 	"; \
 	[[ ${CENTOS_MAJOR} = 8 && ${JAVA_MAJOR} = 8 ]] && deps=" \
-		java-1.8.0-openjdk-headless-1.8.0.282.b08-4.el8 \
+		java-1.8.0-openjdk-headless-1.8.0.292.b10-0.el8_3 \
 	"; \
 	[[ ${CENTOS_MAJOR} = 7 && ${JAVA_MAJOR} = 11 ]] && deps=" \
-		java-11-openjdk-headless-11.0.10.0.9-0.el7_9 \
+		java-11-openjdk-headless-11.0.11.0.9-1.el7_9 \
 	"; \
 	[[ ${CENTOS_MAJOR} = 8 && ${JAVA_MAJOR} = 11 ]] && deps=" \
-		java-11-openjdk-headless-11.0.10.0.9-4.el8 \
+		java-11-openjdk-headless-11.0.11.0.9-0.el8_3 \
 	"; \
     yum -y install $deps; \
     yum clean all;

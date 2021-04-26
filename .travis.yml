@@ -21,18 +21,16 @@ before_script:
   - |-
     case $JAVA_MAJOR in
       8)
-        export JAVA_VERSION=8.0.282
-        export JAVA_VENDOR=openjdk
+        export JAVA_VERSION=8.0.292
         ;;
       11)
-        export JAVA_VERSION=11.0.10
-        export JAVA_VENDOR=openjdk
+        export JAVA_VERSION=11.0.11
         ;;
     esac
   - |-
     export IMAGE_REGISTRY_NAMESPACE=alfresco
     export IMAGE_REPOSITORY=alfresco-base-java
-    export IMAGE_TAG=$JAVA_VERSION-$JAVA_VENDOR-centos-$CENTOS_MAJOR
+    export IMAGE_TAG=$JAVA_VERSION-centos-$CENTOS_MAJOR
 
 script:
   - |-
