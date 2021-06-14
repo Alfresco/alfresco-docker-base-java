@@ -27,13 +27,13 @@ RUN set -eux; \
 		java-1.8.0-openjdk-devel-1.8.0.292.b10-1.el7_9 \
 	"; \
 	[[ ${CENTOS_MAJOR} = 8 && ${JAVA_MAJOR} = 8 ]] && deps=" \
-		java-1.8.0-openjdk-devel-1.8.0.292.b10-0.el8_3 \
+		java-1.8.0-openjdk-devel-1.8.0.292.b10-1.el8_4 \
 	"; \
 	[[ ${CENTOS_MAJOR} = 7 && ${JAVA_MAJOR} = 11 ]] && deps=" \
 		java-11-openjdk-devel-11.0.11.0.9-1.el7_9 \
 	"; \
 	[[ ${CENTOS_MAJOR} = 8 && ${JAVA_MAJOR} = 11 ]] && deps=" \
-		java-11-openjdk-devel-11.0.11.0.9-0.el8_3 \
+		java-11-openjdk-devel-11.0.11.0.9-2.el8_4 \
 	"; \
     yum -y install $deps; \
     yum clean all; \
