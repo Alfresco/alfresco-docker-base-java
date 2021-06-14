@@ -1,5 +1,10 @@
 # Centos 8 Base Image for Alfresco Base Java Image
 FROM centos:8.3.2011
+
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
 RUN set -eux; \
 	deps=" \
         bash-4.4.19-14.el8 \
