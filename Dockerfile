@@ -18,6 +18,14 @@ LABEL org.label-schema.schema-version="1.0" \
 
 ENV JAVA_HOME=/usr/lib/jvm/java
 
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+
+RUN set -eux; \
+	yum update -y; \
+    yum clean all
+
 RUN set -eux; \
 	[[ ${CENTOS_MAJOR} = 7 && ${JAVA_MAJOR} = 8 ]] && deps=" \
 		java-1.8.0-openjdk-devel-1.8.0.292.b10-1.el7_9 \
