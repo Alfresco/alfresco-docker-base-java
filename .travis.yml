@@ -20,10 +20,10 @@ before_script:
   - |-
     case $JAVA_MAJOR in
       8)
-        export JAVA_VERSION=8.0.292
+        export JAVA_VERSION=8.0.302
         ;;
       11)
-        export JAVA_VERSION=11.0.11
+        export JAVA_VERSION=11.0.12
         ;;
     esac
   - |-
