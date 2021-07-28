@@ -51,7 +51,7 @@ docker pull alfresco/alfresco-base-java:$JAVA_VERSION-centos-$CENTOS_MAJOR-$SHOR
 
 where:
 * JAVA_MAJOR is 8 or 11
-* JAVA_VERSION is 8.0.292 or 11.0.11
+* JAVA_VERSION is 8.0.302 or 11.0.12
 * CENTOS_MAJOR is 7 or 8
 * SHORT_SHA256 is the 12 digit SHA256 of the image as available from the registry
 
@@ -91,14 +91,14 @@ FROM alfresco/alfresco-base-java:11
 Example from a Dockerfile using a private base image in Quay:
 
 ```bash
-FROM quay.io/alfresco/alfresco-base-java:11.0.11-centos-7-$SHORT_SHA256
+FROM quay.io/alfresco/alfresco-base-java:11.0.12-centos-7-$SHORT_SHA256
 ```
 where `SHORT_SHA256` is the 12-digit short sha256 image digest.
 
 or pinned:
 
 ```bash
-FROM quay.io/alfresco/alfresco-base-java:11.0.11-centos-7@sha256:$SHA256
+FROM quay.io/alfresco/alfresco-base-java:11.0.12-centos-7@sha256:$SHA256
 ```
 where `SHA256` is the full sha256 image digest.
 
