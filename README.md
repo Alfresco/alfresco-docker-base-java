@@ -24,15 +24,15 @@ Options are available using CentOS 7 and 8 as base.
 To build a local version of the base java image follow the instructions below:
 
 ```bash
-(cd centos-$CENTOS_MAJOR && docker build -t centos-$CENTOS_MAJOR .)
+(cd $DISTRIB-$DISTRIB_MAJOR && docker build -t $DISTRIB-$DISTRIB_MAJOR .)
 docker build -t alfresco-base-java . \
-  --build-arg CENTOS_MAJOR=$CENTOS_MAJOR \
+  --build-arg DISTRIB_MAJOR=$DISTRIB_MAJOR \
   --build-arg JAVA_MAJOR=$JAVA_MAJOR \
   --no-cache
 ```
 
 where:
-* CENTOS_MAJOR is 7 or 8
+* DISTRIB_MAJOR is 7 or 8
 * JAVA_MAJOR is 8 or 11
 
 #### Release
@@ -45,14 +45,14 @@ Builds are available from [Docker Hub](https://hub.docker.com/r/alfresco/alfresc
 
 ```bash
 docker pull alfresco/alfresco-base-java:$JAVA_MAJOR
-docker pull alfresco/alfresco-base-java:$JAVA_VERSION-centos-$CENTOS_MAJOR
-docker pull alfresco/alfresco-base-java:$JAVA_VERSION-centos-$CENTOS_MAJOR-$SHORT_SHA256
+docker pull alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB-$DISTRIB_MAJOR
+docker pull alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB-$DISTRIB_MAJOR-$SHORT_SHA256
 ```
 
 where:
 * JAVA_MAJOR is 8 or 11
 * JAVA_VERSION is 8.0.302 or 11.0.12
-* CENTOS_MAJOR is 7 or 8
+* DISTRIB_MAJOR is 7 or 8
 * SHORT_SHA256 is the 12 digit SHA256 of the image as available from the registry
 
 *NOTE*
@@ -62,8 +62,8 @@ The builds are identical to those stored in the private repo on Quay.
 
 ```bash
 docker pull quay.io/alfresco/alfresco-base-java:$JAVA_MAJOR
-docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-centos-$CENTOS_MAJOR
-docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-centos-$CENTOS_MAJOR-$SHORT_SHA256
+docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB-$DISTRIB_MAJOR
+docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB-$DISTRIB_MAJOR-$SHORT_SHA256
 ```
 
 ## Usage
