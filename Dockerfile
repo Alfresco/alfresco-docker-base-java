@@ -20,9 +20,8 @@ LABEL org.label-schema.schema-version="1.0" \
 
 ENV JAVA_HOME=/usr/lib/jvm/java
 
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
 
 RUN set -eux; \
     yum update -y; \
