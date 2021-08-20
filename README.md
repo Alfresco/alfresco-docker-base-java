@@ -24,7 +24,7 @@ Options are available using CentOS 7 and 8 as base.
 To build a local version of the base java image follow the instructions below:
 
 ```bash
-(cd $DISTRIB-$DISTRIB_MAJOR && docker build -t $DISTRIB-$DISTRIB_MAJOR .)
+(cd $DISTRIB_NAME-$DISTRIB_MAJOR && docker build -t $DISTRIB_NAME-$DISTRIB_MAJOR .)
 docker build -t alfresco-base-java . \
   --build-arg DISTRIB_MAJOR=$DISTRIB_MAJOR \
   --build-arg JAVA_MAJOR=$JAVA_MAJOR \
@@ -45,8 +45,8 @@ Builds are available from [Docker Hub](https://hub.docker.com/r/alfresco/alfresc
 
 ```bash
 docker pull alfresco/alfresco-base-java:$JAVA_MAJOR
-docker pull alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB-$DISTRIB_MAJOR
-docker pull alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB-$DISTRIB_MAJOR-$SHORT_SHA256
+docker pull alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB_NAME-$DISTRIB_MAJOR
+docker pull alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB_NAME-$DISTRIB_MAJOR-$SHORT_SHA256
 ```
 
 where:
@@ -62,8 +62,8 @@ The builds are identical to those stored in the private repo on Quay.
 
 ```bash
 docker pull quay.io/alfresco/alfresco-base-java:$JAVA_MAJOR
-docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB-$DISTRIB_MAJOR
-docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB-$DISTRIB_MAJOR-$SHORT_SHA256
+docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB_NAME-$DISTRIB_MAJOR
+docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB_NAME-$DISTRIB_MAJOR-$SHORT_SHA256
 ```
 
 ## Usage

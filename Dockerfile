@@ -1,11 +1,11 @@
 # Alfresco Base Java Image
 
-ARG DISTRIB=centos
-ARG DISTRIB_MAJOR=7
-FROM $DISTRIB-$DISTRIB_MAJOR
-ARG DISTRIB=centos
-ARG DISTRIB_MAJOR=7
-ARG JAVA_MAJOR=8
+ARG DISTRIB_NAME
+ARG DISTRIB_MAJOR
+FROM $DISTRIB_NAME-$DISTRIB_MAJOR
+ARG DISTRIB_NAME
+ARG DISTRIB_MAJOR
+ARG JAVA_MAJOR
 ARG CREATED
 ARG REVISION
 LABEL org.label-schema.schema-version="1.0" \
@@ -22,14 +22,13 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
-RUN set -eux; [ $DISTRIB = 'debian' ] && mkdir -p /usr/share/man/man1 || true
+RUN set -eux; [ $DISTRIB_NAME = 'debian' ] && mkdir -p /usr/share/man/man1 || true
 
 RUN set -eux; \
-    case "$DISTRIB" in \
+    case "$DISTRIB_NAME" in \
       centos) \
         [[ ${DISTRIB_MAJOR} = 7 && ${JAVA_MAJOR} = 8 ]] && deps="\
           java-1.8.0-openjdk-headless-1.8.0.302.b08-0.el7_9 \
-          java-1.8.0-openjdk-headless-1.8.0.292.b10-1.el7_9 \
         "; \
         [[ ${DISTRIB_MAJOR} = 8 && ${JAVA_MAJOR} = 8 ]] && deps="\
           java-1.8.0-openjdk-headless-1.8.0.302.b08-0.el8_4 \
@@ -55,7 +54,7 @@ RUN set -eux; \
     $JAVA_HOME/bin/java -version
 
 RUN set -eux; \
-    case "$DISTRIB" in \
+    case "$DISTRIB_NAME" in \
       centos) \
         dist_update() { yum update -y && yum clean all; } ;; \
       debian) \
