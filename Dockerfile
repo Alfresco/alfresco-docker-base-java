@@ -28,7 +28,7 @@ RUN set -eux; \
 
 RUN set -eux; \
     [[ ${CENTOS_MAJOR} = 7 && ${JAVA_MAJOR} = 8 ]] && deps=" \
-        java-1.8.0-openjdk-devel-1.8.0.292.b10-1.el7_9 \
+        java-1.8.0-openjdk-devel-1.8.0.302.b08-0.el7_9 \
     "; \
     [[ ${CENTOS_MAJOR} = 8 && ${JAVA_MAJOR} = 8 ]] && deps=" \
         java-1.8.0-openjdk-devel-1.8.0.302.b08-0.el8_4 \
