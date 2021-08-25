@@ -27,6 +27,15 @@ RUN set -eux; [ $DISTRIB_NAME = 'debian' ] && mkdir -p /usr/share/man/man1 || tr
 RUN set -eux; \
     case "$DISTRIB_NAME" in \
       centos) \
+        dist_update() { yum update -y && yum clean all; } ;; \
+      debian) \
+        dist_update() { apt-get update && apt-get upgrade -y && apt-get clean -y && find /var/lib/apt/lists/ -type f -delete; } ;; \
+    esac; \
+    dist_update
+
+RUN set -eux; \
+    case "$DISTRIB_NAME" in \
+      centos) \
         [[ ${DISTRIB_MAJOR} = 7 && ${JAVA_MAJOR} = 8 ]] && deps="\
           java-1.8.0-openjdk-headless-1.8.0.302.b08-0.el7_9 \
         "; \
@@ -52,13 +61,4 @@ RUN set -eux; \
     locate_java; \
     export JAVA_HOME=${JAVA_BIN_PATH%*/bin/java}; \
     $JAVA_HOME/bin/java -version
-
-RUN set -eux; \
-    case "$DISTRIB_NAME" in \
-      centos) \
-        dist_update() { yum update -y && yum clean all; } ;; \
-      debian) \
-        dist_update() { apt-get update && apt-get upgrade -y && apt-get clean -y && find /var/lib/apt/lists/ -type f -delete; } ;; \
-    esac; \
-    dist_update
 

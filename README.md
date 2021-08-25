@@ -26,13 +26,15 @@ To build a local version of the base java image follow the instructions below:
 ```bash
 (cd $DISTRIB_NAME-$DISTRIB_MAJOR && docker build -t $DISTRIB_NAME-$DISTRIB_MAJOR .)
 docker build -t alfresco-base-java . \
+  --build-arg DISTRIB_NAME=$DISTRIB_NAME \
   --build-arg DISTRIB_MAJOR=$DISTRIB_MAJOR \
   --build-arg JAVA_MAJOR=$JAVA_MAJOR \
   --no-cache
 ```
 
 where:
-* DISTRIB_MAJOR is 7 or 8
+* DISTRIB_NAME is centos or debian
+* DISTRIB_MAJOR is 7 or 8 for centos and 10 for debian
 * JAVA_MAJOR is 8 or 11
 
 #### Release
