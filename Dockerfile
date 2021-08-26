@@ -48,12 +48,12 @@ RUN set -eux; \
         locate_java() { JAVA_BIN_PATH=$(dpkg -L openjdk-${JAVA_MAJOR}-jre-headless | grep '\/bin\/java$'); } ; \
         pkg_install() { apt-get update && apt-get install --no-install-recommends -y $* && apt-get clean -y && find /var/lib/apt/lists/ -type f -delete; } ;; \
     esac; \
-    pkg_install $deps; \
-    locate_java;
+    [[ ${DISTRIB_NAME} != ubi ]] && pkg_install $deps && locate_java && export JAVA_HOME=${JAVA_BIN_PATH%*/bin/java}; \
+    $JAVA_HOME/bin/java -version
 
 RUN set -eux; \
     case "$DISTRIB_NAME" in \
-      centos) \
+      centos|ubi) \
         dist_update() { yum update -y && yum clean all; } ;; \
       debian) \
         dist_update() { apt-get update && apt-get upgrade -y && apt-get clean -y && find /var/lib/apt/lists/ -type f -delete; } ;; \
