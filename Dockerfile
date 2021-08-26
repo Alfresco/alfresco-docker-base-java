@@ -18,45 +18,57 @@ LABEL org.label-schema.schema-version="1.0" \
     org.opencontainers.image.revision="$REVISION" \
     org.opencontainers.image.source="https://github.com/Alfresco/alfresco-docker-base-java"
 
-ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
-RUN set -eux; [ $DISTRIB_NAME = 'debian' ] && mkdir -p /usr/share/man/man1 || true
-
 RUN set -eux; \
     case "$DISTRIB_NAME" in \
       centos) \
-        [[ ${DISTRIB_MAJOR} = 7 && ${JAVA_MAJOR} = 8 ]] && JAVA_PKG_VERSION=1.8.0 && deps="\
-          java-1.8.0-openjdk-headless-1.8.0.302.b08-0.el7_9 \
-        "; \
-        [[ ${DISTRIB_MAJOR} = 8 && ${JAVA_MAJOR} = 8 ]] && JAVA_PKG_VERSION=1.8.0 && deps="\
-          java-1.8.0-openjdk-headless-1.8.0.302.b08-0.el8_4 \
-        "; \
-        [[ ${DISTRIB_MAJOR} = 7 && ${JAVA_MAJOR} = 11 ]] && JAVA_PKG_VERSION=11 && deps="\
-          java-11-openjdk-headless-11.0.12.0.7-0.el7_9 \
-        "; \
-        [[ ${DISTRIB_MAJOR} = 8 && ${JAVA_MAJOR} = 11 ]] && JAVA_PKG_VERSION=11 && deps="\
-          java-11-openjdk-headless-11.0.12.0.7-0.el8_4 \
-        "; \
-        locate_java() { JAVA_BIN_PATH=$(rpm -ql java-${JAVA_PKG_VERSION}-openjdk-headless | grep '\/bin\/java$'); } ; \
-        pkg_install() { yum install -y $* && yum clean all; } ;; \
+        dist_update() { yum update -y; }; \
+        cleanup() { yum clean all; }; \
+        pkg_install() { \
+          [[ ${DISTRIB_MAJOR} = 7 && ${JAVA_MAJOR} = 8 ]] && JAVA_PKG_VERSION=1.8.0 && deps="\
+            java-1.8.0-openjdk-headless-1.8.0.302.b08-0.el7_9 \
+          "; \
+          [[ ${DISTRIB_MAJOR} = 8 && ${JAVA_MAJOR} = 8 ]] && JAVA_PKG_VERSION=1.8.0 && deps="\
+            java-1.8.0-openjdk-headless-1.8.0.302.b08-0.el8_4 \
+          "; \
+          [[ ${DISTRIB_MAJOR} = 7 && ${JAVA_MAJOR} = 11 ]] && JAVA_PKG_VERSION=11 && deps="\
+            java-11-openjdk-headless-11.0.12.0.7-0.el7_9 \
+          "; \
+          [[ ${DISTRIB_MAJOR} = 8 && ${JAVA_MAJOR} = 11 ]] && JAVA_PKG_VERSION=11 && deps="\
+            java-11-openjdk-headless-11.0.12.0.7-0.el8_4 \
+          "; \
+          yum install -y $deps; \
+        }; \
+        locate_java() { \
+          JAVA_BIN_PATH=$(rpm -ql java-${JAVA_PKG_VERSION}-openjdk-headless | grep '\/bin\/java$'); \
+          export JAVA_HOME=${JAVA_BIN_PATH%*/bin/java}; \
+        };; \
       debian) \
-        [ ${DISTRIB_MAJOR} -eq 10 -a ${JAVA_MAJOR} -eq 11 ] && deps="\
-          openjdk-11-jre-headless=11.0.12+7-2~deb10u1 \
-        "; \
-        locate_java() { JAVA_BIN_PATH=$(dpkg -L openjdk-${JAVA_MAJOR}-jre-headless | grep '\/bin\/java$'); } ; \
-        pkg_install() { apt-get update && apt-get install --no-install-recommends -y $* && apt-get clean -y && find /var/lib/apt/lists/ -type f -delete; } ;; \
+        DEBIAN_FRONTEND=noninteractive; \
+        mkdir -p /usr/share/man/man1 || true; \
+        dist_update() { apt-get update && apt-get upgrade -y; }; \
+        cleanup() { apt-get clean -y && find /var/lib/apt/lists/ -type f -delete; }; \
+        pkg_install() { \
+          [ ${DISTRIB_MAJOR} -eq 10 -a ${JAVA_MAJOR} -eq 11 ] && deps="\
+            openjdk-11-jre-headless=11.0.12+7-2~deb10u1 \
+          "; \
+          apt-get update && apt-get install --no-install-recommends -y $deps; \
+        }; \
+        locate_java() { \
+          JAVA_BIN_PATH=$(dpkg -L openjdk-${JAVA_MAJOR}-jre-headless | grep '\/bin\/java$'); \
+          export JAVA_HOME=${JAVA_BIN_PATH%*/bin/java}; \
+        };; \
+      ubi) \
+        dist_update() { echo do nothing; }; \
+        cleanup() { echo do nothing; }; \
+        pkg_install() { echo do nothing; }; \
+        locate_java() { echo do nothing; };; \
     esac; \
-    pkg_install $deps; \
-    locate_java;
-
-RUN set -eux; \
-    case "$DISTRIB_NAME" in \
-      centos) \
-        dist_update() { yum update -y && yum clean all; } ;; \
-      debian) \
-        dist_update() { apt-get update && apt-get upgrade -y && apt-get clean -y && find /var/lib/apt/lists/ -type f -delete; } ;; \
-    esac; \
-    dist_update
+    dist_update; \
+    pkg_install; \
+    locate_java; \
+    cleanup; \
+    $JAVA_HOME/bin/java -version
 
