@@ -40,6 +40,8 @@ RUN set -eux; \
             java-11-openjdk-headless-11.0.12.0.7-0.el8_4 \
           "; \
           yum install -y $deps; \
+          JAVA_BIN_PATH=$(rpm -ql java-${JAVA_PKG_VERSION}-openjdk-headless | grep '\/bin\/java$'); \
+          export JAVA_HOME=${JAVA_BIN_PATH%*/bin/java}; \
         };; \
       debian) \
         DEBIAN_FRONTEND=noninteractive; \
