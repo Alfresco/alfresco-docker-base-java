@@ -40,6 +40,8 @@ RUN set -eux; \
             java-11-openjdk-headless-11.0.12.0.7-0.el8_4 \
           "; \
           yum install -y $deps; \
+        }; \
+        locate_java() { \
           JAVA_BIN_PATH=$(rpm -ql java-${JAVA_PKG_VERSION}-openjdk-headless | grep '\/bin\/java$'); \
           export JAVA_HOME=${JAVA_BIN_PATH%*/bin/java}; \
         };; \
@@ -53,14 +55,20 @@ RUN set -eux; \
             openjdk-11-jre-headless=11.0.12+7-2~deb10u1 \
           "; \
           apt-get update && apt-get install --no-install-recommends -y $deps; \
+        }; \
+        locate_java() { \
+          JAVA_BIN_PATH=$(dpkg -L openjdk-${JAVA_MAJOR}-jre-headless | grep '\/bin\/java$'); \
+          export JAVA_HOME=${JAVA_BIN_PATH%*/bin/java}; \
         };; \
       ubi) \
         dist_update() { echo do nothing; }; \
         cleanup() { echo do nothing; }; \
-        pkg_install() { echo do nothing; };; \
+        pkg_install() { echo do nothing; }; \
+        locate_java() { echo do nothing; };; \
     esac; \
     dist_update; \
     pkg_install; \
+    locate_java; \
     cleanup; \
     $JAVA_HOME/bin/java -version
 
