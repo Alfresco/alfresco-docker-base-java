@@ -17,7 +17,7 @@ For legacy Java 8 builds, using the OpenJDK version from the CentOS distro which
 
 For Java 11 builds, using the OpenJDK version from the CentOS distro which includes the latest security patches, this is the recommended option.
 
-Options are available using CentOS 7 and 8 as base.
+Options are available using CentOS 7 and Debian 10 as base.
 
 ## How to Build
 
@@ -34,7 +34,7 @@ docker build -t alfresco-base-java . \
 
 where:
 * DISTRIB_NAME is centos or debian
-* DISTRIB_MAJOR is 7 or 8 for centos and 10 for debian
+* DISTRIB_MAJOR is 7 for centos and 10 for debian
 * JAVA_MAJOR is 8 or 11
 
 #### Release
@@ -58,7 +58,7 @@ where:
 * SHORT_SHA256 is the 12 digit SHA256 of the image as available from the registry
 
 *NOTE*
-The default image with $JAVA_MAJOR as tag uses CentOS 8.
+The default image with $JAVA_MAJOR as tag uses CentOS 7.
 
 The builds are identical to those stored in the private repo on Quay.
 

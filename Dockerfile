@@ -30,14 +30,8 @@ RUN set -eux; \
           [[ ${DISTRIB_MAJOR} = 7 && ${JAVA_MAJOR} = 8 ]] && JAVA_PKG_VERSION=1.8.0 && deps="\
             java-1.8.0-openjdk-headless-1.8.0.302.b08-0.el7_9 \
           "; \
-          [[ ${DISTRIB_MAJOR} = 8 && ${JAVA_MAJOR} = 8 ]] && JAVA_PKG_VERSION=1.8.0 && deps="\
-            java-1.8.0-openjdk-headless-1.8.0.302.b08-0.el8_4 \
-          "; \
           [[ ${DISTRIB_MAJOR} = 7 && ${JAVA_MAJOR} = 11 ]] && JAVA_PKG_VERSION=11 && deps="\
             java-11-openjdk-headless-11.0.12.0.7-0.el7_9 \
-          "; \
-          [[ ${DISTRIB_MAJOR} = 8 && ${JAVA_MAJOR} = 11 ]] && JAVA_PKG_VERSION=11 && deps="\
-            java-11-openjdk-headless-11.0.12.0.7-0.el8_4 \
           "; \
           yum install -y $deps; \
         }; \
