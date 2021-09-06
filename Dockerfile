@@ -20,7 +20,7 @@ LABEL org.label-schema.schema-version="1.0" \
 
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
-ENV JAVA_HOME=/usr/lib/jvm/java
+ENV JAVA_HOME=/etc/alternatives/jre
 
 RUN set -eux; \
     case "$DISTRIB_NAME" in \
@@ -57,11 +57,11 @@ RUN set -eux; \
         dist_update() { echo do nothing; }; \
         cleanup() { echo do nothing; }; \
         pkg_install() { echo do nothing; }; \
-        locate_java() { echo do nothing; };; \
+        locate_java() { JAVA_BIN_PATH=/etc/alternatives/jre/bin/java; };; \
     esac; \
     dist_update; \
     pkg_install; \
-    locate_java && ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME; \
+    locate_java && test -L $JAVA_HOME || ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME; \
     cleanup; \
     $JAVA_HOME/bin/java -version
 
