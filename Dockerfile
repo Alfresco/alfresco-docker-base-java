@@ -20,6 +20,7 @@ LABEL org.label-schema.schema-version="1.0" \
 
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
+ENV JAVA_HOME=/usr/lib/jvm/java
 
 RUN set -eux; \
     case "$DISTRIB_NAME" in \
@@ -37,7 +38,6 @@ RUN set -eux; \
         }; \
         locate_java() { \
           JAVA_BIN_PATH=$(rpm -ql java-${JAVA_PKG_VERSION}-openjdk-headless | grep '\/bin\/java$'); \
-          export JAVA_HOME=${JAVA_BIN_PATH%*/bin/java}; \
         };; \
       debian) \
         DEBIAN_FRONTEND=noninteractive; \
@@ -52,7 +52,6 @@ RUN set -eux; \
         }; \
         locate_java() { \
           JAVA_BIN_PATH=$(dpkg -L openjdk-${JAVA_MAJOR}-jre-headless | grep '\/bin\/java$'); \
-          export JAVA_HOME=${JAVA_BIN_PATH%*/bin/java}; \
         };; \
       ubi) \
         dist_update() { echo do nothing; }; \
@@ -62,7 +61,7 @@ RUN set -eux; \
     esac; \
     dist_update; \
     pkg_install; \
-    locate_java; \
+    locate_java && ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME; \
     cleanup; \
     $JAVA_HOME/bin/java -version
 
