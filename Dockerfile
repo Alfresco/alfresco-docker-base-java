@@ -18,9 +18,6 @@ LABEL org.label-schema.schema-version="1.0" \
     org.opencontainers.image.revision="$REVISION" \
     org.opencontainers.image.source="https://github.com/Alfresco/alfresco-docker-base-java"
 
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
-
 RUN set -eux; \
     case "$DISTRIB_NAME" in \
       centos) \
@@ -28,10 +25,10 @@ RUN set -eux; \
         cleanup() { yum clean all; }; \
         pkg_install() { \
           [[ ${DISTRIB_MAJOR} = 7 && ${JAVA_MAJOR} = 8 ]] && JAVA_PKG_VERSION=1.8.0 && deps="\
-            java-1.8.0-openjdk-headless-1.8.0.302.b08-0.el7_9 \
+            java-1.8.0-openjdk-1.8.0.302.b08-0.el7_9 \
           "; \
           [[ ${DISTRIB_MAJOR} = 7 && ${JAVA_MAJOR} = 11 ]] && JAVA_PKG_VERSION=11 && deps="\
-            java-11-openjdk-headless-11.0.12.0.7-0.el7_9 \
+            java-11-openjdk-11.0.12.0.7-0.el7_9 \
           "; \
           yum install -y $deps; \
         }; \
