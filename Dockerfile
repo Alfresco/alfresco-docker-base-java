@@ -41,8 +41,8 @@ RUN set -eux; \
         dist_update() { apt-get update && apt-get upgrade -y; }; \
         cleanup() { apt-get clean -y && find /var/lib/apt/lists/ -type f -delete; }; \
         pkg_install() { \
-          [ ${DISTRIB_MAJOR} -eq 10 -a ${JAVA_MAJOR} -eq 11 ] && deps="\
-            openjdk-11-jre-headless=11.0.12+7-2~deb10u1 \
+          [ ${DISTRIB_MAJOR} -eq 11 -a ${JAVA_MAJOR} -eq 11 ] && deps="\
+            openjdk-11-jre-headless=11.0.12+7-2 \
           "; \
           apt-get update && apt-get install --no-install-recommends -y $deps; \
         }; \
