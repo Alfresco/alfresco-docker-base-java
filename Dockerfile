@@ -35,14 +35,17 @@ RUN set -eux; \
         locate_java() { \
           JAVA_BIN_PATH=$(rpm -ql java-${JAVA_PKG_VERSION}-openjdk-headless | grep '\/bin\/java$'); \
         };; \
-      debian) \
+      debian|ubuntu) \
         DEBIAN_FRONTEND=noninteractive; \
         mkdir -p /usr/share/man/man1 || true; \
         dist_update() { apt-get update && apt-get upgrade -y; }; \
         cleanup() { apt-get clean -y && find /var/lib/apt/lists/ -type f -delete; }; \
         pkg_install() { \
-          [ ${DISTRIB_MAJOR} -eq 11 -a ${JAVA_MAJOR} -eq 11 ] && deps="\
+          [ ${DISTRIB_NAME} = "debian" -a ${JAVA_MAJOR} -eq 11 ] && deps="\
             openjdk-11-jre-headless=11.0.12+7-2 \
+          "; \
+          [ ${DISTRIB_NAME} = "ubuntu" -a ${JAVA_MAJOR} -eq 11 ] && deps="\
+            openjdk-11-jre-headless=11.0.11+9-0ubuntu2~20.04 \
           "; \
           apt-get update && apt-get install --no-install-recommends -y $deps; \
         }; \
