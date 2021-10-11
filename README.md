@@ -33,8 +33,8 @@ docker build -t alfresco-base-java . \
 ```
 
 where:
-* DISTRIB_NAME is centos or debian
-* DISTRIB_MAJOR is 7 for centos and 10 for debian
+* DISTRIB_NAME is centos, debian or ubuntu
+* DISTRIB_MAJOR is 7 for centos, 11 for debian and 20.04 for ubuntu
 * JAVA_MAJOR is 8 or 11
 
 #### Release
