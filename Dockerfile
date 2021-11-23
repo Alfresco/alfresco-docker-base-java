@@ -42,7 +42,7 @@ RUN set -eux; \
         cleanup() { apt-get clean -y && find /var/lib/apt/lists/ -type f -delete; }; \
         pkg_install() { \
           [ ${DISTRIB_NAME} = "debian" -a ${JAVA_MAJOR} -eq 11 ] && deps="\
-            openjdk-11-jre-headless=11.0.12+7-2 \
+            openjdk-11-jre-headless=11.0.13+8-1~deb11u1 \
           "; \
           [ ${DISTRIB_NAME} = "ubuntu" -a ${JAVA_MAJOR} -eq 11 ] && deps="\
             openjdk-11-jre-headless=11.0.11+9-0ubuntu2~20.04 \
