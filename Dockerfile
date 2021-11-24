@@ -25,10 +25,10 @@ RUN set -eux; \
         cleanup() { yum clean all; }; \
         pkg_install() { \
           [[ ${DISTRIB_MAJOR} = 7 && ${JAVA_MAJOR} = 8 ]] && JAVA_PKG_VERSION=1.8.0 && deps="\
-            java-1.8.0-openjdk-1.8.0.302.b08-0.el7_9 \
+            java-1.8.0-openjdk-1.8.0.312.b07-1.el7_9 \
           "; \
           [[ ${DISTRIB_MAJOR} = 7 && ${JAVA_MAJOR} = 11 ]] && JAVA_PKG_VERSION=11 && deps="\
-            java-11-openjdk-11.0.12.0.7-0.el7_9 \
+            java-11-openjdk-11.0.13.0.8-1.el7_9 \
           "; \
           yum install -y $deps; \
         }; \
@@ -42,7 +42,7 @@ RUN set -eux; \
         cleanup() { apt-get clean -y && find /var/lib/apt/lists/ -type f -delete; }; \
         pkg_install() { \
           [ ${DISTRIB_NAME} = "debian" -a ${JAVA_MAJOR} -eq 11 ] && deps="\
-            openjdk-11-jre-headless=11.0.12+7-2 \
+            openjdk-11-jre-headless=11.0.13+8-1~deb11u1 \
           "; \
           [ ${DISTRIB_NAME} = "ubuntu" -a ${JAVA_MAJOR} -eq 11 ] && deps="\
             openjdk-11-jre-headless=11.0.11+9-0ubuntu2~20.04 \
