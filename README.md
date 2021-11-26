@@ -47,12 +47,13 @@ Builds are available from [Docker Hub](https://hub.docker.com/r/alfresco/alfresc
 
 ```bash
 docker pull alfresco/alfresco-base-java:$JAVA_MAJOR
-docker pull alfresco/alfresco-base-java:$JAVA_MAJOR-$DISTRIB_NAME-$DISTRIB_MAJOR
-docker pull alfresco/alfresco-base-java:$JAVA_MAJOR-$DISTRIB_NAME-$DISTRIB_MAJOR-$SHORT_SHA256
+docker pull alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB_NAME-$DISTRIB_MAJOR
+docker pull alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB_NAME-$DISTRIB_MAJOR-$SHORT_SHA256
 ```
 
 where:
 * JAVA_MAJOR is 8 or 11
+* JAVA_VERSION is 8.0.312 or 11.0.13
 * DISTRIB_MAJOR is 7 or 8
 * SHORT_SHA256 is the 12 digit SHA256 of the image as available from the registry
 
@@ -63,8 +64,8 @@ The builds are identical to those stored in the private repo on Quay.
 
 ```bash
 docker pull quay.io/alfresco/alfresco-base-java:$JAVA_MAJOR
-docker pull quay.io/alfresco/alfresco-base-java:$JAVA_MAJOR-$DISTRIB_NAME-$DISTRIB_MAJOR
-docker pull quay.io/alfresco/alfresco-base-java:$JAVA_MAJOR-$DISTRIB_NAME-$DISTRIB_MAJOR-$SHORT_SHA256
+docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB_NAME-$DISTRIB_MAJOR
+docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB_NAME-$DISTRIB_MAJOR-$SHORT_SHA256
 ```
 
 ## Usage
@@ -92,14 +93,14 @@ FROM alfresco/alfresco-base-java:11
 Example from a Dockerfile using a private base image in Quay:
 
 ```bash
-FROM quay.io/alfresco/alfresco-base-java:11-centos-7-$SHORT_SHA256
+FROM quay.io/alfresco/alfresco-base-java:11.0.13-centos-7-$SHORT_SHA256
 ```
 where `SHORT_SHA256` is the 12-digit short sha256 image digest.
 
 or pinned:
 
 ```bash
-FROM quay.io/alfresco/alfresco-base-java:11-centos-7@sha256:$SHA256
+FROM quay.io/alfresco/alfresco-base-java:11.0.13-centos-7@sha256:$SHA256
 ```
 where `SHA256` is the full sha256 image digest.
 

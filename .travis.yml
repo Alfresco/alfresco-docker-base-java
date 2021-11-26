@@ -19,9 +19,18 @@ before_script:
   - echo $QUAY_PASSWORD | docker login quay.io -u $QUAY_USERNAME --password-stdin
   - echo $DOCKER_PASSWORD | docker login docker.io -u "$DOCKER_USERNAME" --password-stdin
   - |-
+    case $JAVA_MAJOR in
+      8)
+        export JAVA_VERSION=8.0.312
+        ;;
+      11)
+        export JAVA_VERSION=11.0.13
+        ;;
+    esac
+  - |-
     export IMAGE_REGISTRY_NAMESPACE=alfresco
     export IMAGE_REPOSITORY=alfresco-base-java
-    export IMAGE_TAG=${JAVA_MAJOR}-${DISTRIB_NAME}-${DISTRIB_MAJOR}
+    export IMAGE_TAG=${JAVA_VERSION}-${DISTRIB_NAME}-${DISTRIB_MAJOR}
 
 script:
   - |-
