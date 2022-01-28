@@ -56,12 +56,12 @@ ENV JAVA_HOME=/usr/lib/jvm/jre
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
+RUN yum update -y && yum install -y;  \
+    if [ "$JDIST" = 'jdk' ]; then PKG_DEVEL="devel-"; fi && \
     # Update here in case of java upgrade
-#RUN yum update -y && yum install -y; 
-RUN [ $JDIST = 'jdk' ] && PKG_DEVEL="devel-" ; \
-    [ $JAVA_MAJOR -eq 8 ] && JAVA_PKG_VERSION="1.8.0"; JAVA_PKG_EXTRA_VERSION="312.b07-1.el7_9"; \
-    [ $JAVA_MAJOR -eq 11 ] && JAVA_PKG_VERSION="11"; JAVA_PKG_EXTRA_VERSION="0.13.0.8-1.el7_9"; \
-    yum install -y java-${JAVA_PKG_VERSION}-openjdk-headless-${PKG_DEVEL}${JAVA_PKG_VERSION}.${JAVA_PKG_EXTRA_VERSION} && \
+    [ $JAVA_MAJOR -eq 8 ] && JAVA_PKG_VERSION='1.8.0' && JAVA_PKG_EXTRA_VERSION='322.b06-1.el7_9'; \
+    [ $JAVA_MAJOR -eq 11 ] && JAVA_PKG_VERSION='11' && JAVA_PKG_EXTRA_VERSION='0.13.0.8-1.el7_9'; \
+    yum install -y java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless-}${JAVA_PKG_VERSION}.${JAVA_PKG_EXTRA_VERSION} && \
     yum clean all && \
     JAVA_BIN_PATH=$(rpm -ql java-${JAVA_PKG_VERSION}-openjdk-headless | grep '\/bin\/java$') && \
     test -L $JAVA_HOME || ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME
