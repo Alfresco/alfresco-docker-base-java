@@ -9,7 +9,6 @@ env:
   #TODO move to alfresco
   IMAGE_REGISTRY_NAMESPACE: alxgomz
   IMAGE_REPOSITORY: alfresco-base-java
-  IMAGE_TAG:
 jobs:
   docker_images:
     strategy:
@@ -69,7 +68,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - id: q_push
-        name: Build and push to Docker Hub
+        name: Build and push to Quay.io
         uses: docker/build-push-action@v2.8.0
         with:
           push: true
@@ -80,7 +79,7 @@ jobs:
             JAVA_MAJOR=${{ matrix.java_major }}
             REVISION=${{ github.run_number }}
             CREATED=${{ steps.vars.outputs.image_created }}
-          tags: quay.io/${{ steps.vars.outputs.image_tag }}
+          tags: quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
           target: JAVA_BASE_IMAGE
       - id: dh_push
         if: contains(github.event.head_commit.message, '[release]') && github.ref_name == 'master'
@@ -95,5 +94,5 @@ jobs:
             JAVA_MAJOR=${{ matrix.java_major }}
             REVISION=${{ github.run_number }}
             CREATED=${{ steps.vars.outputs.image_created }}
-          tags: ${{ steps.vars.outputs.image_tag }}
+          tags: ${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
           target: JAVA_BASE_IMAGE
