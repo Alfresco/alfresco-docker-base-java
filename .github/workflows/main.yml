@@ -23,7 +23,8 @@ jobs:
             major: 20.04
           - flavor: ubi
             major: 8
-        java_major: 11
+        java_major:
+          - 11
         include:
           - base_image:
               flavor: centos
