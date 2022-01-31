@@ -1,6 +1,6 @@
 name: Alfresco java base Docker image
 on:
-  pull:
+  push:
     branches:
       - opsexp-[0-9]+
       #TODO add  master when confident
