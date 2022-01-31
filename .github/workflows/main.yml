@@ -72,7 +72,7 @@ jobs:
         name: Build and push to Docker Hub
         uses: docker/build-push-action@v2.8.0
         with:
-          pull: true
+          push: true
           build-args: |
             no-cache=true
             DISTRIB_NAME=${{ matrix.base_image.flavor }}
@@ -87,7 +87,7 @@ jobs:
         name: Build and push to Docker Hub
         uses: docker/build-push-action@v2.8.0
         with:
-          pull: true
+          push: true
           build-args: |
             no-cache=true
             DISTRIB_NAME=${{ matrix.base_image.flavor }}
