@@ -68,8 +68,6 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - id: q_push
-        needs:
-          - vars
         name: Build and push to Docker Hub
         uses: docker/build-push-action@v2.8.0
         with:
@@ -80,13 +78,11 @@ jobs:
             - DISTRIB_MAJOR: ${{ matrix.base_image.major }}
             - JAVA_MAJOR: ${{ matrix.java_major }}
             - REVISION: ${{ github.run_number }}
-            - CREATED: ${{ needs.vars.outputs.image_created }}
-          tags: quay.io/${{ needs.vars.outputs.image_tag }}
+            - CREATED: ${{ steps.vars.outputs.image_created }}
+          tags: quay.io/${{ steps.vars.outputs.image_tag }}
           target: JAVA_BASE_IMAGE
       - id: dh_push
         if: contains(github.event.head_commit.message, '[release]') && github.ref_name == 'master'
-        needs:
-          - vars
         name: Build and push to Docker Hub
         uses: docker/build-push-action@v2.8.0
         with:
@@ -97,6 +93,6 @@ jobs:
             - DISTRIB_MAJOR: ${{ matrix.base_image.major }}
             - JAVA_MAJOR: ${{ matrix.java_major }}
             - REVISION: ${{ github.run_number }}
-            - CREATED: ${{ needs.vars.outputs.image_created }}
-          tags: ${{ needs.vars.outputs.image_tag }}
+            - CREATED: ${{ steps.vars.outputs.image_created }}
+          tags: ${{ steps.vars.outputs.image_tag }}
           target: JAVA_BASE_IMAGE
