@@ -43,7 +43,7 @@ jobs:
       - id: vars
         name: compute image tag
         run: |
-          if [[ "${{ github.ref_name }}" != "master" ]]
+          if [[ "${{ github.ref_name }}" != "master" ]]
           then
             echo "::set-output name=image_tag::${{ matrix.java_major }}-${{ matrix.base_image.flavor }}-${{ matrix.base_image.major }}-${GITHUB_REF_NAME//\//-}"
           elif [[ "${{ github.event.head_commit.message }}" =~ .*\[release\].* ]]
