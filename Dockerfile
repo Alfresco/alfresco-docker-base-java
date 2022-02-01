@@ -2,7 +2,7 @@
 ARG DISTRIB_NAME
 ARG DISTRIB_MAJOR
 
-FROM ubuntu:20.04 AS ubuntu20.04
+FROM ubuntu:20.04@sha256:57df66b9fc9ce2947e434b4aa02dbe16f6685e20db0c170917d4a1962a5fe6a9 AS ubuntu20.04
 
 ARG JDIST
 ARG JAVA_MAJOR
@@ -22,7 +22,7 @@ RUN mkdir -p /usr/share/man/man1 || true; \
     JAVA_BIN_PATH=$(dpkg -L openjdk-${JAVA_MAJOR}-jre-headless | grep '\/bin\/java$'); \ 
     test -L $JAVA_HOME || ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME
 
-FROM debian:11-slim AS debian11
+FROM debian:11-slim@sha256:125f346eac7055d8e1de1b036b1bd39781be5bad3d36417c109729d71af0cd73 AS debian11
 
 ARG JDIST
 ARG JAVA_MAJOR
