@@ -4,7 +4,7 @@ ARG DISTRIB_MAJOR
 
 FROM ubuntu:20.04 AS ubuntu20.04
 
-ARG JDIST=jdk
+ARG JDIST=jre
 ARG JAVA_MAJOR
 
 ENV JAVA_HOME=/usr/lib/jvm/java
@@ -24,7 +24,7 @@ RUN mkdir -p /usr/share/man/man1 || true; \
 
 FROM debian:11-slim AS debian11
 
-ARG JDIST=jdk
+ARG JDIST=jre
 ARG JAVA_MAJOR
 
 ENV JAVA_HOME=/usr/lib/jvm/java
@@ -49,7 +49,7 @@ ENV LC_ALL C.UTF-8
 
 FROM centos:7.9.2009 AS centos7
 
-ARG JDIST=jdk
+ARG JDIST=jre
 ARG JAVA_MAJOR
 
 ENV JAVA_HOME=/usr/lib/jvm/jre
