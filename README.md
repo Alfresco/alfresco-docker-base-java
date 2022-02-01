@@ -7,35 +7,49 @@
 This repository contains the [Dockerfile](Dockerfile) used to create the base Java image that will be used by Alfresco engineering teams,
 other internal groups in the organisation, customers and partners to create Java images from.
 
+## Pre-requisites
+
+While any docker CLI compatible installation will produce valid  images, [Docker buildx](https://docs.docker.com/buildx/working-with-buildx/) has proven being more efficient and clever when building images using [Multistage builds](https://docs.docker.com/develop/develop-images/multistage-build/). We recommand using it.
+
 ## Versioning
 
-### Legacy OpenJDK Java 8
+The alfresco-docker-base-java`image can be generated in multiple flavors by mixing OpenJDK versions, distributions and OS.
+
+### Java 
+
+Either Java 8 (supported up to 5.2 and 6.0) or Java 11 can used used to build images using the `JAVA_MAJOR` build argument.
+
+> Both OpenJDK versions bellow can be built from the JDK or the JRE distribution (using the JDIST build argument)
+
+#### Legacy OpenJDK Java 8
 
 For legacy Java 8 builds, using the OpenJDK version from the CentOS distro which includes the latest security patches.
 
-### OpenJDK Java 11 LTS
+#### OpenJDK Java 11 LTS
 
 For Java 11 builds, using the OpenJDK version from the CentOS distro which includes the latest security patches, this is the recommended option.
 
-Options are available using CentOS 7 and Debian 10 as base.
+### OS
+
+The possible combination of OS versions are available:
+
+ * centos 7 
+ * ubi 8
+ * debian 11
+ * ubuntu 20.04
 
 ## How to Build
 
 To build a local version of the base java image follow the instructions below:
 
 ```bash
-(cd $DISTRIB_NAME-$DISTRIB_MAJOR && docker build -t $DISTRIB_NAME-$DISTRIB_MAJOR .)
 docker build -t alfresco-base-java . \
   --build-arg DISTRIB_NAME=$DISTRIB_NAME \
   --build-arg DISTRIB_MAJOR=$DISTRIB_MAJOR \
   --build-arg JAVA_MAJOR=$JAVA_MAJOR \
-  --no-cache
+  --build-arg JDIST=$JDIST \
+  --no-cache --target JAVA_BASE_IMAGE
 ```
-
-where:
-* DISTRIB_NAME is centos, debian or ubuntu
-* DISTRIB_MAJOR is 7 for centos, 11 for debian and 20.04 for ubuntu
-* JAVA_MAJOR is 8 or 11
 
 #### Release
 
@@ -46,26 +60,19 @@ Push a commit on the default branch including `[release]` in the message to trig
 Builds are available from [Docker Hub](https://hub.docker.com/r/alfresco/alfresco-base-java):
 
 ```bash
-docker pull alfresco/alfresco-base-java:$JAVA_MAJOR
-docker pull alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB_NAME-$DISTRIB_MAJOR
-docker pull alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB_NAME-$DISTRIB_MAJOR-$SHORT_SHA256
+docker pull alfresco/alfresco-base-java:${JDIST}$JAVA_MAJOR
+docker pull alfresco/alfresco-base-java:${JDIST}$JAVA_VERSION-$DISTRIB_NAME-$DISTRIB_MAJOR
 ```
 
-where:
-* JAVA_MAJOR is 8 or 11
-* JAVA_VERSION is 8.0.312 or 11.0.13
-* DISTRIB_MAJOR is 7 or 8
-* SHORT_SHA256 is the 12 digit SHA256 of the image as available from the registry
-
 *NOTE*
-The default image with $JAVA_MAJOR as tag uses CentOS 7.
+
+>  The default image with $JAVA_MAJOR as tag uses CentOS 7 and JDK distribution of OpenJDK
 
 The builds are identical to those stored in the private repo on Quay.
 
 ```bash
-docker pull quay.io/alfresco/alfresco-base-java:$JAVA_MAJOR
-docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB_NAME-$DISTRIB_MAJOR
-docker pull quay.io/alfresco/alfresco-base-java:$JAVA_VERSION-$DISTRIB_NAME-$DISTRIB_MAJOR-$SHORT_SHA256
+docker pull quay.io/alfresco/alfresco-base-java:${JDIST}$JAVA_MAJOR
+docker pull quay.io/alfresco/alfresco-base-java:${JDIST}$JAVA_VERSION-$DISTRIB_NAME-$DISTRIB_MAJOR
 ```
 
 ## Usage
@@ -87,20 +94,13 @@ instruction, and [best practices with VOLUMEs](https://docs.docker.com/develop/d
 Example from a Dockerfile using a public base image in Docker Hub.
 
 ```bash
-FROM alfresco/alfresco-base-java:11
+FROM alfresco/alfresco-base-java:jre11-ubi-8
 ```
 
-Example from a Dockerfile using a private base image in Quay:
+Example from a Dockerfile using a private base pinned image in Quay:
 
 ```bash
-FROM quay.io/alfresco/alfresco-base-java:11.0.13-centos-7-$SHORT_SHA256
-```
-where `SHORT_SHA256` is the 12-digit short sha256 image digest.
-
-or pinned:
-
-```bash
-FROM quay.io/alfresco/alfresco-base-java:11.0.13-centos-7@sha256:$SHA256
+FROM quay.io/alfresco/alfresco-base-java:jre11-centos-7@sha256:$SHA256
 ```
 where `SHA256` is the full sha256 image digest.
 
