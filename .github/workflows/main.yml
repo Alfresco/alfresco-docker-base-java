@@ -3,11 +3,10 @@ on:
   push:
     branches:
       - opsexp-[0-9]+**
-      #TODO add  master when confident
+      - master
 
 env:
-  #TODO move to alfresco
-  IMAGE_REGISTRY_NAMESPACE: alxgomz
+  IMAGE_REGISTRY_NAMESPACE: alfresco
   IMAGE_REPOSITORY: alfresco-base-java
 jobs:
   docker_images:

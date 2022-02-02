@@ -2,6 +2,20 @@
 
 [![Build Status](https://travis-ci.com/Alfresco/alfresco-docker-base-java.svg?branch=master)](https://travis-ci.com/Alfresco/alfresco-docker-base-java)
 
+The images published by this repo are now named as follow:
+
+`<JAVA_DISTRIBUTION_TYPE><JAVA_MAJOR_VERSION>-<OS_DISTRIBUTION_NAME><OS_DISTRIBUTION_VERSION>`
+
+> example jre11-centos7
+
+Previous images used to follow the naming convention bellow:
+
+`<JAVA_VERSION>[-centos-7]`
+
+Where JAVA_VERSION could be many different things (major version, full version, fullversion with digest...)
+
+> Previous tags remain available but we recommend using the new ones
+
 ## Introduction
 
 This repository contains the [Dockerfile](Dockerfile) used to create the base Java image that will be used by Alfresco engineering teams,
