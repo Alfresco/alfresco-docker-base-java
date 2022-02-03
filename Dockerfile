@@ -16,8 +16,8 @@ RUN mkdir -p /usr/share/man/man1 || true; \
     # check https://ubuntu.com/security/cves?q=&package=openjdk-12 for security updates
     JAVA_PKG_VERSION=11.0.13+8-0ubuntu1~20.04; \
     DEBIAN_FRONTEND=noninteractive; \
-    apt-get update -qqy && apt-get upgrade -qqy && \
-    apt-get install --no-install-recommends -qqy openjdk-11-${JDIST}-headless=${JAVA_PKG_VERSION} && \
+    apt-get update -qq && apt-get upgrade -qq && \
+    apt-get install --no-install-recommends -qq openjdk-11-${JDIST}-headless=${JAVA_PKG_VERSION} && \
     apt-get clean -y && find /var/lib/apt/lists/ -type f -delete; \
     JAVA_BIN_PATH=$(dpkg -L openjdk-${JAVA_MAJOR}-jre-headless | grep '\/bin\/java$'); \ 
     test -L $JAVA_HOME || ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME
@@ -36,8 +36,8 @@ RUN mkdir -p /usr/share/man/man1 || true; \
     # check https://tracker.debian.org/pkg/openjdk-11 for security updates
     JAVA_PKG_VERSION=11.0.14+9-1~deb11u1; \
     DEBIAN_FRONTEND=noninteractive; \
-    apt-get update -qqy && apt-get upgrade -qqy && \
-    apt-get install --no-install-recommends -qqy openjdk-11-${JDIST}-headless=${JAVA_PKG_VERSION} && \
+    apt-get update -qq && apt-get upgrade -qq && \
+    apt-get install --no-install-recommends -qq openjdk-11-${JDIST}-headless=${JAVA_PKG_VERSION} && \
     apt-get clean -y && find /var/lib/apt/lists/ -type f -delete; \
     JAVA_BIN_PATH=$(dpkg -L openjdk-${JAVA_MAJOR}-jre-headless | grep '\/bin\/java$'); \ 
     test -L $JAVA_HOME || ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME
