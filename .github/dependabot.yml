@@ -11,6 +11,7 @@ updates:
       interval: "daily"
     ignore:
       - dependency-name: "ubuntu"
+        versions: [">=21","<20"]
       - dependency-name: "debian"
         versions:
           - ">= 12"
