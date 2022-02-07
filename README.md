@@ -23,7 +23,7 @@ other internal groups in the organisation, customers and partners to create Java
 
 ## Pre-requisites
 
-While any docker CLI compatible installation will produce valid  images, [Docker buildx](https://docs.docker.com/buildx/working-with-buildx/) has proven being more efficient and clever when building images using [Multistage builds](https://docs.docker.com/develop/develop-images/multistage-build/). We recommand using it.
+While any docker CLI compatible installation will produce valid  images, [Docker buildx](https://docs.docker.com/buildx/working-with-buildx/) has proven being more efficient and clever when building images using [Multistage builds](https://docs.docker.com/develop/develop-images/multistage-build/). We recommend using it.
 
 ## Versioning
 
