@@ -21,7 +21,7 @@ Where JAVA_VERSION could be many different things (major version, full version, 
 This repository contains the [Dockerfile](Dockerfile) used to create the base Java image that will be used by Alfresco engineering teams,
 other internal groups in the organisation, customers and partners to create Java images from.
 
-## Pre-requisites
+## Pre-requisites
 
 While any docker CLI compatible installation will produce valid  images, [Docker buildx](https://docs.docker.com/buildx/working-with-buildx/) has proven being more efficient and clever when building images using [Multistage builds](https://docs.docker.com/develop/develop-images/multistage-build/). We recommend using it.
 
@@ -29,7 +29,7 @@ While any docker CLI compatible installation will produce valid  images, [Docker
 
 The alfresco-docker-base-java`image can be generated in multiple flavors by mixing OpenJDK versions, distributions and OS.
 
-### Java 
+### Java
 
 Either Java 8 (supported up to 5.2 and 6.0) or Java 11 can used used to build images using the `JAVA_MAJOR` build argument.
 
