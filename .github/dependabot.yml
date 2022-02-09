@@ -11,10 +11,14 @@ updates:
       interval: "daily"
     ignore:
       - dependency-name: "ubuntu"
-        versions: [">=21","<20"]
+        versions: 
+          - ">20.04"
+          - "<20.04"
       - dependency-name: "debian"
         versions:
           - ">= 12"
+          - "<11"
       - dependency-name: "centos"
         versions:
           - ">= 8"
+          - "<7"
