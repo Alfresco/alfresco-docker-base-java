@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - opsexp-[0-9]+**
+      - OPSEXP-[0-9]+**
       - dependabot/**
       - master
 
@@ -14,6 +15,8 @@ jobs:
     strategy:
       matrix:
         base_image:
+          - flavor: alpine
+            major: 3.15
           - flavor: centos
             major: 7
           - flavor: debian
@@ -83,7 +86,7 @@ jobs:
             DISTRIB_NAME=${{ matrix.base_image.flavor }}
             DISTRIB_MAJOR=${{ matrix.base_image.major }}
             JAVA_MAJOR=${{ matrix.java_major }}
-            REVISION=${{ github.run_number }}
+            REVISION=${{ github.run_number }}
             CREATED=${{ steps.vars.outputs.image_created }}
           tags: |
             quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}-${{ steps.vars.outputs.image_anchor }}
@@ -101,7 +104,7 @@ jobs:
             DISTRIB_NAME=${{ matrix.base_image.flavor }}
             DISTRIB_MAJOR=${{ matrix.base_image.major }}
             JAVA_MAJOR=${{ matrix.java_major }}
-            REVISION=${{ github.run_number }}
+            REVISION=${{ github.run_number }}
             CREATED=${{ steps.vars.outputs.image_created }}
           tags: |
             ${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}-${{ steps.vars.outputs.image_anchor }}
