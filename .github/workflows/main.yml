@@ -5,6 +5,7 @@ on:
       - opsexp-[0-9]+**
       - OPSEXP-[0-9]+**
       - dependabot/**
+      - fix-*
       - master
 
 env:
