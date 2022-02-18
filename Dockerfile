@@ -72,7 +72,8 @@ ENV LC_ALL C.UTF-8
 
 RUN apk update && \
     apk upgrade && \
-    apk add openjdk${JAVA_MAJOR}-${JDIST}-headless
+    apk add openjdk${JAVA_MAJOR}-${JDIST}-headless && \
+    rm -rf /var/cache/apk/*
 
 FROM ${DISTRIB_NAME}${DISTRIB_MAJOR} AS JAVA_BASE_IMAGE
 ARG DISTRIB_NAME
