@@ -70,7 +70,9 @@ ENV JAVA_HOME=/usr/lib/jvm/java-${JAVA_MAJOR}-openjdk
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
-RUN apk add openjdk${JAVA_MAJOR}-${JDIST}-headless
+RUN apk update && \
+    apk upgrade && \
+    apk add openjdk${JAVA_MAJOR}-${JDIST}-headless
 
 FROM ${DISTRIB_NAME}${DISTRIB_MAJOR} AS JAVA_BASE_IMAGE
 ARG DISTRIB_NAME
