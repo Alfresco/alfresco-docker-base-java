@@ -5,6 +5,7 @@ on:
       - opsexp-[0-9]+**
       - OPSEXP-[0-9]+**
       - dependabot/**
+      - fix-*
       - master
 
 env:
@@ -13,6 +14,7 @@ env:
 jobs:
   docker_images:
     strategy:
+      fail-fast: false
       matrix:
         base_image:
           - flavor: alpine
