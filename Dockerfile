@@ -61,7 +61,7 @@ RUN yum update -y && \
     JAVA_BIN_PATH=$(rpm -ql java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless} | grep '\/bin\/java$') && \
     test -L $JAVA_HOME || ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME
 
-FROM alpine:3.15@sha256:21a3deaa0d32a8057914f36584b5288d2e5ecc984380bc0118285c70fa8c9300 AS alpine3.15
+FROM alpine:3.15.0 AS alpine3.15
 
 ARG JDIST
 ARG JAVA_MAJOR
@@ -70,7 +70,10 @@ ENV JAVA_HOME=/usr/lib/jvm/java-${JAVA_MAJOR}-openjdk
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
-RUN apk add openjdk${JAVA_MAJOR}-${JDIST}-headless
+RUN apk update && \
+    apk upgrade && \
+    apk add openjdk${JAVA_MAJOR}-${JDIST}-headless && \
+    rm -rf /var/cache/apk/*
 
 FROM ${DISTRIB_NAME}${DISTRIB_MAJOR} AS JAVA_BASE_IMAGE
 ARG DISTRIB_NAME
