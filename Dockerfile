@@ -57,6 +57,9 @@ RUN yum update -y && \
     [ $JAVA_MAJOR -eq 8 ] && JAVA_PKG_VERSION='1.8.0'; \
     [ $JAVA_MAJOR -eq 11 ] && JAVA_PKG_VERSION='11'; \
     yum install -y java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless} && \
+    # Remove vulnerable packages shipped with base image (space separated list)
+    PKG_4_REMOVAL="python-lxml" ; \
+    rpm -e --nodeps ${PKG_4_REMOVAL} && \
     yum clean all && \
     JAVA_BIN_PATH=$(rpm -ql java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless} | grep '\/bin\/java$') && \
     test -L $JAVA_HOME || ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME

@@ -19,10 +19,6 @@ jobs:
             major: 3.15
           - flavor: centos
             major: 7
-          - flavor: debian
-            major: 11
-          - flavor: ubuntu
-            major: 20.04
           - flavor: ubi
             major: 8
         java_major:
@@ -30,11 +26,6 @@ jobs:
         jdist:
           - jre
         include:
-          - base_image:
-              flavor: centos
-              major: 7
-            java_major: 8
-            jdist: jdk
           - base_image:
               flavor: centos
               major: 7
