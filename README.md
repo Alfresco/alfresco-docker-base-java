@@ -1,58 +1,103 @@
-# Alfresco Docker Base Java
+# Alfresco Docker Base Java [![Build Status](https://travis-ci.com/Alfresco/alfresco-docker-base-java.svg?branch=master)](https://travis-ci.com/Alfresco/alfresco-docker-base-java)
 
-[![Build Status](https://travis-ci.com/Alfresco/alfresco-docker-base-java.svg?branch=master)](https://travis-ci.com/Alfresco/alfresco-docker-base-java)
+This repository contains the [Dockerfile](Dockerfile) used to create the base
+Java image that will be used by Alfresco engineering teams, other internal
+groups in the organization, customers and partners to create Java images from.
 
-The images published by this repo are now named as follow:
+## Quickstart
+
+Choose between one of the available flavours built from this repository:
+
+Java version | Java flavour | OS          | Image tag
+-------------|--------------|-------------|--------------------------------------------
+11           | jre          | Centos 7    | jre11-centos7
+11           | jdk          | Centos 7    | jdk11-centos7
+11           | jre          | Alpine 3.15 | jre11-alpine3.5
+11           | jre          | UBI 8       | jre11-ubi8
+
+* [Docker Hub](https://hub.docker.com/r/alfresco/alfresco-base-java) image name: `alfresco/alfresco-base-java`
+* [Quay](https://quay.io/repository/alfresco/alfresco-base-java) image name: `quay.io/alfresco/alfresco-base-java`
+
+Example final image: `alfresco/alfresco-base-java:jre11-centos7`
+
+> If you are using this base image in a public repository, please stick to the DockerHub published image.
+
+### Image pinning
+
+This tag get overwritten to always have an up-to-date image and hopefully
+without security issues.
+
+If you want to control the updating process of the image, you can use the digest
+in addition to the tag in your `Dockerfile`, for example:
+
+```dockerfile
+FROM alfresco/alfresco-base-java:jre11-centos7@sha256:59a453e01fd958a3748a2e9b0ca99cdf3410f98eeb245499c7bb31696e35bdf4
+```
+
+To discover the latest image tag, just run a docker pull and copy the `Digest`.
+
+```sh
+docker pull quay.io/alfresco/alfresco-base-java:jre11-centos7
+# jre11-centos7: Pulling from alfresco/alfresco-base-java
+# ...
+# Digest: sha256:59a453e01fd958a3748a2e9b0ca99cdf3410f98eeb245499c7bb31696e35bdf4
+# Status: Downloaded newer image for quay.io/alfresco/alfresco-base-java:jre11-centos7
+```
+
+This configuration is compatible with [Dependabot](https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically/configuration-options-for-dependency-updates#configuration-options-for-private-registries).
+
+## Development
+
+### Naming specs
+
+The images built from this repository are named as follow:
 
 `<JAVA_DISTRIBUTION_TYPE><JAVA_MAJOR_VERSION>-<OS_DISTRIBUTION_NAME><OS_DISTRIBUTION_VERSION>`
 
-> example jre11-centos7
-
-Previous images used to follow the naming convention bellow:
+Previous versions of this repository built images using the naming convention:
 
 `<JAVA_VERSION>[-centos-7]`
 
-Where JAVA_VERSION could be many different things (major version, full version, fullversion with digest...)
+Where JAVA_VERSION could be many different things (major version, full version, full version with digest...)
 
-> Previous tags remain available but we recommend using the new ones
+> Previous tags are still available but are not getting updates anymore
 
-## Introduction
+### Prerequisites
 
-This repository contains the [Dockerfile](Dockerfile) used to create the base Java image that will be used by Alfresco engineering teams,
-other internal groups in the organisation, customers and partners to create Java images from.
+While any docker CLI compatible installation will produce valid images,
+[Docker buildx](https://docs.docker.com/buildx/working-with-buildx/) has proven being
+more efficient and clever when building images using
+[Multistage builds](https://docs.docker.com/develop/develop-images/multistage-build/).
+We recommend using it.
 
-## Pre-requisites
+### Versioning
 
-While any docker CLI compatible installation will produce valid  images, [Docker buildx](https://docs.docker.com/buildx/working-with-buildx/) has proven being more efficient and clever when building images using [Multistage builds](https://docs.docker.com/develop/develop-images/multistage-build/). We recommend using it.
+The `alfresco-docker-base-java` image can be generated in multiple flavors by mixing OpenJDK versions, distributions and OS.
 
-## Versioning
-
-The alfresco-docker-base-java`image can be generated in multiple flavors by mixing OpenJDK versions, distributions and OS.
-
-### Java
+#### Java
 
 Either Java 8 (supported up to 5.2 and 6.0) or Java 11 can used used to build images using the `JAVA_MAJOR` build argument.
 
 > Both OpenJDK versions bellow can be built from the JDK or the JRE distribution (using the JDIST build argument)
 
-#### Legacy OpenJDK Java 8
+##### Legacy OpenJDK Java 8
 
 For legacy Java 8 builds, using the OpenJDK version from the CentOS distro which includes the latest security patches.
 
-#### OpenJDK Java 11 LTS
+##### OpenJDK Java 11 LTS
 
 For Java 11 builds, using the OpenJDK version from the CentOS distro which includes the latest security patches, this is the recommended option.
 
-### OS
+#### OS
 
 The possible combination of OS versions are available:
 
- * centos 7 
- * ubi 8
- * debian 11
- * ubuntu 20.04
+* centos 7
+* ubi 8
+* debian 11
+* ubuntu 20.04
 
-## How to Build
+### How to build an image locally
 
 To build a local version of the base java image follow the instructions below:
 
@@ -69,53 +114,16 @@ docker build -t alfresco-base-java . \
 
 Push a commit on the default branch including `[release]` in the message to trigger a release on Travis CI.
 
-## Pulling released images
+## Useful information
 
-Builds are available from [Docker Hub](https://hub.docker.com/r/alfresco/alfresco-base-java):
+Images built from this repository are more likely to be used as a
+[base image](https://docs.docker.com/glossary/#base-image) in a Dockerfile.
 
-```bash
-docker pull alfresco/alfresco-base-java:${JDIST}$JAVA_MAJOR
-docker pull alfresco/alfresco-base-java:${JDIST}$JAVA_VERSION-$DISTRIB_NAME-$DISTRIB_MAJOR
-```
-
-*NOTE*
-
->  The default image with $JAVA_MAJOR as tag uses CentOS 7 and JDK distribution of OpenJDK
-
-The builds are identical to those stored in the private repo on Quay.
-
-```bash
-docker pull quay.io/alfresco/alfresco-base-java:${JDIST}$JAVA_MAJOR
-docker pull quay.io/alfresco/alfresco-base-java:${JDIST}$JAVA_VERSION-$DISTRIB_NAME-$DISTRIB_MAJOR
-```
-
-## Usage
-
-### Standalone
-
-The image can be used via `docker run` to run java applications with `--read-only` set,
-without any loss of functionality (with the obvious caveat that the application itself does not write to the filesystem).
-
-### Base Image
-
-It is more likely to be used as a [base image](https://docs.docker.com/glossary/#base-image) in a Dockerfile.
 For reference, see the documentation on [layers](https://docs.docker.com/storage/storagedriver/#container-and-layers),
-the [VOLUME](https://docs.docker.com/engine/reference/builder/#volume)
-instruction, and [best practices with VOLUMEs](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#volume).
+the [VOLUME](https://docs.docker.com/engine/reference/builder/#volume) instruction
+and [best practices with Volumes](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#volume).
 
-### Examples of usage as a base image
+### Who is using this base image
 
-Example from a Dockerfile using a public base image in Docker Hub.
-
-```bash
-FROM alfresco/alfresco-base-java:jre11-ubi-8
-```
-
-Example from a Dockerfile using a private base pinned image in Quay:
-
-```bash
-FROM quay.io/alfresco/alfresco-base-java:jre11-centos-7@sha256:$SHA256
-```
-where `SHA256` is the full sha256 image digest.
-
-See [Alfresco Base Tomcat](https://github.com/Alfresco/alfresco-docker-base-tomcat/blob/master/Dockerfile) for a concrete example.
+See [Alfresco Base Tomcat](https://github.com/Alfresco/alfresco-docker-base-tomcat/blob/master/Dockerfile)
+for a concrete example.
