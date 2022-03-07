@@ -1,4 +1,4 @@
-# Alfresco Docker Base Java [![Build Status](https://travis-ci.com/Alfresco/alfresco-docker-base-java.svg?branch=master)](https://travis-ci.com/Alfresco/alfresco-docker-base-java)
+# Alfresco Docker Base Java [![Build Status](https://img.shields.io/github/workflow/status/Alfresco/alfresco-docker-base-java/Alfresco%20java%20base%20Docker%20image)](https://github.com/Alfresco/alfresco-docker-base-tomcat/actions/workflows/main.yml)
 
 This repository contains the [Dockerfile](Dockerfile) used to create the base
 Java image that will be used by Alfresco engineering teams, other internal
