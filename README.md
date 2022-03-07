@@ -29,7 +29,7 @@ Example final image: `alfresco/alfresco-base-java:jre11-centos7`
 
 ### Image pinning
 
-This tag get overwritten to always have an up-to-date image and hopefully
+These tags get overwritten to always have an up-to-date image and hopefully
 without security issues.
 
 If you want to control the updating process of the image, you can use the digest
