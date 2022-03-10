@@ -36,7 +36,7 @@ RUN mkdir -p /usr/share/man/man1 || true; \
     JAVA_BIN_PATH=$(dpkg -L openjdk-${JAVA_MAJOR}-${JDIST}-headless | grep '\/bin\/java$'); \
     test -L $JAVA_HOME || ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME
 
-FROM registry.access.redhat.com/ubi8/openjdk-11-runtime:1.11-2 AS ubi8
+FROM registry.access.redhat.com/ubi8/openjdk-11-runtime:1.11-2.1645811205 AS ubi8
 
 ENV JAVA_HOME /etc/alternatives/jre
 ENV LANG C.UTF-8
@@ -60,7 +60,25 @@ RUN yum update -y && \
     # Remove vulnerable packages shipped with base image (space separated list)
     PKG_4_REMOVAL="python-lxml" ; \
     rpm -e --nodeps ${PKG_4_REMOVAL} && \
-    yum clean all && \
+    yum clean all && rm -rf /var/cache/yum && \
+    JAVA_BIN_PATH=$(rpm -ql java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless} | grep '\/bin\/java$') && \
+    test -L $JAVA_HOME || ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME
+
+FROM rockylinux:8.5@sha256:5fed5497b568bcf7a90a00965987fc099edbcf44b1179a5ef6d4b47758281ca5 AS rockylinux8
+
+ARG JDIST
+ARG JAVA_MAJOR
+
+ENV JAVA_HOME=/usr/lib/jvm/java
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+
+RUN yum update --security -y && \
+    if [ "$JDIST" = 'jdk' ]; then PKG_DEVEL="devel"; fi && \
+    # Update here in case of java upgrade
+    [ $JAVA_MAJOR -eq 11 ] && JAVA_PKG_VERSION='11' ; \
+    yum install -y java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless} && \
+    yum clean all && rm -rf /var/cache/yum && \
     JAVA_BIN_PATH=$(rpm -ql java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless} | grep '\/bin\/java$') && \
     test -L $JAVA_HOME || ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME
 
