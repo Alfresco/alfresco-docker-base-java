@@ -21,6 +21,8 @@ jobs:
             major: 7
           - flavor: ubi
             major: 8
+          - flavor: rockylinux
+            major: 8
         java_major:
           - 11
         jdist:
@@ -29,6 +31,11 @@ jobs:
           - base_image:
               flavor: centos
               major: 7
+            java_major: 11
+            jdist: jdk
+          - base_image:
+              flavor: rockylinux
+              major: 8
             java_major: 11
             jdist: jdk
     runs-on: ubuntu-latest
