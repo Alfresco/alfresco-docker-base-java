@@ -64,6 +64,12 @@ This configuration is compatible with [Dependabot](https://docs.github.com/en/co
 
 ## Development
 
+While any docker installation will produce valid images, building with
+[BuildKit](https://docs.docker.com/develop/develop-images/build_enhancements/)
+has proven being more efficient and clever with [Multistage
+builds](https://docs.docker.com/develop/develop-images/multistage-build/). If
+you are building images locally, we recommend enabling it.
+
 ### Naming specs
 
 The images built from this repository are named as follow:
@@ -77,14 +83,6 @@ Previous versions of this repository built images using the naming convention:
 Where JAVA_VERSION could be many different things (major version, full version, full version with digest...)
 
 > Previous tags are still available but are not getting updates anymore
-
-### Prerequisites
-
-While any docker installation will produce valid images, building with
-[BuildKit](https://docs.docker.com/develop/develop-images/build_enhancements/)
-has proven being more efficient and clever with [Multistage
-builds](https://docs.docker.com/develop/develop-images/multistage-build/). If
-you are building images locally, we recommend enabling it.
 
 ### Versioning
 
@@ -144,5 +142,4 @@ and [best practices with Volumes](https://docs.docker.com/develop/develop-images
 
 ### Who is using this base image
 
-See [Alfresco Base Tomcat](https://github.com/Alfresco/alfresco-docker-base-tomcat/blob/master/Dockerfile)
-for a concrete example.
+* [Alfresco Base Tomcat](https://github.com/Alfresco/alfresco-docker-base-tomcat/blob/master/Dockerfile)
