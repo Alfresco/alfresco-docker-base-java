@@ -82,7 +82,7 @@ RUN yum update --security -y && \
     JAVA_BIN_PATH=$(rpm -ql java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless} | grep '\/bin\/java$') && \
     test -L $JAVA_HOME || ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME
 
-FROM alpine:3.15.0 AS alpine3.15
+FROM alpine:3.15.1 AS alpine3.15
 
 ARG JDIST
 ARG JAVA_MAJOR
