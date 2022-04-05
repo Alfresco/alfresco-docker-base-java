@@ -1,4 +1,5 @@
 name: Alfresco java base Docker image
+
 on:
   push:
     branches:
@@ -10,6 +11,7 @@ on:
 env:
   IMAGE_REGISTRY_NAMESPACE: alfresco
   IMAGE_REPOSITORY: alfresco-base-java
+
 jobs:
   docker_images:
     strategy:
@@ -43,22 +45,20 @@ jobs:
       - id: co
         name: checkout project
         uses: actions/checkout@v2
+
       - id: vars
         name: compute image tag
         env:
           IMAGE_BASE_NAME: ${{ matrix.jdist }}${{ matrix.java_major }}-${{ matrix.base_image.flavor }}${{ matrix.base_image.major }}
         run: |
-          if [[ "${{ github.ref_name }}" != "master" ]]
-          then
+          if [[ "${{ github.ref_name }}" != "master" ]]; then
             echo "::set-output name=image_tag::${IMAGE_BASE_NAME}-${GITHUB_REF_NAME//\//-}"
-          elif [[ "${{ github.event.head_commit.message }}" =~ .*\[release\].* ]]
-          then
-            echo "::set-output name=image_tag::$IMAGE_BASE_NAME"
           else
-            echo "::set-output name=image_tag::${IMAGE_BASE_NAME}-release-candidate"
+            echo "::set-output name=image_tag::$IMAGE_BASE_NAME"
           fi
           echo "::set-output name=image_created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
           echo "::set-output name=image_anchor::$(date -u +'%Y%m%d%H%M')"
+
       - id: q_login
         if: github.actor != 'dependabot[bot]'
         name: Login to Quay.io
@@ -67,13 +67,15 @@ jobs:
           registry: quay.io
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_PASSWORD }}
+
       - id: dh_login
-        if: contains(github.event.head_commit.message, '[release]') && github.ref_name == 'master'
+        if: github.ref_name == 'master'
         name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
       - id: q_push
         name: Build and push to Quay.io
         uses: docker/build-push-action@v2.8.0
@@ -91,8 +93,9 @@ jobs:
             quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}-${{ steps.vars.outputs.image_anchor }}
             quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
           target: JAVA_BASE_IMAGE
+
       - id: dh_push
-        if: contains(github.event.head_commit.message, '[release]') && github.ref_name == 'master'
+        if: github.ref_name == 'master'
         name: Build and push to Docker Hub
         uses: docker/build-push-action@v2.8.0
         with:
