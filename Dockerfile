@@ -36,7 +36,7 @@ RUN mkdir -p /usr/share/man/man1 || true; \
     JAVA_BIN_PATH=$(dpkg -L openjdk-${JAVA_MAJOR}-${JDIST}-headless | grep '\/bin\/java$'); \
     test -L $JAVA_HOME || ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME
 
-FROM registry.access.redhat.com/ubi8/openjdk-11-runtime:1.11-2.1647527176 AS ubi8
+FROM registry.access.redhat.com/ubi8/openjdk-11-runtime:1.11-2.1648459559 AS ubi8
 
 ENV JAVA_HOME /etc/alternatives/jre
 ENV LANG C.UTF-8
