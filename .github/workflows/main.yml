@@ -40,11 +40,14 @@ jobs:
             jdist: jdk
     runs-on: ubuntu-latest
     steps:
-      - id: co
-        name: checkout project
+      - name: Checkout
         uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
       - id: vars
-        name: compute image tag
+        name: Compute Image Tag
         env:
           IMAGE_BASE_NAME: ${{ matrix.jdist }}${{ matrix.java_major }}-${{ matrix.base_image.flavor }}${{ matrix.base_image.major }}
         run: |
@@ -67,15 +70,13 @@ jobs:
           registry: quay.io
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_PASSWORD }}
-      - id: dh_login
+      - name: Login to Docker Hub
         if: contains(github.event.head_commit.message, '[release]') && github.ref_name == 'master'
-        name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - id: q_push
-        name: Build and push to Quay.io
+      - name: Build and Push to Quay.io
         uses: docker/build-push-action@v2.8.0
         with:
           push: ${{ github.actor != 'dependabot[bot]' }}
@@ -90,22 +91,13 @@ jobs:
           tags: |
             quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}-${{ steps.vars.outputs.image_anchor }}
             quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
+          platforms: linux/amd64,linux/arm64
           target: JAVA_BASE_IMAGE
-      - id: dh_push
+      - name: Push Image to Docker Hub
         if: contains(github.event.head_commit.message, '[release]') && github.ref_name == 'master'
-        name: Build and push to Docker Hub
-        uses: docker/build-push-action@v2.8.0
+        uses: akhilerm/tag-push-action@v2.0.0
         with:
-          push: true
-          build-args: |
-            no-cache=true
-            JDIST=${{ matrix.jdist }}
-            DISTRIB_NAME=${{ matrix.base_image.flavor }}
-            DISTRIB_MAJOR=${{ matrix.base_image.major }}
-            JAVA_MAJOR=${{ matrix.java_major }}
-            REVISION=${{ github.run_number }}
-            CREATED=${{ steps.vars.outputs.image_created }}
-          tags: |
+          src: quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}-${{ steps.vars.outputs.image_anchor }}
+          dst: |
             ${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}-${{ steps.vars.outputs.image_anchor }}
             ${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
-          target: JAVA_BASE_IMAGE
