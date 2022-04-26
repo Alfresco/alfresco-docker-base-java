@@ -19,23 +19,6 @@ RUN mkdir -p /usr/share/man/man1 || true; \
     JAVA_BIN_PATH=$(dpkg -L openjdk-${JAVA_MAJOR}-${JDIST}-headless | grep '\/bin\/java$'); \
     test -L $JAVA_HOME || ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME
 
-FROM debian:11-slim@sha256:125f346eac7055d8e1de1b036b1bd39781be5bad3d36417c109729d71af0cd73 AS debian11
-
-ARG JDIST
-ARG JAVA_MAJOR
-
-ENV JAVA_HOME=/usr/lib/jvm/java
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
-
-RUN mkdir -p /usr/share/man/man1 || true; \
-    DEBIAN_FRONTEND=noninteractive; \
-    apt-get update -qq && apt-get upgrade -qq && \
-    apt-get install --no-install-recommends -qq openjdk-${JAVA_MAJOR}-${JDIST}-headless && \
-    apt-get clean -y && find /var/lib/apt/lists/ -type f -delete; \
-    JAVA_BIN_PATH=$(dpkg -L openjdk-${JAVA_MAJOR}-${JDIST}-headless | grep '\/bin\/java$'); \
-    test -L $JAVA_HOME || ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME
-
 FROM registry.access.redhat.com/ubi8/openjdk-11-runtime:1.11-2.1648459559 AS ubi8
 
 ENV JAVA_HOME /etc/alternatives/jre
