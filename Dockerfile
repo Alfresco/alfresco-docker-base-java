@@ -2,12 +2,6 @@
 ARG DISTRIB_NAME
 ARG DISTRIB_MAJOR
 
-FROM registry.access.redhat.com/ubi8/openjdk-11-runtime:1.11-2.1648459559 AS ubi8
-
-ENV JAVA_HOME /etc/alternatives/jre
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
-
 FROM centos:7.9.2009 AS centos7
 
 ARG JDIST
