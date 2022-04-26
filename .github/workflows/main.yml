@@ -1,4 +1,4 @@
-name: Alfresco java base Docker image
+name: build
 on:
   push:
     branches:
