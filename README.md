@@ -22,17 +22,15 @@ Java version | Java flavour | OS            | Image tag         | Size
 -------------|--------------|---------------|-------------------|-----------------------------
 11           | jre          | Centos 7      | jre11-centos7     | ![jre11-centos7 size][1]
 11           | jdk          | Centos 7      | jdk11-centos7     | ![jdk11-centos7 size][2]
-11           | jre          | Rocky Linux 8 | jre11-rockylinux8 | ![jre11-rockylinux8 size][5]
-11           | jdk          | Rocky Linux 8 | jdk11-rockylinux8 | ![jdk11-rockylinux8 size][6]
 11           | jre          | Alpine 3.15   | jre11-alpine3.15  | ![jre11-alpine3.15][3]
-11           | jre          | UBI 8         | jre11-ubi8        | ![jre11-ubi8 size][4]
+11           | jre          | Rocky Linux 8 | jre11-rockylinux8 | ![jre11-rockylinux8 size][4]
+11           | jdk          | Rocky Linux 8 | jdk11-rockylinux8 | ![jdk11-rockylinux8 size][5]
 
 [1]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-centos7
 [2]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jdk11-centos7
 [3]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-alpine3.15
-[4]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-ubi8
-[5]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-rockylinux8
-[6]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jdk11-rockylinux8
+[4]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-rockylinux8
+[5]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jdk11-rockylinux8
 
 * [Docker Hub](https://hub.docker.com/r/alfresco/alfresco-base-java) image name: `alfresco/alfresco-base-java`
 * [Quay](https://quay.io/repository/alfresco/alfresco-base-java) image name: `quay.io/alfresco/alfresco-base-java`
@@ -111,7 +109,8 @@ For Java 11 builds, using the OpenJDK version from the CentOS distro which inclu
 The possible combination of OS versions are available:
 
 * centos 7
-* ubi 8
+* rockylinux 8
+* alpine 3.15
 
 ### How to build an image locally
 
@@ -128,7 +127,7 @@ docker build -t alfresco-base-java . \
 
 #### Release
 
-Push a commit on the default branch including `[release]` in the message to trigger a release on Travis CI.
+Push a commit on the default branch including `[release]` in the message to trigger a release.
 
 ## Useful information
 

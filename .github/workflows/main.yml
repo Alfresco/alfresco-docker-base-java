@@ -19,8 +19,6 @@ jobs:
             major: 3.15
           - flavor: centos
             major: 7
-          - flavor: ubi
-            major: 8
           - flavor: rockylinux
             major: 8
         java_major:
