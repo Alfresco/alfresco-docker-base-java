@@ -112,7 +112,6 @@ The possible combination of OS versions are available:
 
 * centos 7
 * ubi 8
-* ubuntu 20.04
 
 ### How to build an image locally
 
@@ -126,9 +125,6 @@ docker build -t alfresco-base-java . \
   --build-arg JDIST=$JDIST \
   --no-cache --target JAVA_BASE_IMAGE
 ```
-
-> Dockerfile includes support for Ubuntu distribution but they aren't
-> actively built.
 
 #### Release
 
