@@ -37,7 +37,7 @@ RUN yum update --security -y && \
     if [ "$JDIST" = 'jdk' ]; then PKG_DEVEL="devel"; fi && \
     # Update here in case of java upgrade
     [ $JAVA_MAJOR -eq 11 ] && JAVA_PKG_VERSION='11' ; \
-    yum install -y java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless} && \
+    yum install -y langpacks-en java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless} && \
     yum clean all && rm -rf /var/cache/yum && \
     JAVA_BIN_PATH=$(rpm -ql java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless} | grep '\/bin\/java$') && \
     test -L $JAVA_HOME || ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME
