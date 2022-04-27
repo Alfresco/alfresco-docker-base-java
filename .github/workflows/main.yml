@@ -23,7 +23,6 @@ jobs:
             major: 8
         java_major:
           - 11
-          - 17
         jdist:
           - jre
         include:
@@ -35,8 +34,8 @@ jobs:
           - base_image:
               flavor: rockylinux
               major: 8
-            java_major: 11
-            jdist: jdk
+            java_major: 17
+            jdist: jre
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
