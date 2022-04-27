@@ -38,8 +38,6 @@ RUN yum update --security -y && \
     JAVA_PKG=java-${JAVA_PKG_VERSION}-openjdk-${JAVA_PKG_TYPE} && \
     # Remove vulnerable packages shipped with base image (space separated list)
     yum install -y langpacks-en $JAVA_PKG && \
-    PKG_4_REMOVAL="python-lxml" && \
-    rpm -e --nodeps ${PKG_4_REMOVAL} && \
     yum clean all && rm -rf /var/cache/yum
 
 FROM alpine:3.15.4 AS alpine3.15
