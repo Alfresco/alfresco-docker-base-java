@@ -11,12 +11,11 @@ ENV JAVA_HOME=/usr/lib/jvm/java
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
-RUN yum update -y && \
+RUN yum update --security -y && \
     if [ "$JDIST" = 'jdk' ]; then PKG_DEVEL="devel"; fi && \
     # Update here in case of java upgrade
-    [ $JAVA_MAJOR -eq 8 ] && JAVA_PKG_VERSION='1.8.0'; \
-    [ $JAVA_MAJOR -eq 11 ] && JAVA_PKG_VERSION='11'; \
-    yum install -y java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless} && \
+    [ $JAVA_MAJOR -eq 8 ] && JAVA_PKG_VERSION='1.8.0' || JAVA_PKG_VERSION=$JAVA_MAJOR; \
+    yum install -y langpacks-en java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless} && \
     # Remove vulnerable packages shipped with base image (space separated list)
     PKG_4_REMOVAL="python-lxml" ; \
     rpm -e --nodeps ${PKG_4_REMOVAL} && \
@@ -36,8 +35,11 @@ ENV LC_ALL en_US.UTF-8
 RUN yum update --security -y && \
     if [ "$JDIST" = 'jdk' ]; then PKG_DEVEL="devel"; fi && \
     # Update here in case of java upgrade
-    [ $JAVA_MAJOR -eq 11 ] && JAVA_PKG_VERSION='11' ; \
+    [ $JAVA_MAJOR -eq 8 ] && JAVA_PKG_VERSION='1.8.0' || JAVA_PKG_VERSION=$JAVA_MAJOR; \
     yum install -y langpacks-en java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless} && \
+    # Remove vulnerable packages shipped with base image (space separated list)
+    PKG_4_REMOVAL="python-lxml" ; \
+    rpm -e --nodeps ${PKG_4_REMOVAL} && \
     yum clean all && rm -rf /var/cache/yum && \
     JAVA_BIN_PATH=$(rpm -ql java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless} | grep '\/bin\/java$') && \
     test -L $JAVA_HOME || ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME
@@ -48,8 +50,8 @@ ARG JDIST
 ARG JAVA_MAJOR
 
 ENV JAVA_HOME=/usr/lib/jvm/java-${JAVA_MAJOR}-openjdk
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
 
 RUN apk update && \
     apk upgrade && \
