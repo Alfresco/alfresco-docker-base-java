@@ -7,42 +7,40 @@ FROM centos:7.9.2009 AS centos7
 ARG JDIST
 ARG JAVA_MAJOR
 
-ENV JAVA_HOME=/usr/lib/jvm/java
+ENV JAVA_HOME /etc/alternatives/jre
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
 RUN yum update --security -y && \
-    if [ "$JDIST" = 'jdk' ]; then PKG_DEVEL="devel"; fi && \
+    if [ "$JDIST" = 'jdk' ]; then JAVA_PKG_TYPE="devel"; else JAVA_PKG_TYPE="headless"; fi && \
     # Update here in case of java upgrade
-    [ $JAVA_MAJOR -eq 8 ] && JAVA_PKG_VERSION='1.8.0' || JAVA_PKG_VERSION=$JAVA_MAJOR; \
-    yum install -y langpacks-en java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless} && \
+    if [ $JAVA_MAJOR -eq 8 ]; then JAVA_PKG_VERSION='1.8.0'; else JAVA_PKG_VERSION=$JAVA_MAJOR; fi && \
+    JAVA_PKG=java-${JAVA_PKG_VERSION}-openjdk-${JAVA_PKG_TYPE} && \
     # Remove vulnerable packages shipped with base image (space separated list)
-    PKG_4_REMOVAL="python-lxml" ; \
+    yum install -y langpacks-en $JAVA_PKG && \
+    PKG_4_REMOVAL="python-lxml" && \
     rpm -e --nodeps ${PKG_4_REMOVAL} && \
-    yum clean all && rm -rf /var/cache/yum && \
-    JAVA_BIN_PATH=$(rpm -ql java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless} | grep '\/bin\/java$') && \
-    test -L $JAVA_HOME || ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME
+    yum clean all && rm -rf /var/cache/yum
 
 FROM rockylinux:8.5.20220308@sha256:c7d13ea4d57355aaad6b6ebcdcca50f5be65fc821f54161430f5c25641d68c5c AS rockylinux8
 
 ARG JDIST
 ARG JAVA_MAJOR
 
-ENV JAVA_HOME=/usr/lib/jvm/java
+ENV JAVA_HOME /etc/alternatives/jre
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
 RUN yum update --security -y && \
-    if [ "$JDIST" = 'jdk' ]; then PKG_DEVEL="devel"; fi && \
+    if [ "$JDIST" = 'jdk' ]; then JAVA_PKG_TYPE="devel"; else JAVA_PKG_TYPE="headless"; fi && \
     # Update here in case of java upgrade
-    [ $JAVA_MAJOR -eq 8 ] && JAVA_PKG_VERSION='1.8.0' || JAVA_PKG_VERSION=$JAVA_MAJOR; \
-    yum install -y langpacks-en java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless} && \
+    if [ $JAVA_MAJOR -eq 8 ]; then JAVA_PKG_VERSION='1.8.0'; else JAVA_PKG_VERSION=$JAVA_MAJOR; fi && \
+    JAVA_PKG=java-${JAVA_PKG_VERSION}-openjdk-${JAVA_PKG_TYPE} && \
     # Remove vulnerable packages shipped with base image (space separated list)
-    PKG_4_REMOVAL="python-lxml" ; \
+    yum install -y langpacks-en $JAVA_PKG && \
+    PKG_4_REMOVAL="python-lxml" && \
     rpm -e --nodeps ${PKG_4_REMOVAL} && \
-    yum clean all && rm -rf /var/cache/yum && \
-    JAVA_BIN_PATH=$(rpm -ql java-${JAVA_PKG_VERSION}-openjdk-${PKG_DEVEL:-headless} | grep '\/bin\/java$') && \
-    test -L $JAVA_HOME || ln -sf ${JAVA_BIN_PATH%*/bin/java} $JAVA_HOME
+    yum clean all && rm -rf /var/cache/yum
 
 FROM alpine:3.15.4 AS alpine3.15
 
