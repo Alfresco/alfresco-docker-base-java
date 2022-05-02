@@ -26,12 +26,6 @@ jobs:
           - 17
         jdist:
           - jre
-        exclude:
-          - base_image:
-              flavor: centos
-              major: 7
-            java_major: 17
-            jdist: jre
         include:
           - base_image:
               flavor: centos
