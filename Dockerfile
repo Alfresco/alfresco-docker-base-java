@@ -34,7 +34,7 @@ RUN set -eux; \
   fi && \
   yum clean all && rm -rf /var/cache/yum
 
-FROM rockylinux:8.6.20227707@sha256:afd392a691df0475390df77cb5486f226bc2b4cbaf87c41785115b9237f3203f AS rockylinux8
+FROM rockylinux:9.0.20220712@sha256:1be360c545172f1a451dfac8bab345c6aa5cc2c24ed42ba31239c394b8657795 AS rockylinux8
 
 ARG JDIST
 ARG JAVA_MAJOR
