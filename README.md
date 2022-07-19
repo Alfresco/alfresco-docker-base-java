@@ -28,7 +28,7 @@ Java version | Java flavour | OS            | Image tag         | Size
 
 [1]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-centos7
 [2]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jdk11-centos7
-[3]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-alpine173.15
+[3]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-alpine3.15
 [4]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-rockylinux8
 [5]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jdk11-rockylinux8
 
