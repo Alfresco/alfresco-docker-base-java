@@ -28,7 +28,7 @@ Java version | Java flavour | OS            | Image tag         | Size
 
 [1]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-centos7
 [2]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jdk11-centos7
-[3]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-alpine3.15
+[3]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-alpine173.15
 [4]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-rockylinux8
 [5]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jdk11-rockylinux8
 
@@ -92,17 +92,17 @@ The `alfresco-docker-base-java` image can be generated in multiple flavors by mi
 
 #### Java
 
-Either Java 8 (supported up to 5.2 and 6.0) or Java 11 can used used to build images using the `JAVA_MAJOR` build argument.
+Either Java 11 or Java 17 can used used to build images using the `JAVA_MAJOR` build argument.
 
 > Both OpenJDK versions bellow can be built from the JDK or the JRE distribution (using the JDIST build argument)
 
-##### Legacy OpenJDK Java 8
+##### Legacy OpenJDK Java 11
 
-For legacy Java 8 builds, using the OpenJDK version from the CentOS distro which includes the latest security patches.
+For legacy Java 11 builds, using the OpenJDK version from the CentOS distro which includes the latest security patches.
 
-##### OpenJDK Java 11 LTS
+##### OpenJDK Java 17
 
-For Java 11 builds, using the OpenJDK version from the CentOS distro which includes the latest security patches, this is the recommended option.
+For Java 17 builds, using the OpenJDK version from the CentOS distro which includes the latest security patches, this is the recommended option.
 
 #### OS
 
