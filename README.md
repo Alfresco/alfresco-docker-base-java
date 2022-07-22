@@ -26,7 +26,7 @@ Java version | Java flavour | OS            | Image tag         | Size
 17           | jre          | Alpine 3.15   | jre17-alpine3.15  | ![jre17-alpine3.15 size][4]
 11           | jre          | Alpine 3.15   | jre11-alpine3.15  | ![jre11-alpine3.15 size][5]
 17           | jre          | Rocky Linux 8 | jre17-rockylinux8 | ![jre17-rockylinux8 size][6]
-17           | jre          | Rocky Linux 8 | jre11-rockylinux8 | ![jre11-rockylinux8 size][7]
+11           | jre          | Rocky Linux 8 | jre11-rockylinux8 | ![jre11-rockylinux8 size][7]
 11           | jdk          | Rocky Linux 8 | jdk11-rockylinux8 | ![jdk11-rockylinux8 size][8]
 
 [1]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre17-centos7
