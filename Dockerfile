@@ -49,7 +49,7 @@ RUN \
   yum install -y langpacks-en java-${JAVA_MAJOR}-openjdk-${JAVA_PKG_TYPE} && \
   yum clean all && rm -rf /var/cache/yum
 
-FROM alpine:3.15.4 AS alpine3.15
+FROM alpine:3.15.6 AS alpine3.15
 
 ARG JDIST
 ARG JAVA_MAJOR
