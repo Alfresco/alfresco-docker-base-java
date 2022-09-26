@@ -34,7 +34,7 @@ RUN set -eux; \
   fi && \
   yum clean all && rm -rf /var/cache/yum
 
-FROM rockylinux:8.6.20227707@sha256:afd392a691df0475390df77cb5486f226bc2b4cbaf87c41785115b9237f3203f AS rockylinux8
+FROM rockylinux:8.6.20227707 AS rockylinux8
 
 ARG JDIST
 ARG JAVA_MAJOR
@@ -48,20 +48,6 @@ RUN \
   if [ "$JDIST" = 'jdk' ]; then JAVA_PKG_TYPE="devel"; else JAVA_PKG_TYPE="headless"; fi && \
   yum install -y langpacks-en java-${JAVA_MAJOR}-openjdk-${JAVA_PKG_TYPE} && \
   yum clean all && rm -rf /var/cache/yum
-
-FROM alpine:3.15.6 AS alpine3.15
-
-ARG JDIST
-ARG JAVA_MAJOR
-
-ENV JAVA_HOME /usr/lib/jvm/java-${JAVA_MAJOR}-openjdk
-ENV LANG en_US.UTF-8
-ENV LC_ALL en_US.UTF-8
-
-RUN apk update && \
-    apk upgrade && \
-    apk add openjdk${JAVA_MAJOR}-${JDIST}-headless && \
-    rm -rf /var/cache/apk/*
 
 FROM ${DISTRIB_NAME}${DISTRIB_MAJOR} AS JAVA_BASE_IMAGE
 ARG DISTRIB_NAME
