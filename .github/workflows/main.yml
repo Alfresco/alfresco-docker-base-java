@@ -6,8 +6,6 @@ on:
       - OPSEXP-[0-9]+**
       - dependabot/**
       - master
-    paths-ignore:
-      - "*.md"
 
 env:
   IMAGE_REGISTRY_NAMESPACE: alfresco
