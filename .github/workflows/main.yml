@@ -6,6 +6,8 @@ on:
       - OPSEXP-[0-9]+**
       - dependabot/**
       - master
+    paths-ignore:
+      - "*.md"
 
 env:
   IMAGE_REGISTRY_NAMESPACE: alfresco
@@ -15,8 +17,6 @@ jobs:
     strategy:
       matrix:
         base_image:
-          - flavor: alpine
-            major: 3.15
           - flavor: centos
             major: 7
           - flavor: rockylinux
@@ -26,17 +26,12 @@ jobs:
           - 17
         jdist:
           - jre
-        include:
+          - jdk
+        exclude:
           - base_image:
               flavor: centos
               major: 7
-            java_major: 11
-            jdist: jdk
-          - base_image:
-              flavor: rockylinux
-              major: 8
-            java_major: 11
-            jdist: jdk
+            java_major: 17
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

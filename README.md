@@ -20,23 +20,19 @@ Choose between one of the available flavours built from this repository:
 
 Java version | Java flavour | OS            | Image tag         | Size
 -------------|--------------|---------------|-------------------|-----------------------------
-17           | jre          | Centos 7      | jre17-centos7     | ![jre17-centos7 size][1]
-11           | jre          | Centos 7      | jre11-centos7     | ![jre11-centos7 size][2]
-11           | jdk          | Centos 7      | jdk11-centos7     | ![jdk11-centos7 size][3]
-17           | jre          | Alpine 3.15   | jre17-alpine3.15  | ![jre17-alpine3.15 size][4]
-11           | jre          | Alpine 3.15   | jre11-alpine3.15  | ![jre11-alpine3.15 size][5]
-17           | jre          | Rocky Linux 8 | jre17-rockylinux8 | ![jre17-rockylinux8 size][6]
-11           | jre          | Rocky Linux 8 | jre11-rockylinux8 | ![jre11-rockylinux8 size][7]
-11           | jdk          | Rocky Linux 8 | jdk11-rockylinux8 | ![jdk11-rockylinux8 size][8]
+11           | jre          | Centos 7      | jre11-centos7     | ![jre11-centos7 size][1]
+11           | jdk          | Centos 7      | jdk11-centos7     | ![jdk11-centos7 size][2]
+17           | jre          | Rocky Linux 8 | jre17-rockylinux8 | ![jre17-rockylinux8 size][3]
+17           | jdk          | Rocky Linux 8 | jdk17-rockylinux8 | ![jdk17-rockylinux8 size][4]
+11           | jre          | Rocky Linux 8 | jre11-rockylinux8 | ![jre11-rockylinux8 size][5]
+11           | jdk          | Rocky Linux 8 | jdk11-rockylinux8 | ![jdk11-rockylinux8 size][6]
 
-[1]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre17-centos7
-[2]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-centos7
-[3]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jdk11-centos7
-[4]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre17-alpine3.15
-[5]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-alpine3.15
-[6]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre17-rockylinux8
-[7]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-rockylinux8
-[8]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jdk11-rockylinux8
+[1]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-centos7
+[2]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jdk11-centos7
+[3]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre17-rockylinux8
+[4]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jdk17-rockylinux8
+[5]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-rockylinux8
+[6]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jdk11-rockylinux8
 
 * [Docker Hub](https://hub.docker.com/r/alfresco/alfresco-base-java) image name: `alfresco/alfresco-base-java`
 * [Quay](https://quay.io/repository/alfresco/alfresco-base-java) image name: `quay.io/alfresco/alfresco-base-java`
