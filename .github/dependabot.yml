@@ -2,17 +2,23 @@
 # package ecosystems to update and where the package manifests are located.
 # Please see the documentation for all configuration options:
 # https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
-
+---
 version: 2
 updates:
-  - package-ecosystem: "docker"
-    directory: "/"
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: "daily"
+      interval: weekly
+
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: daily
     ignore:
-      - dependency-name: "centos"
+      - dependency-name: centos
         versions:
           - ">= 8"
           - "<7"
-      - dependency-name: "rockylinux"
-        update-types: ["version-update:semver-major"]
+      - dependency-name: rockylinux
+        update-types:
+          - "version-update:semver-major"
