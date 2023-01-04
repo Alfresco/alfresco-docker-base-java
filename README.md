@@ -1,4 +1,4 @@
-# Alfresco Docker Base Java [![Build Status](https://img.shields.io/github/workflow/status/Alfresco/alfresco-docker-base-java/Alfresco%20java%20base%20Docker%20image)](https://github.com/Alfresco/alfresco-docker-base-java/actions/workflows/main.yml)
+# Alfresco Docker Base Java [![Build Status](https://img.shields.io/github/actions/workflow/status/Alfresco/alfresco-docker-base-java/main.yml?branch=master)](https://github.com/Alfresco/alfresco-docker-base-java/actions/workflows/main.yml)
 
 This repository contains the [Dockerfile](Dockerfile) used to create the base
 Java image based on Centos 7 that will be used by Alfresco engineering teams,
