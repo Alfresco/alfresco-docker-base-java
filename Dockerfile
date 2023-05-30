@@ -34,7 +34,7 @@ RUN set -eux; \
   fi && \
   yum clean all && rm -rf /var/cache/yum
 
-FROM rockylinux:8.7.20230215 AS rockylinux8
+FROM rockylinux:8.8.20230518 AS rockylinux8
 
 ARG JDIST
 ARG JAVA_MAJOR
