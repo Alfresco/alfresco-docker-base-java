@@ -64,12 +64,39 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Image locally
+        uses: docker/build-push-action@v4.0.0
+        with:
+          load: true
+          build-args: |
+            no-cache=true
+            JDIST=${{ matrix.jdist }}
+            DISTRIB_NAME=${{ matrix.base_image.flavor }}
+            DISTRIB_MAJOR=${{ matrix.base_image.major }}
+            JAVA_MAJOR=${{ matrix.java_major }}
+            REVISION=${{ github.run_number }}
+            CREATED=${{ steps.vars.outputs.image_created }}
+          tags: |
+            local/${{ env.IMAGE_REPOSITORY }}:ci
+          target: JAVA_BASE_IMAGE
+      - name: Test Built Image
+        run: |
+          echo -n "Checking for java version:"
+          docker run local/${{ env.IMAGE_REPOSITORY }}:ci java -version 2>&1 \
+          | grep -i 'version \"${{ matrix.java_major }}\.'
+          echo -n "Checking shell environment:"
+          BASH_LOGIN="$(docker run local${{ env.IMAGE_REPOSITORY }}:ci /bin/bash 2>&1 > /dev/null || true)"
+          if [ -z "$BASH_LOGIN" ]; then
+            echo ok
+          else echo 'bash reported an error'
+            echo $BASH_LOGIN
+            exit 7
+          fi
       - name: Build and Push to quay.io
         uses: docker/build-push-action@v4.0.0
         with:
           push: ${{ github.actor != 'dependabot[bot]' }}
           build-args: |
-            no-cache=true
             JDIST=${{ matrix.jdist }}
             DISTRIB_NAME=${{ matrix.base_image.flavor }}
             DISTRIB_MAJOR=${{ matrix.base_image.major }}
