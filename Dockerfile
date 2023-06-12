@@ -40,8 +40,8 @@ ARG JDIST
 ARG JAVA_MAJOR
 
 ENV JAVA_HOME /etc/alternatives/jre
-ENV LANG en_US.UTF-8
-ENV LC_ALL en_US.UTF-8
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
 
 RUN \
   yum update --security -y && \
