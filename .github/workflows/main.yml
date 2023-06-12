@@ -65,7 +65,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build Image locally
-        uses: docker/build-push-action@v4.0.0
+        uses: docker/build-push-action@v4.1.0
         with:
           load: true
           build-args: |
@@ -93,7 +93,7 @@ jobs:
             exit 7
           fi
       - name: Build and Push to quay.io
-        uses: docker/build-push-action@v4.0.0
+        uses: docker/build-push-action@v4.1.0
         with:
           push: ${{ github.actor != 'dependabot[bot]' }}
           build-args: |
