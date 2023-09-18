@@ -49,6 +49,21 @@ RUN \
   yum install -y langpacks-en java-${JAVA_MAJOR}-openjdk-${JAVA_PKG_TYPE} && \
   yum clean all && rm -rf /var/cache/yum
 
+FROM rockylinux:9.2.20230513 AS rockylinux9
+
+ARG JDIST
+ARG JAVA_MAJOR
+
+ENV JAVA_HOME /etc/alternatives/jre
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+
+RUN \
+  yum update --security -y && \
+  if [ "$JDIST" = 'jdk' ]; then JAVA_PKG_TYPE="devel"; else JAVA_PKG_TYPE="headless"; fi && \
+  yum install -y langpacks-en java-${JAVA_MAJOR}-openjdk-${JAVA_PKG_TYPE} && \
+  yum clean all && rm -rf /var/cache/yum
+
 FROM ${DISTRIB_NAME}${DISTRIB_MAJOR} AS JAVA_BASE_IMAGE
 ARG DISTRIB_NAME
 ARG DISTRIB_MAJOR
