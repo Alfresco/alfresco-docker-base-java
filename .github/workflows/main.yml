@@ -19,6 +19,8 @@ jobs:
             major: 7
           - flavor: rockylinux
             major: 8
+          - flavor: rockylinux
+            major: 9
         java_major:
           - 11
           - 17
@@ -30,6 +32,10 @@ jobs:
               flavor: centos
               major: 7
             java_major: 17
+              flavor: rockylinux
+              major: 9
+            java_major: 11
+            jdist: jdk
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
