@@ -32,11 +32,11 @@ jobs:
               flavor: centos
               major: 7
             java_major: 17
-          # - base_image:
-          #     flavor: rockylinux
-          #     major: 9
-          #   java_major: 11
-          #   jdist: jdk
+          - base_image:
+              flavor: rockylinux
+              major: 9
+            java_major: 11
+            jdist: jdk
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
