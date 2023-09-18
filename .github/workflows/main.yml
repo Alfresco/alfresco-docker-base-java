@@ -36,6 +36,11 @@ jobs:
               flavor: rockylinux
               major: 9
             java_major: 11
+          - base_image:
+              flavor: rockylinux
+              major: 9
+            java_major: 17
+            jdist: jdk
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
