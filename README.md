@@ -1,14 +1,12 @@
 # Alfresco Docker Base Java [![Build Status](https://img.shields.io/github/actions/workflow/status/Alfresco/alfresco-docker-base-java/main.yml?branch=master)](https://github.com/Alfresco/alfresco-docker-base-java/actions/workflows/main.yml)
 
 This repository contains the [Dockerfile](Dockerfile) used to create the base
-Java image based on Centos 7 that will be used by Alfresco engineering teams,
+Java image based on Centos 7, Rocky Linux 8 & Rocky Linux 9 that will be used by Alfresco engineering teams,
 other internal groups in the organization, customers and partners to create Java
 images from.
 
 Please be aware that:
 
-* `jdk` flavoured builds are provided only for development purposes and are not
-  meant to be used in production, please use the lighter `jre` flavour.
 * we are providing jre images based on different OS but at the time of writing
   only `jre11-centos7` is passing security scan on our private quay.io. You can
   check for updated security scans results on the quay.io [image
@@ -21,18 +19,14 @@ Choose between one of the available flavours built from this repository:
 Java version | Java flavour | OS            | Image tag         | Size
 -------------|--------------|---------------|-------------------|-----------------------------
 11           | jre          | Centos 7      | jre11-centos7     | ![jre11-centos7 size][1]
-11           | jdk          | Centos 7      | jdk11-centos7     | ![jdk11-centos7 size][2]
-17           | jre          | Rocky Linux 8 | jre17-rockylinux8 | ![jre17-rockylinux8 size][3]
-17           | jdk          | Rocky Linux 8 | jdk17-rockylinux8 | ![jdk17-rockylinux8 size][4]
-11           | jre          | Rocky Linux 8 | jre11-rockylinux8 | ![jre11-rockylinux8 size][5]
-11           | jdk          | Rocky Linux 8 | jdk11-rockylinux8 | ![jdk11-rockylinux8 size][6]
+17           | jre          | Rocky Linux 8 | jre17-rockylinux8 | ![jre17-rockylinux8 size][2]
+11           | jre          | Rocky Linux 8 | jre11-rockylinux8 | ![jre11-rockylinux8 size][3]
+17           | jre          | Rocky Linux 9 | jre17-rockylinux9 | ![jre17-rockylinux9 size][4]
 
 [1]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-centos7
-[2]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jdk11-centos7
-[3]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre17-rockylinux8
-[4]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jdk17-rockylinux8
-[5]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-rockylinux8
-[6]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jdk11-rockylinux8
+[2]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre17-rockylinux8
+[3]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-rockylinux8
+[4]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre17-rockylinux9
 
 * [Docker Hub](https://hub.docker.com/r/alfresco/alfresco-base-java) image name: `alfresco/alfresco-base-java`
 * [Quay](https://quay.io/repository/alfresco/alfresco-base-java) image name: `quay.io/alfresco/alfresco-base-java`
@@ -96,7 +90,7 @@ The `alfresco-docker-base-java` image can be generated in multiple flavors by mi
 
 Either Java 11 or Java 17 can be used to build images using the `JAVA_MAJOR` build argument.
 
-> Both OpenJDK versions bellow can be built from the JDK or the JRE distribution (using the JDIST build argument)
+> OpenJDK versions below can be built from the JRE distribution (using the JDIST build argument)
 
 ##### Legacy OpenJDK Java 11
 
@@ -112,7 +106,7 @@ The possible combination of OS versions are available:
 
 * centos 7
 * rockylinux 8
-* alpine 3.15
+* rockylinux 9
 
 ### How to build an image locally
 
