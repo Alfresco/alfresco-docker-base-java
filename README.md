@@ -107,7 +107,6 @@ The possible combination of OS versions are available:
 * centos 7
 * rockylinux 8
 * rockylinux 9
-* alpine 3.15
 
 ### How to build an image locally
 
