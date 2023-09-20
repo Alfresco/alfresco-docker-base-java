@@ -34,8 +34,7 @@ ENV LC_ALL C.UTF-8
 
 RUN \
   yum update --security -y && \
-  JAVA_PKG_TYPE="headless" && \
-  yum install -y langpacks-en java-${JAVA_MAJOR}-openjdk-${JAVA_PKG_TYPE} && \
+  yum install -y langpacks-en java-${JAVA_MAJOR}-openjdk-headless && \
   yum clean all && rm -rf /var/cache/yum
 
 FROM rockylinux:9.2.20230513 AS rockylinux9
@@ -49,8 +48,7 @@ ENV LC_ALL C.UTF-8
 
 RUN \
   yum update --security -y && \
-  JAVA_PKG_TYPE="headless" && \
-  yum install -y langpacks-en java-${JAVA_MAJOR}-openjdk-${JAVA_PKG_TYPE} && \
+  yum install -y langpacks-en java-${JAVA_MAJOR}-openjdk-headless && \
   yum clean all && rm -rf /var/cache/yum
 
 FROM ${DISTRIB_NAME}${DISTRIB_MAJOR} AS JAVA_BASE_IMAGE
