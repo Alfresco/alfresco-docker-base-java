@@ -13,15 +13,14 @@ ENV LC_ALL en_US.UTF-8
 
 RUN set -eux; \
   yum update --security -y && \
-    ARCH=$(uname -m | sed s/86_//) && \
-    if [ $JAVA_MAJOR -eq 11 ]; then JAVA_VERSION="11.0.15_10" ; fi && \
-    if [ $JAVA_MAJOR -eq 17 ]; then JAVA_VERSION="17.0.3_7" ; fi && \
-    curl -fsLo java.tar.gz https://github.com/adoptium/temurin${JAVA_MAJOR}-binaries/releases/download/jdk-${JAVA_VERSION/_/%2B}/OpenJDK${JAVA_MAJOR}U-${JDIST}_${ARCH}_linux_hotspot_${JAVA_VERSION}.tar.gz && \
-    tar xvfz java.tar.gz && \
-    mkdir -p /usr/lib/jvm && \
-    mv jdk-* ${JAVA_HOME} && \
-    update-alternatives --install /usr/bin/java java $JAVA_HOME/bin/java 1; \
-  fi && \
+  ARCH=$(uname -m | sed s/86_//) && \
+  if [ $JAVA_MAJOR -eq 11 ]; then JAVA_VERSION="11.0.15_10" ; fi && \
+  if [ $JAVA_MAJOR -eq 17 ]; then JAVA_VERSION="17.0.3_7" ; fi && \
+  curl -fsLo java.tar.gz https://github.com/adoptium/temurin${JAVA_MAJOR}-binaries/releases/download/jdk-${JAVA_VERSION/_/%2B}/OpenJDK${JAVA_MAJOR}U-${JDIST}_${ARCH}_linux_hotspot_${JAVA_VERSION}.tar.gz && \
+  tar xvfz java.tar.gz && \
+  mkdir -p /usr/lib/jvm && \
+  mv jdk-* ${JAVA_HOME} && \
+  update-alternatives --install /usr/bin/java java $JAVA_HOME/bin/java 1; \
   yum clean all && rm -rf /var/cache/yum
 
 FROM rockylinux:8.8.20230518 AS rockylinux8
