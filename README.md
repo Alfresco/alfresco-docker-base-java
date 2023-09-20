@@ -90,7 +90,7 @@ The `alfresco-docker-base-java` image can be generated in multiple flavors by mi
 
 Either Java 11 or Java 17 can be used to build images using the `JAVA_MAJOR` build argument.
 
-> OpenJDK versions below can be built the JRE distribution (using the JDIST build argument)
+> OpenJDK versions below can be built from the JRE distribution (using the JDIST build argument)
 
 ##### Legacy OpenJDK Java 11
 
