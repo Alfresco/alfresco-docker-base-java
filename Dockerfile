@@ -13,16 +13,6 @@ ENV LC_ALL en_US.UTF-8
 
 RUN set -eux; \
   yum update --security -y && \
-  if [ "$JDIST" = 'jdk' ]; then \
-    REPO_FILE="/etc/yum.repos.d/adoptium.repo" && \
-    echo "[Adoptium]" >> $REPO_FILE && \
-    echo "name=Adoptium" >> $REPO_FILE && \
-    echo "enabled=1" >> $REPO_FILE && \
-    echo "gpgcheck=1" >> $REPO_FILE && \
-    echo "gpgkey=https://packages.adoptium.net/artifactory/api/gpg/key/public" >> $REPO_FILE && \
-    echo "baseurl=https://packages.adoptium.net/artifactory/rpm/centos/7/$(uname -m)" >> $REPO_FILE && \
-    yum install -y temurin-${JAVA_MAJOR}-${JDIST}; \
-  else \
     ARCH=$(uname -m | sed s/86_//) && \
     if [ $JAVA_MAJOR -eq 11 ]; then JAVA_VERSION="11.0.15_10" ; fi && \
     if [ $JAVA_MAJOR -eq 17 ]; then JAVA_VERSION="17.0.3_7" ; fi && \
@@ -45,7 +35,7 @@ ENV LC_ALL C.UTF-8
 
 RUN \
   yum update --security -y && \
-  if [ "$JDIST" = 'jdk' ]; then JAVA_PKG_TYPE="devel"; else JAVA_PKG_TYPE="headless"; fi && \
+  JAVA_PKG_TYPE="headless" && \
   yum install -y langpacks-en java-${JAVA_MAJOR}-openjdk-${JAVA_PKG_TYPE} && \
   yum clean all && rm -rf /var/cache/yum
 
@@ -60,7 +50,7 @@ ENV LC_ALL C.UTF-8
 
 RUN \
   yum update --security -y && \
-  if [ "$JDIST" = 'jdk' ]; then JAVA_PKG_TYPE="devel"; else JAVA_PKG_TYPE="headless"; fi && \
+  JAVA_PKG_TYPE="headless" && \
   yum install -y langpacks-en java-${JAVA_MAJOR}-openjdk-${JAVA_PKG_TYPE} && \
   yum clean all && rm -rf /var/cache/yum
 
