@@ -23,7 +23,7 @@ RUN set -eux; \
   update-alternatives --install /usr/bin/java java $JAVA_HOME/bin/java 1; \
   yum clean all && rm -rf /var/cache/yum
 
-FROM rockylinux:8.8 AS rockylinux8
+FROM rockylinux:9.3 AS rockylinux8
 
 ARG JDIST
 ARG JAVA_MAJOR
@@ -37,7 +37,7 @@ RUN \
   yum install -y langpacks-en java-${JAVA_MAJOR}-openjdk-headless && \
   yum clean all && rm -rf /var/cache/yum
 
-FROM rockylinux:9.2 AS rockylinux9
+FROM rockylinux:9.3 AS rockylinux9
 
 ARG JDIST
 ARG JAVA_MAJOR
