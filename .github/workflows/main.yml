@@ -2,10 +2,7 @@ name: build
 on:
   push:
     branches:
-      - opsexp-[0-9]+**
-      - OPSEXP-[0-9]+**
-      - dependabot/**
-      - master
+      - '**'
 
 env:
   IMAGE_REGISTRY_NAMESPACE: alfresco
