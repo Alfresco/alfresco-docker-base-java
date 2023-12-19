@@ -37,7 +37,7 @@ RUN \
   yum install -y langpacks-en java-${JAVA_MAJOR}-openjdk-headless && \
   yum clean all && rm -rf /var/cache/yum
 
-FROM rockylinux:9.2 AS rockylinux9
+FROM rockylinux:9 AS rockylinux9
 
 ARG JDIST
 ARG JAVA_MAJOR
