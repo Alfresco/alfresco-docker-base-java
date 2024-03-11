@@ -112,7 +112,7 @@ jobs:
           target: JAVA_BASE_IMAGE
       - name: Push Image to docker.io
         if: contains(github.event.head_commit.message, '[release]') && github.ref_name == 'master'
-        uses: akhilerm/tag-push-action@v2.1.0
+        uses: akhilerm/tag-push-action@v2.2.0
         with:
           src: quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}-${{ steps.vars.outputs.image_anchor }}
           dst: |
