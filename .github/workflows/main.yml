@@ -5,6 +5,10 @@ on:
   schedule:
     - cron: '12 2 * * MON'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name || github.run_id }}
+  cancel-in-progress: true
+
 env:
   IMAGE_REGISTRY_NAMESPACE: alfresco
   IMAGE_REPOSITORY: alfresco-base-java
