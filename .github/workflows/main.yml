@@ -113,6 +113,7 @@ jobs:
           platforms: linux/amd64,linux/arm64/v8
           labels: ${{ steps.vars.outputs.image_labels }}
           target: JAVA_BASE_IMAGE
+          provenance: false
 
       - name: Push Image to docker.io
         if: github.ref_name == 'master'
