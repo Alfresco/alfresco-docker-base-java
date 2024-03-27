@@ -83,7 +83,6 @@ jobs:
           tags: |
             local/${{ env.IMAGE_REPOSITORY }}:ci
           target: JAVA_BASE_IMAGE
-          labels: ${{ steps.vars.outputs.image_labels }}
 
       - name: Test Built Image
         run: |
@@ -114,8 +113,8 @@ jobs:
             quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
           platforms: linux/amd64,linux/arm64/v8
           labels: ${{ steps.vars.outputs.image_labels }}
-          target: JAVA_BASE_IMAGE
           provenance: false
+          target: JAVA_BASE_IMAGE
 
       - name: Push Image to docker.io
         if: github.ref_name == 'master'
