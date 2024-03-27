@@ -19,7 +19,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: Alfresco/alfresco-build-tools/.github/actions/pre-commit@v5.21.0
+      - uses: Alfresco/alfresco-build-tools/.github/actions/pre-commit@ba4451e4bd397a963027ba0f7ca4752a27b68689 # v5.21.0
         with:
           auto-commit: "true"
   build:
@@ -50,11 +50,11 @@ jobs:
               major: 9
             java_major: 11
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
-      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3.0.0
 
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@2b51285047da1547ffb1b2203d8be4c0af6b1f20 # v3.2.0
 
       - id: vars
         name: Compute Image Tag
@@ -72,7 +72,7 @@ jobs:
 
       - name: Login to quay.io
         if: github.actor != 'dependabot[bot]'
-        uses: docker/login-action@v3
+        uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3.1.0
         with:
           registry: quay.io
           username: ${{ secrets.QUAY_USERNAME }}
@@ -80,13 +80,13 @@ jobs:
 
       - name: Login to docker.io
         if: github.ref_name == 'master'
-        uses: docker/login-action@v3
+        uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3.1.0
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Image locally
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@2cdde995de11925a030ce8070c3d77a52ffcf1c0 # v5.3.0
         with:
           load: true
           build-args: |
@@ -115,7 +115,7 @@ jobs:
           fi
 
       - name: Build and Push to quay.io
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@2cdde995de11925a030ce8070c3d77a52ffcf1c0 # v5.3.0
         with:
           push: ${{ github.actor != 'dependabot[bot]' }}
           build-args: |
