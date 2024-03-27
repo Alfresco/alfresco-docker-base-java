@@ -1,6 +1,9 @@
-name: build
+name: Build
+
 on:
   push:
+  schedule:
+    - cron: '12 2 * * MON'
 
 env:
   IMAGE_REGISTRY_NAMESPACE: alfresco
