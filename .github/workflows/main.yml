@@ -14,9 +14,18 @@ env:
   IMAGE_REPOSITORY: alfresco-base-java
 
 jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: Alfresco/alfresco-build-tools/.github/actions/pre-commit@v5.21.0
+        with:
+          auto-commit: "true"
   build:
     name: Java ${{ matrix.java_major }} on ${{ matrix.base_image.flavor }}:${{ matrix.base_image.major }}
     runs-on: ubuntu-latest
+    needs: pre-commit
     strategy:
       matrix:
         base_image:
