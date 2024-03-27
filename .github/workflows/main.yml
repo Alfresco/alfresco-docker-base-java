@@ -50,7 +50,7 @@ jobs:
             echo "image_labels=" >> $GITHUB_OUTPUT
           else
             echo "image_tag=${IMAGE_BASE_NAME}-${GITHUB_REF_NAME//\//-}" >> $GITHUB_OUTPUT
-            echo "image_labels=quay.expires.after=2w" >> $GITHUB_OUTPUT
+            echo "image_labels=quay.expires-after=2w" >> $GITHUB_OUTPUT
           fi
           echo "image_created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
 
