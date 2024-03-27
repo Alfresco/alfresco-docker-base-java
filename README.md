@@ -123,7 +123,7 @@ docker build -t alfresco-base-java . \
 
 #### Release
 
-Push a commit on the default branch including `[release]` in the message to trigger a release.
+New images are built automatically on each new commit on master and on a weekly schedule.
 
 ## Useful information
 
