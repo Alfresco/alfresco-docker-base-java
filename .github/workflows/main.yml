@@ -8,6 +8,7 @@ env:
 
 jobs:
   build:
+    name: Java ${{ matrix.java_major }} on ${{ matrix.base_image.flavor }}:${{ matrix.base_image.major }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -82,6 +83,7 @@ jobs:
           tags: |
             local/${{ env.IMAGE_REPOSITORY }}:ci
           target: JAVA_BASE_IMAGE
+          labels: ${{ steps.vars.outputs.image_labels }}
 
       - name: Test Built Image
         run: |
