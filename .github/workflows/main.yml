@@ -1,14 +1,31 @@
-name: build
+name: Build
+
 on:
   push:
-    branches:
-      - '**'
+  schedule:
+    - cron: '12 2 * * MON'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name || github.run_id }}
+  cancel-in-progress: true
 
 env:
   IMAGE_REGISTRY_NAMESPACE: alfresco
   IMAGE_REPOSITORY: alfresco-base-java
+
 jobs:
-  docker_images:
+  pre-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: Alfresco/alfresco-build-tools/.github/actions/pre-commit@ba4451e4bd397a963027ba0f7ca4752a27b68689 # v5.21.0
+        with:
+          auto-commit: "true"
+  build:
+    name: Java ${{ matrix.java_major }} on ${{ matrix.base_image.flavor }}:${{ matrix.base_image.major }}
+    runs-on: ubuntu-latest
+    needs: pre-commit
     strategy:
       matrix:
         base_image:
@@ -32,46 +49,47 @@ jobs:
               flavor: rockylinux
               major: 9
             java_major: 11
-    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: docker/setup-qemu-action@v3
-      - uses: docker/setup-buildx-action@v3
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3.0.0
+
+      - uses: docker/setup-buildx-action@2b51285047da1547ffb1b2203d8be4c0af6b1f20 # v3.2.0
+
       - id: vars
         name: Compute Image Tag
         env:
           IMAGE_BASE_NAME: ${{ matrix.jdist }}${{ matrix.java_major }}-${{ matrix.base_image.flavor }}${{ matrix.base_image.major }}
         run: |
-          if [[ "${{ github.ref_name }}" != "master" ]]
-          then
-            echo "image_tag=${IMAGE_BASE_NAME}-${GITHUB_REF_NAME//\//-}" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.event.head_commit.message }}" =~ .*\[release\].* ]]
-          then
+          if [[ "${{ github.ref_name }}" == "master" ]]; then
             echo "image_tag=$IMAGE_BASE_NAME" >> $GITHUB_OUTPUT
+            echo "image_labels=" >> $GITHUB_OUTPUT
           else
-            echo "image_tag=${IMAGE_BASE_NAME}-release-candidate" >> $GITHUB_OUTPUT
+            echo "image_tag=${IMAGE_BASE_NAME}-${GITHUB_REF_NAME//\//-}" >> $GITHUB_OUTPUT
+            echo "image_labels=quay.expires-after=2w" >> $GITHUB_OUTPUT
           fi
           echo "image_created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
-          echo "image_anchor=$(date -u +'%Y%m%d%H%M')" >> $GITHUB_OUTPUT
+
       - name: Login to quay.io
         if: github.actor != 'dependabot[bot]'
-        uses: docker/login-action@v3
+        uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3.1.0
         with:
           registry: quay.io
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_PASSWORD }}
+
       - name: Login to docker.io
-        if: contains(github.event.head_commit.message, '[release]') && github.ref_name == 'master'
-        uses: docker/login-action@v3
+        if: github.ref_name == 'master'
+        uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3.1.0
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Build Image locally
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@2cdde995de11925a030ce8070c3d77a52ffcf1c0 # v5.3.0
         with:
           load: true
           build-args: |
-            no-cache=true
             JDIST=${{ matrix.jdist }}
             DISTRIB_NAME=${{ matrix.base_image.flavor }}
             DISTRIB_MAJOR=${{ matrix.base_image.major }}
@@ -81,6 +99,7 @@ jobs:
           tags: |
             local/${{ env.IMAGE_REPOSITORY }}:ci
           target: JAVA_BASE_IMAGE
+
       - name: Test Built Image
         run: |
           echo -n "Checking for java version: "
@@ -94,8 +113,9 @@ jobs:
             echo $BASH_LOGIN
             exit 7
           fi
+
       - name: Build and Push to quay.io
-        uses: docker/build-push-action@v5.3.0
+        uses: docker/build-push-action@2cdde995de11925a030ce8070c3d77a52ffcf1c0 # v5.3.0
         with:
           push: ${{ github.actor != 'dependabot[bot]' }}
           build-args: |
@@ -106,15 +126,17 @@ jobs:
             REVISION=${{ github.run_number }}
             CREATED=${{ steps.vars.outputs.image_created }}
           tags: |
-            quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}-${{ steps.vars.outputs.image_anchor }}
             quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
           platforms: linux/amd64,linux/arm64/v8
+          labels: ${{ steps.vars.outputs.image_labels }}
+          provenance: false
           target: JAVA_BASE_IMAGE
+
       - name: Push Image to docker.io
-        if: contains(github.event.head_commit.message, '[release]') && github.ref_name == 'master'
-        uses: akhilerm/tag-push-action@v2.1.0
-        with:
-          src: quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}-${{ steps.vars.outputs.image_anchor }}
-          dst: |
-            ${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}-${{ steps.vars.outputs.image_anchor }}
-            ${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
+        if: github.ref_name == 'master'
+        env:
+          SRC_IMAGE: quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
+          DST_IMAGE: ${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
+        run: |
+          docker tag ${{ env.SRC_IMAGE }} ${{ env.DST_IMAGE }}
+          docker push ${{ env.DST_IMAGE }}
