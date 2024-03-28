@@ -1,64 +1,62 @@
-# Alfresco Docker Base Java [![Build Status](https://img.shields.io/github/actions/workflow/status/Alfresco/alfresco-docker-base-java/main.yml?branch=master)](https://github.com/Alfresco/alfresco-docker-base-java/actions/workflows/main.yml)
+# Alfresco Docker Base Java [![Build Status](https://img.shields.io/github/actions/workflow/status/Alfresco/alfresco-docker-base-java/main.yml?branch=master)](https://github.com/Alfresco/alfresco-docker-base-java/actions/workflows/main.yml) ![Docker Hub Pulls](https://img.shields.io/docker/pulls/alfresco/alfresco-base-java)
 
-This repository contains the [Dockerfile](Dockerfile) used to create the base
-Java image based on Centos 7, Rocky Linux 8 & Rocky Linux 9 that will be used by Alfresco engineering teams,
-other internal groups in the organization, customers and partners to create Java
-images from.
+This repository provides the base Docker images for Java LTS versions Centos 7,
+Rocky Linux 8/9 that are meant to be used within the Alfresco engineering to
+build Docker images for Java applications.
 
-Please be aware that:
-
-* we are providing jre images based on different OS but at the time of writing
-  only `jre11-centos7` is passing security scan on our private quay.io. You can
-  check for updated security scans results on the quay.io [image
-  page](https://quay.io/repository/alfresco/alfresco-base-java?tab=tags).
-
-## Quickstart
+## Flavours
 
 Choose between one of the available flavours built from this repository:
 
-Java version | Java flavour | OS            | Image tag         | Size
--------------|--------------|---------------|-------------------|-----------------------------
-11           | jre          | Centos 7      | jre11-centos7     | ![jre11-centos7 size][1]
-17           | jre          | Rocky Linux 8 | jre17-rockylinux8 | ![jre17-rockylinux8 size][2]
-11           | jre          | Rocky Linux 8 | jre11-rockylinux8 | ![jre11-rockylinux8 size][3]
-17           | jre          | Rocky Linux 9 | jre17-rockylinux9 | ![jre17-rockylinux9 size][4]
+Java version | Java flavour | OS            | Image ref                                       | Size
+-------------|--------------|---------------|-------------------------------------------------|-----------------------------
+11           | jre          | Centos 7      | `alfresco/alfresco-base-java:jre11-centos7`     | ![jre11-centos7 size][1]
+17           | jre          | Rocky Linux 8 | `alfresco/alfresco-base-java:jre17-rockylinux8` | ![jre17-rockylinux8 size][2]
+11           | jre          | Rocky Linux 8 | `alfresco/alfresco-base-java:jre11-rockylinux8` | ![jre11-rockylinux8 size][3]
+17           | jre          | Rocky Linux 9 | `alfresco/alfresco-base-java:jre17-rockylinux9` | ![jre17-rockylinux9 size][4]
 
 [1]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-centos7
 [2]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre17-rockylinux8
 [3]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-rockylinux8
 [4]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre17-rockylinux9
 
-* [Docker Hub](https://hub.docker.com/r/alfresco/alfresco-base-java) image name: `alfresco/alfresco-base-java`
-* [Quay](https://quay.io/repository/alfresco/alfresco-base-java) image name: `quay.io/alfresco/alfresco-base-java`
+The images are available on:
 
-Example final image: `alfresco/alfresco-base-java:jre11-centos7`
+* [Docker Hub](https://hub.docker.com/r/alfresco/alfresco-base-java), image name: `alfresco/alfresco-base-java`
+* [Quay](https://quay.io/repository/alfresco/alfresco-base-java) (enterprise credentials required), image name: `quay.io/alfresco/alfresco-base-java`
 
-> If you are using this base image in a public repository, please stick to the DockerHub published image.
+> If you are using this base image in a public repository, please use the Docker
+> Hub hosted one
 
 ### Image pinning
 
-These tags get overwritten to always have an up-to-date image and hopefully
-without security issues.
+All the supported tags are mutable because they are periodically rebuilt, to
+always have an up-to-date image without security issues.
 
-For being in control of the image update process, you can use the digest in
-addition to the tag in your `Dockerfile`, for example:
+The suggested approach is to pin the sha256 digest for best reproducibility in
+your `Dockerfile`, for example:
 
 ```dockerfile
-FROM alfresco/alfresco-base-java:jre11-centos7@sha256:59a453e01fd958a3748a2e9b0ca99cdf3410f98eeb245499c7bb31696e35bdf4
+FROM alfresco/alfresco-base-java:re17-rockylinux9@sha256:b749868ceb42bd6f58ae2f143e8c16af4752fad7b40eb1085c014cbfcecb1ffc
 ```
 
-To discover the latest image digest, just run a docker pull and copy the
-`Digest` value.
+To discover the latest image digest, just run `docker pull <image-ref>` and then
+run `docker images --digests`.
 
 ```sh
-docker pull quay.io/alfresco/alfresco-base-java:jre11-centos7
-# jre11-centos7: Pulling from alfresco/alfresco-base-java
-# ...
-# Digest: sha256:59a453e01fd958a3748a2e9b0ca99cdf3410f98eeb245499c7bb31696e35bdf4
-# Status: Downloaded newer image for quay.io/alfresco/alfresco-base-java:jre11-centos7
+$ docker pull alfresco/alfresco-base-java:jre17-rockylinux9
+489e1be6ce56: Already exists
+66defdfd2e26: Download complete
+41c3b80bc03b: Download complete
+be4e433e73b5: Download complete
+docker.io/alfresco/alfresco-base-java:jre17-rockylinux9
+
+$ docker images --digests
+REPOSITORY                    TAG                 DIGEST                                                                    IMAGE ID       CREATED          SIZE
+alfresco/alfresco-base-java   jre17-rockylinux9   sha256:b749868ceb42bd6f58ae2f143e8c16af4752fad7b40eb1085c014cbfcecb1ffc   be4e433e73b5   14 minutes ago   410MB
 ```
 
-This configuration is compatible with [Dependabot](https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically/configuration-options-for-dependency-updates#configuration-options-for-private-registries).
+This configuration approach is compatible with [Dependabot](https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically/configuration-options-for-dependency-updates#configuration-options-for-private-registries).
 
 ## Development
 
@@ -74,41 +72,7 @@ The images built from this repository are named as follow:
 
 `<JAVA_DISTRIBUTION_TYPE><JAVA_MAJOR_VERSION>-<OS_DISTRIBUTION_NAME><OS_DISTRIBUTION_VERSION>`
 
-Previous versions of this repository built images using the naming convention:
-
-`<JAVA_VERSION>[-centos-7]`
-
-Where JAVA_VERSION could be many different things (major version, full version, full version with digest...)
-
-> Previous tags are still available but are not getting updates anymore
-
-### Versioning
-
-The `alfresco-docker-base-java` image can be generated in multiple flavors by mixing OpenJDK versions, distributions and OS.
-
-#### Java
-
-Either Java 11 or Java 17 can be used to build images using the `JAVA_MAJOR` build argument.
-
-> OpenJDK versions below can be built from the JRE distribution (using the JDIST build argument)
-
-##### Legacy OpenJDK Java 11
-
-For legacy Java 11 builds, using the OpenJDK version from the CentOS distro which includes the latest security patches.
-
-##### OpenJDK Java 17
-
-For Java 17 builds, using the OpenJDK version from the CentOS distro which includes the latest security patches, this is the recommended option.
-
-#### OS
-
-The possible combination of OS versions are available:
-
-* centos 7
-* rockylinux 8
-* rockylinux 9
-
-### How to build an image locally
+### Build an image locally
 
 To build a local version of the base java image follow the instructions below:
 
@@ -121,19 +85,20 @@ docker build -t alfresco-base-java . \
   --no-cache --target JAVA_BASE_IMAGE
 ```
 
-#### Release
+### Release
 
 New images are built automatically on each new commit on master and on a weekly schedule.
 
-## Useful information
+## Glossary
 
-Images built from this repository are more likely to be used as a
-[base image](https://docs.docker.com/glossary/#base-image) in a Dockerfile.
+* What is a [base image](https://docs.docker.com/glossary/#base-image).
 
-For reference, see the documentation on [layers](https://docs.docker.com/storage/storagedriver/#container-and-layers),
-the [VOLUME](https://docs.docker.com/engine/reference/builder/#volume) instruction
-and [best practices with Volumes](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#volume).
+## Downstream projects
 
-### Who is using this base image
+Known projects currently using the base image:
 
 * [Alfresco Base Tomcat](https://github.com/Alfresco/alfresco-docker-base-tomcat/blob/master/Dockerfile)
+* [Alfresco ActiveMQ](https://github.com/Alfresco/alfresco-docker-activemq)
+* [Alfresco Transform Core](https://github.com/Alfresco/alfresco-transform-core)
+* [Alfresco Search Services](https://github.com/Alfresco/SearchServices)
+* [Alfresco Connector for Hyland Experience Insight](https://github.com/Alfresco/hxinsight-connector)
