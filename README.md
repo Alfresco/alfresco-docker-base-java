@@ -56,7 +56,7 @@ REPOSITORY                    TAG                 DIGEST                        
 alfresco/alfresco-base-java   jre17-rockylinux9   sha256:b749868ceb42bd6f58ae2f143e8c16af4752fad7b40eb1085c014cbfcecb1ffc   be4e433e73b5   14 minutes ago   410MB
 ```
 
-This configuration approach is compatible with [Dependabot](https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically/configuration-options-for-dependency-updates#configuration-options-for-private-registries).
+This configuration approach is compatible with [Dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file#docker).
 
 ## Development
 
