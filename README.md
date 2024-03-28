@@ -25,19 +25,16 @@ The images are available on:
 * [Docker Hub](https://hub.docker.com/r/alfresco/alfresco-base-java), image name: `alfresco/alfresco-base-java`
 * [Quay](https://quay.io/repository/alfresco/alfresco-base-java) (enterprise credentials required), image name: `quay.io/alfresco/alfresco-base-java`
 
-> If you are using this base image in a public repository, please use the Docker
-> Hub hosted one
-
 ### Image pinning
 
-All the supported tags are mutable because they are periodically rebuilt, to
-always have an up-to-date image without security issues.
+To ensure the propagation of security fixes from upstream projects, all
+supported tags are mutable and undergo periodic rebuilding.
 
 The suggested approach is to pin the sha256 digest for best reproducibility in
 your `Dockerfile`, for example:
 
 ```dockerfile
-FROM alfresco/alfresco-base-java:re17-rockylinux9@sha256:b749868ceb42bd6f58ae2f143e8c16af4752fad7b40eb1085c014cbfcecb1ffc
+FROM alfresco/alfresco-base-java:jre17-rockylinux9@sha256:b749868ceb42bd6f58ae2f143e8c16af4752fad7b40eb1085c014cbfcecb1ffc
 ```
 
 To discover the latest image digest, just run `docker pull <image-ref>` and then
