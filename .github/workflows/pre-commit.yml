@@ -9,6 +9,6 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: Alfresco/alfresco-build-tools/.github/actions/pre-commit@ba4451e4bd397a963027ba0f7ca4752a27b68689 # v5.21.0
+      - uses: Alfresco/alfresco-build-tools/.github/actions/pre-commit@9558268b491821a4cfce1f11d4c8f6e56adc8496 # v5.30.0
         with:
           auto-commit: "true"
