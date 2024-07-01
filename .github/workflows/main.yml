@@ -25,8 +25,6 @@ jobs:
       fail-fast: ${{ github.ref_name == 'master' && false || true }}
       matrix:
         base_image:
-          - flavor: centos
-            major: 7
           - flavor: rockylinux
             major: 8
           - flavor: rockylinux
@@ -37,10 +35,6 @@ jobs:
         jdist:
           - jre
         exclude:
-          - base_image:
-              flavor: centos
-              major: 7
-            java_major: 17
           - base_image:
               flavor: rockylinux
               major: 9
