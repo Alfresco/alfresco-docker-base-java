@@ -1,7 +1,7 @@
 # Alfresco Docker Base Java [![Build Status](https://img.shields.io/github/actions/workflow/status/Alfresco/alfresco-docker-base-java/main.yml?branch=master)](https://github.com/Alfresco/alfresco-docker-base-java/actions/workflows/main.yml) ![Docker Hub Pulls](https://img.shields.io/docker/pulls/alfresco/alfresco-base-java)
 
-This repository provides the base Docker images for Java LTS versions Centos 7,
-Rocky Linux 8/9 that are meant to be used within the Alfresco engineering to
+This repository provides the base Docker images for Java LTS versions
+Rocky Linux 8 and 9 that are meant to be used within the Alfresco engineering to
 build Docker images for Java applications.
 
 ## Flavours
@@ -10,15 +10,13 @@ Choose between one of the available flavours built from this repository:
 
 Java version | Java flavour | OS            | Image ref                                       | Size
 -------------|--------------|---------------|-------------------------------------------------|-----------------------------
-11           | jre          | Centos 7      | `alfresco/alfresco-base-java:jre11-centos7`     | ![jre11-centos7 size][1]
 17           | jre          | Rocky Linux 8 | `alfresco/alfresco-base-java:jre17-rockylinux8` | ![jre17-rockylinux8 size][2]
 11           | jre          | Rocky Linux 8 | `alfresco/alfresco-base-java:jre11-rockylinux8` | ![jre11-rockylinux8 size][3]
 17           | jre          | Rocky Linux 9 | `alfresco/alfresco-base-java:jre17-rockylinux9` | ![jre17-rockylinux9 size][4]
 
-[1]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-centos7
-[2]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre17-rockylinux8
-[3]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-rockylinux8
-[4]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre17-rockylinux9
+[1]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre17-rockylinux8
+[2]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-rockylinux8
+[3]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre17-rockylinux9
 
 The images are available on:
 
