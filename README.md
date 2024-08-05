@@ -28,6 +28,8 @@ The images are available on:
 To ensure the propagation of security fixes from upstream projects, all
 supported tags are mutable and undergo periodic rebuilding.
 
+#### Pin by digest
+
 The suggested approach is to pin the sha256 digest for best reproducibility in
 your `Dockerfile`, for example:
 
@@ -52,6 +54,17 @@ alfresco/alfresco-base-java   jre17-rockylinux9   sha256:b749868ceb42bd6f58ae2f1
 ```
 
 This configuration approach is compatible with [Dependabot](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file#docker).
+
+#### Pin by immutable tags
+
+Additional tags are being pushed for master releases, following the pattern
+`$tag-YYMMDDHHMM`. Those tags are never overwritten and can be used as a more
+intuitive approach. You can still use it in combination with digest for
+increased security.
+
+> Quay.io doesn't retain previous images when a tag is overwritten, so using an
+> immutable tag is mandatory in order to avoid getting `Manifest not found`
+> error once a mutable tag get updated.
 
 ## Development
 
