@@ -123,7 +123,7 @@ jobs:
           provenance: false
           target: JAVA_BASE_IMAGE
 
-      - name: Push additional anchored tag to quay.io
+      - name: Push additional timestamped tag to quay.io
         if: github.ref_name == 'master'
         env:
           SRC_IMAGE: quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
