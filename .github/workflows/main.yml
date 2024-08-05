@@ -59,6 +59,7 @@ jobs:
             echo "image_labels=quay.expires-after=2w" >> $GITHUB_OUTPUT
           fi
           echo "image_created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+          echo "timestamp=$(date -u +'%Y%m%d%H%M')" >> $GITHUB_OUTPUT
 
       - name: Login to quay.io
         if: github.actor != 'dependabot[bot]'
@@ -117,6 +118,7 @@ jobs:
             CREATED=${{ steps.vars.outputs.image_created }}
           tags: |
             quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
+            quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}-${{ steps.vars.outputs.timestamp }}
           platforms: linux/amd64,linux/arm64/v8
           labels: ${{ steps.vars.outputs.image_labels }}
           provenance: false
@@ -129,3 +131,4 @@ jobs:
           DST_IMAGE: ${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
         run: |
           docker buildx imagetools create ${{ env.SRC_IMAGE }} -t ${{ env.DST_IMAGE }}
+          docker buildx imagetools create ${{ env.SRC_IMAGE }}-${{ steps.vars.outputs.timestamp }} -t ${{ env.DST_IMAGE }}-${{ steps.vars.outputs.timestamp }}
