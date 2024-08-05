@@ -120,7 +120,7 @@ jobs:
             quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
             quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}-${{ steps.vars.outputs.timestamp }}
           platforms: linux/amd64,linux/arm64/v8
-          labels: | # one for each built tag
+          labels: |
             ${{ steps.vars.outputs.image_labels }}
             ${{ steps.vars.outputs.image_labels }}
           provenance: false
