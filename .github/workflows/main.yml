@@ -118,11 +118,17 @@ jobs:
             CREATED=${{ steps.vars.outputs.image_created }}
           tags: |
             quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
-            quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}-${{ steps.vars.outputs.timestamp }}
           platforms: linux/amd64,linux/arm64/v8
           labels: ${{ steps.vars.outputs.image_labels }}
           provenance: false
           target: JAVA_BASE_IMAGE
+
+      - name: Push additional image to quay.io
+        env:
+          SRC_IMAGE: quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
+          DST_IMAGE: quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}-${{ steps.vars.outputs.timestamp }}
+        run: |
+          docker buildx imagetools create ${{ env.SRC_IMAGE }} -t ${{ env.DST_IMAGE }}
 
       - name: Push Image to docker.io
         if: github.ref_name == 'master'
