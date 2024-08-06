@@ -136,6 +136,7 @@ jobs:
         env:
           SRC_IMAGE: quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
           DST_IMAGE: ${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
-        run: |
-          docker buildx imagetools create ${{ env.SRC_IMAGE }} -t ${{ env.DST_IMAGE }}
-          docker buildx imagetools create ${{ env.SRC_IMAGE }} -t ${{ env.DST_IMAGE }}-${{ steps.vars.outputs.timestamp }}
+        run: >-
+          docker buildx imagetools create ${{ env.SRC_IMAGE }}
+          -t ${{ env.DST_IMAGE }}
+          -t ${{ env.DST_IMAGE }}-${{ steps.vars.outputs.timestamp }}
