@@ -59,6 +59,7 @@ jobs:
             echo "image_labels=quay.expires-after=2w" >> $GITHUB_OUTPUT
           fi
           echo "image_created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
+          echo "timestamp=$(date -u +'%Y%m%d%H%M')" >> $GITHUB_OUTPUT
 
       - name: Login to quay.io
         if: github.actor != 'dependabot[bot]'
@@ -122,10 +123,20 @@ jobs:
           provenance: false
           target: JAVA_BASE_IMAGE
 
-      - name: Push Image to docker.io
+      - name: Push additional timestamped tag to quay.io
+        if: github.ref_name == 'master'
+        env:
+          SRC_IMAGE: quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
+          DST_IMAGE: quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}-${{ steps.vars.outputs.timestamp }}
+        run: |
+          docker buildx imagetools create ${{ env.SRC_IMAGE }} -t ${{ env.DST_IMAGE }}
+
+      - name: Push images to docker.io
         if: github.ref_name == 'master'
         env:
           SRC_IMAGE: quay.io/${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
           DST_IMAGE: ${{ env.IMAGE_REGISTRY_NAMESPACE }}/${{ env.IMAGE_REPOSITORY }}:${{ steps.vars.outputs.image_tag }}
-        run: |
-          docker buildx imagetools create ${{ env.SRC_IMAGE }} -t ${{ env.DST_IMAGE }}
+        run: >-
+          docker buildx imagetools create ${{ env.SRC_IMAGE }}
+          -t ${{ env.DST_IMAGE }}
+          -t ${{ env.DST_IMAGE }}-${{ steps.vars.outputs.timestamp }}
