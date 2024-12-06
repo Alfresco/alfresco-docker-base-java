@@ -32,6 +32,7 @@ jobs:
         java_major:
           - 11
           - 17
+          - 21
         jdist:
           - jre
         exclude:
