@@ -7,9 +7,9 @@ FROM rockylinux/rockylinux:9 AS rockylinux8
 ARG JDIST
 ARG JAVA_MAJOR
 
-ENV JAVA_HOME=/etc/alternatives/jre
-ENV LANG=C.UTF-8
-ENV LC_ALL=C.UTF-8
+ENV JAVA_HOME=/etc/alternatives/jre \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8
 
 RUN \
   dnf update --security -y && \
@@ -21,9 +21,9 @@ FROM rockylinux/rockylinux:9 AS rockylinux9
 ARG JDIST
 ARG JAVA_MAJOR
 
-ENV JAVA_HOME /etc/alternatives/jre
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
+ENV JAVA_HOME=/etc/alternatives/jre \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8
 
 RUN \
   dnf update --security -y && \
