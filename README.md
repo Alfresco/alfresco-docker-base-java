@@ -14,11 +14,13 @@ Java version | Java flavour | OS            | Image ref                         
 11           | jre          | Rocky Linux 8 | `alfresco/alfresco-base-java:jre11-rockylinux8` | ![jre11-rockylinux8 size][2]
 17           | jre          | Rocky Linux 9 | `alfresco/alfresco-base-java:jre17-rockylinux9` | ![jre17-rockylinux9 size][3]
 21           | jre          | Rocky Linux 9 | `alfresco/alfresco-base-java:jre21-rockylinux9` | ![jre21-rockylinux9 size][4]
+25           | jre          | Rocky Linux 9 | `alfresco/alfresco-base-java:jre25-rockylinux9` | ![jre25-rockylinux9 size][5]
 
 [1]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre17-rockylinux8
 [2]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-rockylinux8
 [3]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre17-rockylinux9
 [4]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre21-rockylinux9
+[5]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre25-rockylinux9
 
 The images are available on:
 
