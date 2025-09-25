@@ -33,6 +33,7 @@ jobs:
           - 11
           - 17
           - 21
+          - 25
         jdist:
           - jre
         exclude:
@@ -44,6 +45,10 @@ jobs:
               flavor: rockylinux
               major: 8
             java_major: 21
+          - base_image:
+              flavor: rockylinux
+              major: 8
+            java_major: 25
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
@@ -94,7 +99,7 @@ jobs:
             CREATED=${{ steps.vars.outputs.image_created }}
           tags: |
             local/${{ env.IMAGE_REPOSITORY }}:ci
-          target: JAVA_BASE_IMAGE
+          target: java_base_image
 
       - name: Test Built Image
         run: |
@@ -126,7 +131,7 @@ jobs:
           platforms: linux/amd64,linux/arm64/v8
           labels: ${{ steps.vars.outputs.image_labels }}
           provenance: false
-          target: JAVA_BASE_IMAGE
+          target: java_base_image
 
       - name: Push additional timestamped tag to quay.io
         if: github.ref_name == 'master'
