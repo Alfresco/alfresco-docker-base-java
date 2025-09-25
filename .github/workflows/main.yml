@@ -94,7 +94,7 @@ jobs:
             CREATED=${{ steps.vars.outputs.image_created }}
           tags: |
             local/${{ env.IMAGE_REPOSITORY }}:ci
-          target: JAVA_BASE_IMAGE
+          target: java_base_image
 
       - name: Test Built Image
         run: |
@@ -126,7 +126,7 @@ jobs:
           platforms: linux/amd64,linux/arm64/v8
           labels: ${{ steps.vars.outputs.image_labels }}
           provenance: false
-          target: JAVA_BASE_IMAGE
+          target: java_base_image
 
       - name: Push additional timestamped tag to quay.io
         if: github.ref_name == 'master'

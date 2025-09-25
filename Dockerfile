@@ -30,7 +30,7 @@ RUN \
   dnf install -y langpacks-en java-${JAVA_MAJOR}-openjdk-headless && \
   dnf clean all && rm -rf /var/cache/dnf
 
-FROM ${DISTRIB_NAME}${DISTRIB_MAJOR} AS JAVA_BASE_IMAGE
+FROM ${DISTRIB_NAME}${DISTRIB_MAJOR} AS java_base_image
 ARG DISTRIB_NAME
 ARG DISTRIB_MAJOR
 ARG JAVA_MAJOR
