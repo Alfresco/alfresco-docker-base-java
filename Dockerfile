@@ -12,9 +12,9 @@ ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 
 RUN \
-  yum update --security -y && \
-  yum install -y langpacks-en java-${JAVA_MAJOR}-openjdk-headless && \
-  yum clean all && rm -rf /var/cache/yum
+  dnf update --security -y && \
+  dnf install -y langpacks-en java-${JAVA_MAJOR}-openjdk-headless && \
+  dnf clean all && rm -rf /var/cache/dnf
 
 FROM rockylinux/rockylinux:9 AS rockylinux9
 
@@ -26,9 +26,9 @@ ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
 RUN \
-  yum update --security -y && \
-  yum install -y langpacks-en java-${JAVA_MAJOR}-openjdk-headless && \
-  yum clean all && rm -rf /var/cache/yum
+  dnf update --security -y && \
+  dnf install -y langpacks-en java-${JAVA_MAJOR}-openjdk-headless && \
+  dnf clean all && rm -rf /var/cache/dnf
 
 FROM ${DISTRIB_NAME}${DISTRIB_MAJOR} AS JAVA_BASE_IMAGE
 ARG DISTRIB_NAME
