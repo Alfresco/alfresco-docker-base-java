@@ -2,7 +2,7 @@
 ARG DISTRIB_NAME
 ARG DISTRIB_MAJOR
 
-FROM rockylinux/rockylinux:9 AS rockylinux8
+FROM rockylinux:8 AS rockylinux8
 
 ARG JDIST
 ARG JAVA_MAJOR
