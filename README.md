@@ -16,6 +16,8 @@ Java version | Java flavour | OS            | Image ref                         
 21           | jre          | Rocky Linux 9 | `alfresco/alfresco-base-java:jre21-rockylinux9` | ![jre21-rockylinux9 size][4]
 25           | jre          | Rocky Linux 9 | `alfresco/alfresco-base-java:jre25-rockylinux9` | ![jre25-rockylinux9 size][5]
 
+> **Note:** Java 25 uses Eclipse Temurin builds from the Adoptium project instead of distribution packages, as OpenJDK 25 packages are not yet available in Rocky Linux repositories.
+
 [1]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre17-rockylinux8
 [2]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre11-rockylinux8
 [3]: https://img.shields.io/docker/image-size/alfresco/alfresco-base-java/jre17-rockylinux9
