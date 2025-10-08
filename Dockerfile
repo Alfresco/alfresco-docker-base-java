@@ -44,6 +44,7 @@ RUN if [ "$JAVA_MAJOR" = "25" ]; then \
     tar -xzf /tmp/temurin.tar.gz -C /opt/java --strip-components=1 && \
     rm /tmp/temurin.tar.gz && \
     ln -sf /opt/java/bin/java /usr/bin/java && \
+    mkdir -p /usr/lib/jvm && \
     ln -sf /opt/java /usr/lib/jvm/java-${JAVA_MAJOR}-openjdk && \
     mkdir -p /etc/alternatives && \
     ln -sf /opt/java /etc/alternatives/jre; \
