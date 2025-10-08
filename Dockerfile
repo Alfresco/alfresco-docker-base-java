@@ -2,7 +2,7 @@
 ARG DISTRIB_NAME
 ARG DISTRIB_MAJOR
 
-FROM rockylinux:8.8 AS rockylinux8
+FROM rockylinux/rockylinux:8 AS rockylinux8
 
 ARG JDIST
 ARG JAVA_MAJOR
@@ -16,7 +16,7 @@ RUN \
   yum install -y langpacks-en java-${JAVA_MAJOR}-openjdk-headless && \
   yum clean all && rm -rf /var/cache/yum
 
-FROM rockylinux:9 AS rockylinux9
+FROM rockylinux/rockylinux:9 AS rockylinux9
 
 ARG JDIST
 ARG JAVA_MAJOR
