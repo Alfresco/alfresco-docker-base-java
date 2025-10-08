@@ -27,6 +27,7 @@ ENV LC_ALL=C.UTF-8
 
 # Install common packages
 RUN \
+  yum makecache --refresh && \
   yum update --security -y && \
   yum install -y langpacks-en ca-certificates wget tar gzip && \
   yum clean all && rm -rf /var/cache/yum
