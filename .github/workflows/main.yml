@@ -105,12 +105,14 @@ jobs:
         run: |
           echo -n "Checking for java version: "
           docker run local/${{ env.IMAGE_REPOSITORY }}:ci java -version 2>&1 \
-          | grep -i 'version \"${{ matrix.java_major }}\.'
+          | grep -i 'version \"${{ matrix.java_major }}' || { echo 'expected java version not found'; exit 5; }
+
           echo -n "Checking shell environment: "
           BASH_LOGIN="$(docker run local/${{ env.IMAGE_REPOSITORY }}:ci /bin/bash 2>&1 > /dev/null || true)"
           if [ -z "$BASH_LOGIN" ]; then
             echo ok
-          else echo 'bash reported an error'
+          else
+            echo 'bash reported an error:'
             echo $BASH_LOGIN
             exit 7
           fi
