@@ -21,14 +21,36 @@ FROM rockylinux:9 AS rockylinux9
 ARG JDIST
 ARG JAVA_MAJOR
 
-ENV JAVA_HOME /etc/alternatives/jre
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
+ENV JAVA_HOME=/etc/alternatives/jre
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
 
+# Install common packages
 RUN \
   yum update --security -y && \
-  yum install -y langpacks-en java-${JAVA_MAJOR}-openjdk-headless && \
+  yum install -y langpacks-en ca-certificates wget tar gzip && \
   yum clean all && rm -rf /var/cache/yum
+
+# For Java 25, use Temurin binaries; for others, use distribution packages
+SHELL ["/bin/sh", "-o", "pipefail", "-c"]
+RUN if [ "$JAVA_MAJOR" = "25" ]; then \
+    # Download and install Temurin JDK from Eclipse Adoptium
+    ARCH=$(uname -m | sed 's/x86_64/x64/g' | sed 's/aarch64/aarch64/g') && \
+    TEMURIN_URL="https://api.adoptium.net/v3/binary/latest/${JAVA_MAJOR}/ga/linux/${ARCH}/${JDIST}/hotspot/normal/eclipse" && \
+    echo "Downloading Temurin JDK ${JAVA_MAJOR} for ${ARCH} from ${TEMURIN_URL}" && \
+    wget --progress=dot:giga -O /tmp/temurin.tar.gz "${TEMURIN_URL}" && \
+    mkdir -p /opt/java && \
+    tar -xzf /tmp/temurin.tar.gz -C /opt/java --strip-components=1 && \
+    rm /tmp/temurin.tar.gz && \
+    ln -sf /opt/java/bin/java /usr/bin/java && \
+    ln -sf /opt/java /usr/lib/jvm/java-${JAVA_MAJOR}-openjdk && \
+    mkdir -p /etc/alternatives && \
+    ln -sf /opt/java /etc/alternatives/jre; \
+  else \
+    # Use distribution packages for other Java versions
+    yum install -y java-${JAVA_MAJOR}-openjdk-headless && \
+    yum clean all && rm -rf /var/cache/yum; \
+  fi
 
 FROM ${DISTRIB_NAME}${DISTRIB_MAJOR} AS JAVA_BASE_IMAGE
 ARG DISTRIB_NAME
