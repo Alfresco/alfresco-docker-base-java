@@ -1,6 +1,6 @@
 # Alfresco Base Java Image
-ARG DISTRIB_NAME
-ARG DISTRIB_MAJOR
+ARG DISTRIB_NAME=rockylinux/rockylinux
+ARG DISTRIB_MAJOR=9
 
 FROM rockylinux/rockylinux:8 AS rockylinux8
 
