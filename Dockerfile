@@ -51,6 +51,7 @@ RUN if [ "$JAVA_MAJOR" = "25" ]; then \
     ln -sf /opt/java /etc/alternatives/jre; \
   else \
     echo "Installing distribution packages for Java ${JAVA_MAJOR}" && \
+    dnf makecache --refresh && \
     dnf install -y java-${JAVA_MAJOR}-openjdk-headless && \
     dnf clean all && rm -rf /var/cache/dnf; \
   fi
