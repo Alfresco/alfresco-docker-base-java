@@ -39,7 +39,7 @@ RUN if [ "$JAVA_MAJOR" = "25" ]; then \
     # Download and install Temurin JDK from Eclipse Adoptium
     ARCH=$(uname -m | sed 's/x86_64/x64/g' | sed 's/aarch64/aarch64/g') && \
     TEMURIN_URL="https://api.adoptium.net/v3/binary/latest/${JAVA_MAJOR}/ga/linux/${ARCH}/${JDIST}/hotspot/normal/eclipse" && \
-    echo "Downloading Temurin JDK ${JAVA_MAJOR} for ${ARCH} from ${TEMURIN_URL}" && \
+    echo "Installing Temurin JDK ${JAVA_MAJOR} for ${ARCH} from ${TEMURIN_URL}" && \
     wget --progress=dot:giga -O /tmp/temurin.tar.gz "${TEMURIN_URL}" && \
     mkdir -p /opt/java && \
     tar -xzf /tmp/temurin.tar.gz -C /opt/java --strip-components=1 && \
@@ -50,7 +50,7 @@ RUN if [ "$JAVA_MAJOR" = "25" ]; then \
     mkdir -p /etc/alternatives && \
     ln -sf /opt/java /etc/alternatives/jre; \
   else \
-    # Use distribution packages for other Java versions
+    echo "Installing distribution packages for Java ${JAVA_MAJOR}" && \
     dnf install -y java-${JAVA_MAJOR}-openjdk-headless && \
     dnf clean all && rm -rf /var/cache/dnf; \
   fi
