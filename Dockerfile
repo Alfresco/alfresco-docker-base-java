@@ -12,10 +12,9 @@ ENV JAVA_HOME=/etc/alternatives/jre \
     LC_ALL=C.UTF-8
 
 RUN \
-  dnf makecache --refresh && \
   dnf update --security -y && \
   dnf install -y langpacks-en java-${JAVA_MAJOR}-openjdk-headless && \
-  dnf clean all && rm -rf /var/cache/dnf
+  dnf clean all
 
 FROM rockylinux/rockylinux:9 AS rockylinux9
 
@@ -28,10 +27,9 @@ ENV JAVA_HOME=/etc/alternatives/jre \
 
 # Install common packages
 RUN \
-  dnf makecache --refresh && \
   dnf update --security -y && \
   dnf install -y langpacks-en ca-certificates wget tar gzip && \
-  dnf clean all && rm -rf /var/cache/dnf
+  dnf clean all
 
 # For Java 25, use Temurin binaries; for others, use distribution packages
 SHELL ["/bin/sh", "-o", "pipefail", "-c"]
@@ -51,9 +49,8 @@ RUN if [ "$JAVA_MAJOR" = "25" ]; then \
     ln -sf /opt/java /etc/alternatives/jre; \
   else \
     echo "Installing distribution packages for Java ${JAVA_MAJOR}" && \
-    dnf makecache --refresh && \
     dnf install -y java-${JAVA_MAJOR}-openjdk-headless && \
-    dnf clean all && rm -rf /var/cache/dnf; \
+    dnf clean all; \
   fi
 
 FROM ${DISTRIB_NAME}${DISTRIB_MAJOR} AS java_base_image
