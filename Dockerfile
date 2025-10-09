@@ -35,7 +35,7 @@ RUN \
 SHELL ["/bin/sh", "-o", "pipefail", "-c"]
 RUN if [ "$JAVA_MAJOR" = "25" ]; then \
     # Download and install Temurin JDK from Eclipse Adoptium
-    ARCH=$(uname -m | sed 's/x86_64/x64/g' | sed 's/aarch64/aarch64/g') && \
+    ARCH=$(uname -m | sed 's/x86_64/x64/g') && \
     TEMURIN_URL="https://api.adoptium.net/v3/binary/latest/${JAVA_MAJOR}/ga/linux/${ARCH}/${JDIST}/hotspot/normal/eclipse" && \
     echo "Installing Temurin JDK ${JAVA_MAJOR} for ${ARCH} from ${TEMURIN_URL}" && \
     wget --progress=dot:giga -O /tmp/temurin.tar.gz "${TEMURIN_URL}" && \
