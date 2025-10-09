@@ -49,8 +49,8 @@ RUN if [ "$JAVA_MAJOR" = "25" ]; then \
     ln -sf /opt/java /etc/alternatives/jre; \
   else \
     # Use distribution packages for other Java versions
-    yum install -y java-${JAVA_MAJOR}-openjdk-headless && \
-    yum clean all && rm -rf /var/cache/yum; \
+    dnf install -y java-${JAVA_MAJOR}-openjdk-headless && \
+    dnf clean all && rm -rf /var/cache/dnf; \
   fi
 
 FROM ${DISTRIB_NAME}${DISTRIB_MAJOR} AS java_base_image
