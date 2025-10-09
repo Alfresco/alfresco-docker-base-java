@@ -22,7 +22,7 @@ jobs:
     name: Java ${{ matrix.java_major }} on ${{ matrix.base_image.flavor }}:${{ matrix.base_image.major }}
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: ${{ github.ref_name == 'master' && false || true }}
+      fail-fast: false
       matrix:
         base_image:
           - flavor: rockylinux
