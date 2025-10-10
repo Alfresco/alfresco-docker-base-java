@@ -22,7 +22,7 @@ jobs:
     name: Java ${{ matrix.java_major }} on ${{ matrix.base_image.flavor }}:${{ matrix.base_image.major }}
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: ${{ github.ref_name == 'master' && false || true }}
+      fail-fast: false
       matrix:
         base_image:
           - flavor: rockylinux
@@ -33,6 +33,7 @@ jobs:
           - 11
           - 17
           - 21
+          - 25
         jdist:
           - jre
         exclude:
@@ -44,6 +45,10 @@ jobs:
               flavor: rockylinux
               major: 8
             java_major: 21
+          - base_image:
+              flavor: rockylinux
+              major: 8
+            java_major: 25
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
@@ -94,18 +99,20 @@ jobs:
             CREATED=${{ steps.vars.outputs.image_created }}
           tags: |
             local/${{ env.IMAGE_REPOSITORY }}:ci
-          target: JAVA_BASE_IMAGE
+          target: java_base_image
 
       - name: Test Built Image
         run: |
           echo -n "Checking for java version: "
           docker run local/${{ env.IMAGE_REPOSITORY }}:ci java -version 2>&1 \
-          | grep -i 'version \"${{ matrix.java_major }}\.'
+          | grep -i 'version \"${{ matrix.java_major }}' || { echo 'expected java version not found'; exit 5; }
+
           echo -n "Checking shell environment: "
           BASH_LOGIN="$(docker run local/${{ env.IMAGE_REPOSITORY }}:ci /bin/bash 2>&1 > /dev/null || true)"
           if [ -z "$BASH_LOGIN" ]; then
             echo ok
-          else echo 'bash reported an error'
+          else
+            echo 'bash reported an error:'
             echo $BASH_LOGIN
             exit 7
           fi
@@ -126,7 +133,7 @@ jobs:
           platforms: linux/amd64,linux/arm64/v8
           labels: ${{ steps.vars.outputs.image_labels }}
           provenance: false
-          target: JAVA_BASE_IMAGE
+          target: java_base_image
 
       - name: Push additional timestamped tag to quay.io
         if: github.ref_name == 'master'
