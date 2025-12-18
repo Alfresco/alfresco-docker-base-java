@@ -18,6 +18,7 @@ RUN <<EOC
   echo "Installing common distribution packages"
   dnf update --security -y
   dnf install -y langpacks-en ca-certificates
+  false
   dnf clean all
 EOC
 
