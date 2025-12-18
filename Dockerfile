@@ -17,13 +17,13 @@ SHELL ["/bin/sh", "-o", "pipefail", "-c"]
 RUN <<EOC
   echo "Installing common distribution packages"
   dnf update --security -y
-  dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-${DISTRIB_MAJOR}.noarch.rpm
   dnf install -y langpacks-en ca-certificates
   dnf clean all
 EOC
 
 RUN <<EOC
   echo "Installing distribution packages for Java ${JAVA_MAJOR}"
+  dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-${DISTRIB_MAJOR}.noarch.rpm
   dnf install -y java-${JAVA_MAJOR}-openjdk-headless
   dnf clean all
 EOC
