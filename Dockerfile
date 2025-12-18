@@ -12,7 +12,7 @@ ENV JAVA_HOME=/etc/alternatives/jre \
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8
 
-SHELL ["/bin/sh", "-o", "pipefail", "-c"]
+SHELL ["/bin/sh", "-eo", "pipefail", "-c"]
 
 RUN <<EOC
   echo "Installing common distribution packages"
