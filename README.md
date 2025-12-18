@@ -101,7 +101,7 @@ docker build -t alfresco-base-java . \
   --build-arg DISTRIB_MAJOR=$DISTRIB_MAJOR \
   --build-arg JAVA_MAJOR=$JAVA_MAJOR \
   --build-arg JDIST=$JDIST \
-  --no-cache --target java_base_image
+  --no-cache
 ```
 
 ### Release
