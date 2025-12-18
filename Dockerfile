@@ -17,7 +17,7 @@ SHELL ["/bin/sh", "-o", "pipefail", "-c"]
 RUN <<EOC
   echo "Installing common distribution packages"
   dnf update --security -y
-  dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-${DISTRIB_MAJOR}.noarch.rpm
+  dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-${DISTRIB_MAJOR}.noarch.rpm
   dnf install -y langpacks-en ca-certificates
   dnf clean all
 EOC
