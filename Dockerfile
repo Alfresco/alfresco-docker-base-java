@@ -15,7 +15,7 @@ SHELL ["/bin/sh", "-euo", "pipefail", "-c"]
 
 RUN <<EOC
   echo "Installing common distribution packages"
-  dnf update --security -y
+  dnf upgrade -y
   dnf install -y langpacks-en ca-certificates
   dnf clean all
 EOC
