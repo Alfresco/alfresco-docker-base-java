@@ -4,7 +4,7 @@ ARG BASE_IMAGE_TAG=9
 
 FROM ${BASE_IMAGE_NAME}:${BASE_IMAGE_TAG}
 
-ARG BASE_IMAGE_TAG
+ARG DISTRIB_MAJOR
 ARG JAVA_MAJOR
 
 ENV JAVA_HOME=/etc/alternatives/jre \
@@ -22,7 +22,7 @@ EOC
 
 RUN <<EOC
   echo "Installing distribution packages for Java ${JAVA_MAJOR}"
-  dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-${BASE_IMAGE_TAG}.noarch.rpm
+  dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-${DISTRIB_MAJOR}.noarch.rpm
   dnf install -y java-${JAVA_MAJOR}-openjdk-headless
   dnf clean all
 EOC
