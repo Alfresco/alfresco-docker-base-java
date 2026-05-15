@@ -89,8 +89,8 @@ jobs:
           load: true
           build-args: |
             JDIST=${{ matrix.jdist }}
-            DISTRIB_NAME=${{ matrix.base_image.image_name }}
-            DISTRIB_MAJOR=${{ matrix.base_image.image_tag }}
+            BASE_IMAGE_NAME=${{ matrix.base_image.image_name }}
+            BASE_IMAGE_TAG=${{ matrix.base_image.image_tag }}
             JAVA_MAJOR=${{ matrix.java_major }}
             REVISION=${{ github.run_number }}
             CREATED=${{ steps.vars.outputs.image_created }}
@@ -119,8 +119,8 @@ jobs:
           push: ${{ github.actor != 'dependabot[bot]' }}
           build-args: |
             JDIST=${{ matrix.jdist }}
-            DISTRIB_NAME=${{ matrix.base_image.image_name }}
-            DISTRIB_MAJOR=${{ matrix.base_image.image_tag }}
+            BASE_IMAGE_NAME=${{ matrix.base_image.image_name }}
+            BASE_IMAGE_TAG=${{ matrix.base_image.image_tag }}
             JAVA_MAJOR=${{ matrix.java_major }}
             REVISION=${{ github.run_number }}
             CREATED=${{ steps.vars.outputs.image_created }}
