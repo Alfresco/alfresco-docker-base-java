@@ -28,11 +28,11 @@ jobs:
           - flavor: rockylinux
             major: 8
             image_name: rockylinux/rockylinux
-            image_tag: 8
+            image_tag: 8-minimal
           - flavor: rockylinux
             major: 9
             image_name: rockylinux/rockylinux
-            image_tag: 9
+            image_tag: 9-minimal
         java_major:
           - 11
           - 17
