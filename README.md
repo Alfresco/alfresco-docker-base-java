@@ -91,13 +91,15 @@ The images built from this repository are named as follow:
 To build a local version of the base java image follow the instructions below:
 
 ```bash
-DISTRIB_NAME=rockylinux
+BASE_IMAGE_NAME=rockylinux/rockylinux
+BASE_IMAGE_TAG=9
 DISTRIB_MAJOR=9
 JAVA_MAJOR=25
 JDIST=jre
 
 docker build -t alfresco-base-java . \
-  --build-arg DISTRIB_NAME=$DISTRIB_NAME \
+  --build-arg BASE_IMAGE_NAME=$BASE_IMAGE_NAME \
+  --build-arg BASE_IMAGE_TAG=$BASE_IMAGE_TAG \
   --build-arg DISTRIB_MAJOR=$DISTRIB_MAJOR \
   --build-arg JAVA_MAJOR=$JAVA_MAJOR \
   --build-arg JDIST=$JDIST \

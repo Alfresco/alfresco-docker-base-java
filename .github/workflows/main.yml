@@ -27,8 +27,12 @@ jobs:
         base_image:
           - flavor: rockylinux
             major: 8
+            image_name: rockylinux/rockylinux
+            image_tag: 8
           - flavor: rockylinux
             major: 9
+            image_name: rockylinux/rockylinux
+            image_tag: 9
         java_major:
           - 11
           - 17
@@ -85,7 +89,8 @@ jobs:
           load: true
           build-args: |
             JDIST=${{ matrix.jdist }}
-            DISTRIB_NAME=${{ matrix.base_image.flavor }}
+            BASE_IMAGE_NAME=${{ matrix.base_image.image_name }}
+            BASE_IMAGE_TAG=${{ matrix.base_image.image_tag }}
             DISTRIB_MAJOR=${{ matrix.base_image.major }}
             JAVA_MAJOR=${{ matrix.java_major }}
             REVISION=${{ github.run_number }}
@@ -115,7 +120,8 @@ jobs:
           push: ${{ github.actor != 'dependabot[bot]' }}
           build-args: |
             JDIST=${{ matrix.jdist }}
-            DISTRIB_NAME=${{ matrix.base_image.flavor }}
+            BASE_IMAGE_NAME=${{ matrix.base_image.image_name }}
+            BASE_IMAGE_TAG=${{ matrix.base_image.image_tag }}
             DISTRIB_MAJOR=${{ matrix.base_image.major }}
             JAVA_MAJOR=${{ matrix.java_major }}
             REVISION=${{ github.run_number }}

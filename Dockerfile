@@ -1,11 +1,11 @@
 # Alfresco Base Java Image
-ARG DISTRIB_NAME=rockylinux/rockylinux
+ARG BASE_IMAGE_NAME=rockylinux/rockylinux
+ARG BASE_IMAGE_TAG=9
+
+FROM ${BASE_IMAGE_NAME}:${BASE_IMAGE_TAG}
+
 ARG DISTRIB_MAJOR=9
-
-FROM ${DISTRIB_NAME}:${DISTRIB_MAJOR}
-
-ARG DISTRIB_MAJOR
-ARG JAVA_MAJOR
+ARG JAVA_MAJOR=25
 
 ENV JAVA_HOME=/etc/alternatives/jre \
     LANG=C.UTF-8 \
@@ -15,7 +15,7 @@ SHELL ["/bin/sh", "-euo", "pipefail", "-c"]
 
 RUN <<EOC
   echo "Installing common distribution packages"
-  dnf update --security -y
+  dnf upgrade -y
   dnf install -y langpacks-en ca-certificates
   dnf clean all
 EOC
