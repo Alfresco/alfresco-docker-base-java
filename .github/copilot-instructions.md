@@ -50,7 +50,7 @@ The entire build is a **single `Dockerfile`** parameterised by build args. The C
 - Rocky 8: Java 11, 17 (JRE)
 - Rocky 9: Java 17, 21, 25 (JRE)
 
-**Java 25 special case:** OpenJDK 25 packages are not available in Rocky Linux repositories, so Rocky 9 / Java 25 builds use Eclipse Temurin from the Adoptium project instead of the DNF package path used by other versions.
+Java installation is handled consistently via the Dockerfile's DNF package path for all supported `JAVA_MAJOR` values, using `java-${JAVA_MAJOR}-openjdk-headless`.
 
 ## Image Naming Convention
 
